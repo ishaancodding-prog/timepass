@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ABTalks — 60-Day Coding Challenge Hub (Animated Agentic Experience)</title>
+    <title>ABTalks — 60-Day Coding Challenge Hub (Advanced Agentic Experience)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
@@ -19,16 +19,16 @@
     <style>
         :root {
             --bg-base: #060811;
-            --panel-glass: rgba(15, 23, 42, 0.75);
-            --border-glow: rgba(56, 189, 248, 0.25);
-            --dialog-bar: rgba(10, 15, 30, 0.92);
+            --panel-glass: rgba(15, 23, 42, 0.78);
+            --border-glow: rgba(56, 189, 248, 0.3);
+            --dialog-bar: rgba(10, 15, 30, 0.95);
         }
 
         body {
             background-color: var(--bg-base);
             background-image: 
-                radial-gradient(circle at 50% -20%, rgba(56, 189, 248, 0.15), transparent 60%),
-                radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.1), transparent 50%);
+                radial-gradient(circle at 50% -20%, rgba(56, 189, 248, 0.18), transparent 60%),
+                radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.12), transparent 50%);
             font-family: 'Plus Jakarta Sans', sans-serif;
             color: #f8fafc;
             min-height: 100vh;
@@ -47,8 +47,8 @@
             background: var(--dialog-bar);
             backdrop-filter: blur(50px);
             -webkit-backdrop-filter: blur(50px);
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(56, 189, 248, 0.2);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px rgba(56, 189, 248, 0.25);
         }
 
         .agentic-btn {
@@ -61,17 +61,13 @@
 
         .agentic-btn:hover {
             opacity: 0.95;
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 20px 45px rgba(56, 189, 248, 0.6);
-        }
-
-        .agentic-btn:active {
-            transform: scale(0.97);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(56, 189, 248, 0.6);
         }
 
         @keyframes pulseGlow {
             0%, 100% { opacity: 0.6; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
-            50% { opacity: 1; box-shadow: 0 0 35px rgba(56, 189, 248, 0.7); }
+            50% { opacity: 1; box-shadow: 0 0 35px rgba(56, 189, 248, 0.8); }
         }
         .animate-ai-glow { animation: pulseGlow 3s ease-in-out infinite; }
 
@@ -84,70 +80,64 @@
         .wave-bar-3 { animation: waveAnim 1.4s ease-in-out infinite 0.4s; }
         .wave-bar-4 { animation: waveAnim 1s ease-in-out infinite 0.1s; }
 
-        /* Smooth View Transitions */
         @keyframes pageSlideIn {
-            0% { opacity: 0; transform: translateY(16px) scale(0.98); filter: blur(4px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+            0% { opacity: 0; transform: translateY(14px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .animate-page-in {
-            animation: pageSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        /* Floating background orb pulse */
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(-50%, 0px) scale(1); }
-            50% { transform: translate(-50%, -20px) scale(1.1); }
-        }
-        .animate-orb {
-            animation: orbFloat 10s ease-in-out infinite;
-        }
+        .animate-page-in { animation: pageSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 lg:p-10 selection:bg-cyan-500 selection:text-slate-950">
 
-    <!-- Ambient Floating Aura with Animation -->
-    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-sky-500/15 rounded-full blur-[150px] pointer-events-none animate-orb"></div>
+    <!-- Ambient Floating Aura -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-sky-500/15 rounded-full blur-[150px] pointer-events-none"></div>
 
     <!-- RESPONSIVE HEADER -->
     <header class="max-w-4xl mx-auto w-full agentic-panel px-5 py-3.5 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-3 z-20">
         <div class="flex items-center gap-3 cursor-pointer group" onclick="router.navigate('/')">
-            <div class="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center font-bold text-cyan-300 text-sm animate-ai-glow group-hover:scale-110 transition-transform">
+            <div class="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center font-bold text-cyan-300 text-sm animate-ai-glow">
                 🔮
             </div>
             <div>
                 <span class="font-extrabold text-xs tracking-wider text-white uppercase block">ABTALKS</span>
-                <span class="text-[9px] text-cyan-400 font-mono">Agentic AI Animated Hub</span>
+                <span class="text-[9px] text-cyan-400 font-mono">Advanced Agentic AI Hub</span>
             </div>
         </div>
 
         <div class="flex items-center gap-1 bg-slate-950/60 p-1 rounded-xl border border-white/10 text-xs font-semibold">
-            <button onclick="router.navigate('/')" id="r-home" class="px-3 py-1.5 rounded-lg transition-all duration-300 text-slate-400">Home (/)</button>
-            <button onclick="router.navigate('/dashboard')" id="r-dash" class="px-3 py-1.5 rounded-lg transition-all duration-300 text-slate-400">Dashboard (/dashboard)</button>
-            <button onclick="router.navigate('/day/1')" id="r-day" class="px-3 py-1.5 rounded-lg transition-all duration-300 text-slate-400">Day 1 (/day/1)</button>
+            <button onclick="router.navigate('/')" id="r-home" class="px-3 py-1.5 rounded-lg transition-all text-slate-400">Home (/)</button>
+            <button onclick="router.navigate('/dashboard')" id="r-dash" class="px-3 py-1.5 rounded-lg transition-all text-slate-400">Dashboard (/dashboard)</button>
+            <button onclick="router.navigate('/day/1')" id="r-day" class="px-3 py-1.5 rounded-lg transition-all text-slate-400">Day 1 (/day/1)</button>
         </div>
     </header>
 
     <!-- DYNAMIC ROUTER VIEW CONTAINER -->
     <main id="appContainer" class="flex-grow max-w-4xl mx-auto w-full my-6 z-10 flex flex-col justify-center"></main>
 
-    <!-- STANDALONE AI AGENTIC DIALOG BAR WITH HOVER ANIMATIONS -->
+    <!-- ADVANCED AGENTIC AI DIALOG BAR -->
     <div class="max-w-xl mx-auto w-full z-30 mb-4 px-2">
-        <div class="agentic-dialog-bar px-4 py-3 rounded-2xl flex items-center justify-between gap-3 transition-transform duration-300 hover:scale-[1.01]">
-            <div class="flex items-center gap-3">
-                <div class="flex items-end gap-1 px-1 h-6">
-                    <div class="w-1 bg-cyan-400 rounded-full wave-bar-1"></div>
-                    <div class="w-1 bg-indigo-400 rounded-full wave-bar-2"></div>
-                    <div class="w-1 bg-cyan-300 rounded-full wave-bar-3"></div>
-                    <div class="w-1 bg-sky-400 rounded-full wave-bar-4"></div>
+        <div class="agentic-dialog-bar px-4 py-3 rounded-2xl flex flex-col gap-2">
+            <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex items-end gap-1 px-1 h-6">
+                        <div class="w-1 bg-cyan-400 rounded-full wave-bar-1"></div>
+                        <div class="w-1 bg-indigo-400 rounded-full wave-bar-2"></div>
+                        <div class="w-1 bg-cyan-300 rounded-full wave-bar-3"></div>
+                        <div class="w-1 bg-sky-400 rounded-full wave-bar-4"></div>
+                    </div>
+                    <div class="text-xs">
+                        <span class="text-cyan-400 font-mono block text-[10px]">Neural Agent v2.4 (Active)</span>
+                        <span id="aiStatusText" class="text-white font-medium">Ready to optimize code snippets & generate daily sub-tasks.</span>
+                    </div>
                 </div>
-                <div class="text-xs">
-                    <span class="text-slate-400 font-mono block text-[10px]">AI Agentic Assistant</span>
-                    <span id="aiStatusText" class="text-white font-medium transition-opacity duration-300">Ready to review your GitHub commits & streaks.</span>
-                </div>
+                <button onclick="app.triggerAdvancedAi()" class="bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-cyan-500/30 transition">
+                    Analyze Code ✦
+                </button>
             </div>
-            <button onclick="app.triggerAiAssistant()" class="bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-cyan-500/30 hover:scale-105 active:scale-95 transition-all">
-                Ask AI ✦
-            </button>
+            <!-- AI Response Box -->
+            <div id="aiResponseBox" class="hidden bg-slate-950/80 border border-cyan-500/30 p-2.5 rounded-xl text-[11px] font-mono text-cyan-200">
+                🤖 AI: <span id="aiOutputText">Analyzing user repository structure...</span>
+            </div>
         </div>
     </div>
 
@@ -159,21 +149,22 @@
         <div class="text-slate-300">/day/1</div>
     </footer>
 
-    <!-- FULLY ANIMATED APP ENGINE SCRIPT -->
+    <!-- APP ENGINE SCRIPT -->
     <script>
         const store = {
-            currentUser: JSON.parse(localStorage.getItem('agentic_anim_user')) || null,
-            streak: parseInt(localStorage.getItem('agentic_anim_streak')) || 0,
-            completedDays: JSON.parse(localStorage.getItem('agentic_anim_completed')) || [],
-            githubUrl: localStorage.getItem('agentic_anim_gh_1') || '',
-            linkedinUrl: localStorage.getItem('agentic_anim_li_1') || '',
+            currentUser: JSON.parse(localStorage.getItem('adv_agentic_user')) || null,
+            streak: parseInt(localStorage.getItem('adv_agentic_streak')) || 0,
+            completedDays: JSON.parse(localStorage.getItem('adv_agentic_completed')) || [],
+            githubUrl: localStorage.getItem('adv_agentic_gh_1') || '',
+            linkedinUrl: localStorage.getItem('adv_agentic_li_1') || '',
             authMode: 'login',
-            aiMessages: [
-                "✨ Analyzing commit frequency... Velocity is increasing!",
-                "🔥 Streak verification active: Ready for Day 1 challenge submission.",
-                "💼 Recruiter visibility algorithm is fully synchronized with your LinkedIn profile.",
-                "💡 Pro-tip: Late-night coding sessions boost cognitive focus by 24%."
-            ]
+            customTasks: JSON.parse(localStorage.getItem('adv_agentic_tasks')) || {
+                1: [
+                    { id: 't1', text: 'Initialize public GitHub repository', done: true },
+                    { id: 't2', text: 'Configure local Node/Python runtime', done: false },
+                    { id: 't3', text: 'Deploy boilerplate to Vercel/Netlify', done: false }
+                ]
+            }
         };
 
         const router = {
@@ -187,22 +178,17 @@
             },
             render(path) {
                 const container = document.getElementById('appContainer');
-                
-                // Add fade out effect before switching view
                 container.style.opacity = '0';
-                container.style.transform = 'translateY(10px)';
-
+                
                 setTimeout(() => {
                     let html = '';
-
-                    // Update active tab highlights with smooth transition
                     ['home', 'dash', 'day'].forEach(id => {
                         const el = document.getElementById(`r-${id}`);
-                        if (el) el.className = "px-3 py-1.5 rounded-lg transition-all duration-300 text-slate-400 hover:text-slate-200";
+                        if (el) el.className = "px-3 py-1.5 rounded-lg transition-all text-slate-400";
                     });
-                    if (path === '/') document.getElementById('r-home').className = "px-3 py-1.5 rounded-lg transition-all duration-300 bg-cyan-500 text-slate-950 font-extrabold shadow-lg shadow-cyan-500/30 scale-105";
-                    if (path === '/dashboard') document.getElementById('r-dash').className = "px-3 py-1.5 rounded-lg transition-all duration-300 bg-cyan-500 text-slate-950 font-extrabold shadow-lg shadow-cyan-500/30 scale-105";
-                    if (path === '/day/1') document.getElementById('r-day').className = "px-3 py-1.5 rounded-lg transition-all duration-300 bg-cyan-500 text-slate-950 font-extrabold shadow-lg shadow-cyan-500/30 scale-105";
+                    if (path === '/') document.getElementById('r-home').className = "px-3 py-1.5 rounded-lg transition-all bg-cyan-500 text-slate-950 font-extrabold shadow-md";
+                    if (path === '/dashboard') document.getElementById('r-dash').className = "px-3 py-1.5 rounded-lg transition-all bg-cyan-500 text-slate-950 font-extrabold shadow-md";
+                    if (path === '/day/1') document.getElementById('r-day').className = "px-3 py-1.5 rounded-lg transition-all bg-cyan-500 text-slate-950 font-extrabold shadow-md";
 
                     if (path === '/') html = this.views.home();
                     else if (path === '/dashboard') html = this.views.dashboard();
@@ -212,7 +198,6 @@
                     container.innerHTML = html;
                     container.className = "flex-grow max-w-4xl mx-auto w-full my-6 z-10 flex flex-col justify-center animate-page-in";
                     container.style.opacity = '1';
-                    container.style.transform = 'translateY(0)';
                 }, 150);
             },
 
@@ -221,42 +206,25 @@
                     const isAuth = store.currentUser !== null;
                     return `
                         <div class="agentic-panel p-8 sm:p-12 rounded-[2.5rem] space-y-6 text-center relative overflow-hidden">
-                            <div class="absolute -top-24 -right-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-
-                            <div class="inline-flex items-center gap-2 bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-md shadow-sm">
-                                ⚡ Agentic AI Coding Companion • 60-Day Challenge
+                            <div class="inline-flex items-center gap-2 bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-md">
+                                ⚡ Advanced Agentic AI • 60-Day Challenge Hub
                             </div>
                             
                             <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight max-w-2xl mx-auto">
-                                Build Every Night. <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300">Command Recruiter Attention.</span>
+                                Master 60 Days with <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-sky-200">Granular Task Breakdown.</span>
                             </h1>
                             
                             <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl mx-auto">
-                                Designed for Indian college students coding late at night. Turn post-college hours into verified GitHub commits and viral LinkedIn learning streaks.
+                                Featuring day-wise challenge tables, interactive sub-tasks, and real-time AI code verification for Indian college students.
                             </p>
 
                             <div class="pt-2 max-w-sm mx-auto space-y-3">
                                 <button onclick="router.navigate('/dashboard')" class="agentic-btn w-full py-4 rounded-2xl text-sm">
                                     ${isAuth ? 'Open Dashboard ⚡' : 'Get Started / Sign In 🚀'}
                                 </button>
-                                <button onclick="router.navigate('/day/1')" class="w-full bg-white/5 border border-white/10 py-3.5 rounded-2xl text-xs font-bold text-slate-300 hover:bg-white/10 hover:border-white/30 transition-all duration-300">
-                                    Preview Day 1 Challenge
+                                <button onclick="router.navigate('/day/1')" class="w-full bg-white/5 border border-white/10 py-3.5 rounded-2xl text-xs font-bold text-slate-300 hover:bg-white/10 transition">
+                                    View Day 1 Roadmap
                                 </button>
-                            </div>
-
-                            <div class="grid grid-cols-3 gap-3 pt-6 text-left max-w-md mx-auto">
-                                <div class="agentic-panel p-4 rounded-2xl hover:border-cyan-500/40 transition-colors duration-300">
-                                    <div class="text-base sm:text-lg font-extrabold text-white">60 Days</div>
-                                    <div class="text-[10px] text-slate-400">Consistency Arc</div>
-                                </div>
-                                <div class="agentic-panel p-4 rounded-2xl hover:border-cyan-500/40 transition-colors duration-300">
-                                    <div class="text-base sm:text-lg font-extrabold text-cyan-400">GitHub</div>
-                                    <div class="text-[10px] text-slate-400">Automatic Sync</div>
-                                </div>
-                                <div class="agentic-panel p-4 rounded-2xl hover:border-cyan-500/40 transition-colors duration-300">
-                                    <div class="text-base sm:text-lg font-extrabold text-sky-300">LinkedIn</div>
-                                    <div class="text-[10px] text-slate-400">Public Proof</div>
-                                </div>
                             </div>
                         </div>
                     `;
@@ -274,30 +242,28 @@
                                 <div class="flex justify-between items-center">
                                     <span class="text-[10px] font-extrabold text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Agentic Gateway</span>
                                     <div class="flex gap-1 bg-slate-950 p-1 rounded-xl text-xs font-bold">
-                                        <button onclick="store.authMode='login'; router.render('/dashboard')" class="px-3.5 py-1.5 rounded-lg transition-all duration-300 ${isLogin ? 'bg-cyan-500 text-slate-950 shadow-md scale-105' : 'text-slate-400 hover:text-white'}">Login</button>
-                                        <button onclick="store.authMode='signup'; router.render('/dashboard')" class="px-3.5 py-1.5 rounded-lg transition-all duration-300 ${!isLogin ? 'bg-cyan-500 text-slate-950 shadow-md scale-105' : 'text-slate-400 hover:text-white'}">Sign Up</button>
+                                        <button onclick="store.authMode='login'; router.render('/dashboard')" class="px-3.5 py-1.5 rounded-lg ${isLogin ? 'bg-cyan-500 text-slate-950' : 'text-slate-400'}">Login</button>
+                                        <button onclick="store.authMode='signup'; router.render('/dashboard')" class="px-3.5 py-1.5 rounded-lg ${!isLogin ? 'bg-cyan-500 text-slate-950' : 'text-slate-400'}">Sign Up</button>
                                     </div>
                                 </div>
-
                                 <div class="space-y-1">
                                     <h2 class="text-xl font-extrabold text-white">${isLogin ? 'Welcome Back!' : 'Create Account'}</h2>
-                                    <p class="text-xs text-slate-300">${isLogin ? 'Log in to access your interactive dashboard.' : 'Register and initialize your Day 1 challenge.'}</p>
+                                    <p class="text-xs text-slate-300">Authenticate to access your 60-day curriculum table.</p>
                                 </div>
-
                                 <div class="space-y-4 pt-1">
                                     ${!isLogin ? `
-                                        <div class="space-y-1">
-                                            <label class="block text-xs font-bold uppercase text-slate-400">Full Name</label>
-                                            <input type="text" id="dashName" placeholder="Aarav Sharma" class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                                        <div>
+                                            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Full Name</label>
+                                            <input type="text" id="dashName" placeholder="Aarav Sharma" class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400">
                                         </div>
                                     ` : ''}
-                                    <div class="space-y-1">
-                                        <label class="block text-xs font-bold uppercase text-slate-400">College Email</label>
-                                        <input type="email" id="dashEmail" placeholder="student@university.ac.in" class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                                    <div>
+                                        <label class="block text-xs font-bold uppercase text-slate-400 mb-1">College Email</label>
+                                        <input type="email" id="dashEmail" placeholder="student@university.ac.in" class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400">
                                     </div>
-                                    <div class="space-y-1">
-                                        <label class="block text-xs font-bold uppercase text-slate-400">Password</label>
-                                        <input type="password" id="dashPass" placeholder="••••••••" class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                                    <div>
+                                        <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Password</label>
+                                        <input type="password" id="dashPass" placeholder="••••••••" class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400">
                                     </div>
                                     <button onclick="app.handleAuth()" class="agentic-btn w-full py-3.5 rounded-xl text-sm mt-2">
                                         ${isLogin ? 'Access Dashboard ⚡' : 'Initialize Account 🚀'}
@@ -307,46 +273,59 @@
                         `;
                     }
 
+                    // Build 60-Day Table preview (showing first 10 days for brevity in view)
+                    let tableRows = '';
+                    for (let i = 1; i <= 10; i++) {
+                        const done = store.completedDays.includes(i);
+                        tableRows += `
+                            <tr class="border-b border-white/10 hover:bg-white/5 transition">
+                                <td class="p-3 font-mono text-xs text-cyan-300">Day ${i}</td>
+                                <td class="p-3 text-xs text-white">${i === 1 ? 'Environment Setup & Hello World' : 'Advanced Architecture & API Integration'}</td>
+                                <td class="p-3 text-xs"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${done ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">${done ? 'Completed ✓' : 'Pending'}</span></td>
+                                <td class="p-3 text-xs text-right"><button onclick="router.navigate('/day/1')" class="text-cyan-400 hover:underline font-bold">Open →</button></td>
+                            </tr>
+                        `;
+                    }
+
                     return `
                         <div class="space-y-6">
-                            <!-- Interactive Edge Case Banner: Zero Streak -->
-                            ${isZeroStreak ? `
-                                <div class="bg-amber-500/15 border border-amber-500/30 p-4 rounded-2xl text-xs text-amber-200 flex flex-col sm:flex-row items-center justify-between gap-3 animate-pulse">
-                                    <span>⚠️ Edge Case: No active streak yet. Complete Day 1 to ignite your profile!</span>
-                                    <button onclick="router.navigate('/day/1')" class="underline font-bold bg-amber-500/20 px-3 py-1 rounded-lg hover:bg-amber-500/40 transition">Start Day 1</button>
-                                </div>
-                            ` : ''}
-
-                            <!-- User Profile & Streak Widget -->
-                            <div class="agentic-panel p-6 sm:p-8 rounded-[2.5rem] flex flex-col sm:flex-row justify-between items-center gap-4 hover:border-cyan-400/50 transition-colors">
+                            <!-- Stats Widget -->
+                            <div class="agentic-panel p-6 sm:p-8 rounded-[2.5rem] flex flex-col sm:flex-row justify-between items-center gap-4">
                                 <div class="space-y-1 text-center sm:text-left">
-                                    <span class="text-xs font-bold text-cyan-400 uppercase tracking-widest">Authenticated Scholar: ${store.currentUser.name}</span>
+                                    <span class="text-xs font-bold text-cyan-400 uppercase tracking-widest">Scholar: ${store.currentUser.name}</span>
                                     <div class="text-4xl font-extrabold text-white mt-1">${store.streak} <span class="text-base text-cyan-300 font-normal">Day Streak 🔥</span></div>
                                 </div>
                                 <div class="text-center sm:text-right">
-                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Overall Completion</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Completion Rate</span>
                                     <div class="text-3xl font-extrabold text-emerald-400 mt-1">${completionRate}%</div>
                                 </div>
                             </div>
 
-                            <!-- Today's Task Card -->
-                            <div class="agentic-panel p-6 sm:p-8 rounded-[2.5rem] space-y-4 border-cyan-500/40">
+                            <!-- Day-Wise Challenge Table -->
+                            <div class="agentic-panel p-6 rounded-[2.5rem] space-y-4">
                                 <div class="flex justify-between items-center">
-                                    <span class="text-xs font-extrabold text-cyan-300 bg-cyan-500/10 px-3.5 py-1 rounded-full border border-cyan-500/20">Today's Task • Day 1</span>
-                                    <span class="text-xs text-slate-400">Pending Proof of Work</span>
+                                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">60-Day Curriculum Master Table</h3>
+                                    <span class="text-xs text-slate-400">Showing Days 1–10</span>
                                 </div>
-                                <h3 class="text-base sm:text-lg font-bold text-white">Environment Setup & Hello World</h3>
-                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Initialize your public GitHub repository, configure your tools, and publish your initial proof of work.</p>
-                                <button onclick="router.navigate('/day/1')" class="agentic-btn w-full py-3.5 rounded-xl text-xs sm:text-sm">
-                                    Open Day 1 Challenge ⚡
-                                </button>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr class="border-b border-white/20 text-[10px] uppercase font-mono text-slate-400">
+                                                <th class="p-3">Timeline</th>
+                                                <th class="p-3">Challenge Topic</th>
+                                                <th class="p-3">Status</th>
+                                                <th class="p-3 text-right">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${tableRows}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
-                            <!-- Interactive Logout Option -->
-                            <div class="text-center pt-2">
-                                <button onclick="app.handleLogout()" class="text-xs text-slate-400 hover:text-red-400 transition-colors underline">
-                                    Log out / Switch Account ⎋
-                                </button>
+                            <div class="text-center">
+                                <button onclick="app.handleLogout()" class="text-xs text-slate-400 hover:text-red-400 transition underline">Log out ⎋</button>
                             </div>
                         </div>
                     `;
@@ -354,36 +333,63 @@
 
                 day1() {
                     const isSubmitted = store.completedDays.includes(1);
+                    const tasks = store.customTasks[1] || [];
+
+                    let taskListHtml = tasks.map(t => `
+                        <div class="flex items-center justify-between bg-slate-950/60 p-3 rounded-xl border border-white/10">
+                            <label class="flex items-center gap-3 cursor-pointer text-xs text-slate-200">
+                                <input type="checkbox" ${t.done ? 'checked' : ''} onchange="app.toggleTask('${t.id}')" class="w-4 h-4 rounded border-white/20 text-cyan-500 focus:ring-0">
+                                <span class="${t.done ? 'line-through text-slate-500' : ''}">${t.text}</span>
+                            </label>
+                            <button onclick="app.removeTask('${t.id}')" class="text-slate-500 hover:text-red-400 text-xs">✕</button>
+                        </div>
+                    `).join('');
 
                     return `
                         <div class="max-w-2xl mx-auto w-full agentic-panel p-8 sm:p-10 rounded-[2.5rem] space-y-6">
                             <div class="flex justify-between items-center">
-                                <button onclick="router.navigate('/dashboard')" class="text-xs sm:text-sm text-slate-400 hover:text-white font-bold transition-colors">← Dashboard</button>
+                                <button onclick="router.navigate('/dashboard')" class="text-xs text-slate-400 hover:text-white font-bold">← Dashboard</button>
                                 <span class="text-xs font-bold text-cyan-300 bg-cyan-500/10 px-3.5 py-1 rounded-full border border-cyan-500/20">Day 1 of 60</span>
                             </div>
 
                             <div class="space-y-2">
                                 <h1 class="text-xl sm:text-2xl font-extrabold text-white">Environment Setup & Hello World</h1>
-                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Set up your workspace, create your first repository, and deploy a simple landing page or script to kick off your journey.</p>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Complete today's modular sub-tasks, push to GitHub, and submit verification proof.</p>
+                            </div>
+
+                            <!-- Interactive Task Option Section -->
+                            <div class="space-y-3 bg-slate-950/40 p-5 rounded-2xl border border-white/10">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Day 1 Granular Tasks</span>
+                                    <span class="text-[10px] text-slate-400">${tasks.filter(t=>t.done).length}/${tasks.length} Done</span>
+                                </div>
+                                <div class="space-y-2" id="taskContainer">
+                                    ${taskListHtml}
+                                </div>
+                                <!-- Add Task Input -->
+                                <div class="flex gap-2 pt-2">
+                                    <input type="text" id="newTaskInput" placeholder="Add custom sub-task..." class="flex-1 bg-slate-950/80 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+                                    <button onclick="app.addTask()" class="bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-cyan-500/30 transition">+ Add</button>
+                                </div>
                             </div>
 
                             <div class="space-y-4 pt-2">
                                 <div class="space-y-1">
                                     <label class="block text-xs font-bold uppercase text-slate-400">GitHub Repository / Commit URL</label>
-                                    <input type="text" id="ghInput" value="${store.githubUrl}" placeholder="https://github.com/username/repo-day1" class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                                    <input type="text" id="ghInput" value="${store.githubUrl}" placeholder="https://github.com/username/repo-day1" class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400">
                                 </div>
                                 <div class="space-y-1">
                                     <label class="block text-xs font-bold uppercase text-slate-400">LinkedIn Post URL</label>
-                                    <input type="text" id="liInput" value="${store.linkedinUrl}" placeholder="https://linkedin.com/posts/..." class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors">
+                                    <input type="text" id="liInput" value="${store.linkedinUrl}" placeholder="https://linkedin.com/posts/..." class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400">
                                 </div>
                                 <button onclick="app.submitDay1()" class="agentic-btn w-full py-3.5 rounded-xl text-xs sm:text-sm">
-                                    ${isSubmitted ? 'Update Day 1 Submission ✓' : 'Submit Proof & Sync Streak ⚡'}
+                                    ${isSubmitted ? 'Update Submission ✓' : 'Submit Proof & Sync Streak ⚡'}
                                 </button>
                             </div>
 
                             ${isSubmitted ? `
-                                <div class="agentic-panel bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl text-center text-xs sm:text-sm text-emerald-300 font-bold animate-bounce">
-                                    🎉 Day 1 Verified Successfully! Your public learning streak is active.
+                                <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl text-center text-xs text-emerald-300 font-bold">
+                                    🎉 Day 1 Verified Successfully!
                                 </div>
                             ` : ''}
                         </div>
@@ -403,16 +409,41 @@
                     alert('Please enter your email and password.');
                     return;
                 }
-
                 store.currentUser = { name, email };
-                localStorage.setItem('agentic_anim_user', JSON.stringify(store.currentUser));
+                localStorage.setItem('adv_agentic_user', JSON.stringify(store.currentUser));
                 router.navigate('/dashboard');
             },
 
             handleLogout() {
                 store.currentUser = null;
-                localStorage.removeItem('agentic_anim_user');
+                localStorage.removeItem('adv_agentic_user');
                 router.navigate('/dashboard');
+            },
+
+            toggleTask(id) {
+                const tasks = store.customTasks[1];
+                const task = tasks.find(t => t.id === id);
+                if (task) {
+                    task.done = !task.done;
+                    localStorage.setItem('adv_agentic_tasks', JSON.stringify(store.customTasks));
+                    router.render('/day/1');
+                }
+            },
+
+            addTask() {
+                const input = document.getElementById('newTaskInput');
+                const val = input.value.trim();
+                if (!val) return;
+                if (!store.customTasks[1]) store.customTasks[1] = [];
+                store.customTasks[1].push({ id: 't_' + Date.now(), text: val, done: false });
+                localStorage.setItem('adv_agentic_tasks', JSON.stringify(store.customTasks));
+                router.render('/day/1');
+            },
+
+            removeTask(id) {
+                store.customTasks[1] = store.customTasks[1].filter(t => t.id !== id);
+                localStorage.setItem('adv_agentic_tasks', JSON.stringify(store.customTasks));
+                router.render('/day/1');
             },
 
             submitDay1() {
@@ -426,23 +457,20 @@
                 store.linkedinUrl = li;
                 if (!store.completedDays.includes(1)) {
                     store.completedDays.push(1);
-                    store.streak = 1; // Ignite streak on Day 1 completion
+                    store.streak = 1;
                 }
-                localStorage.setItem('agentic_anim_gh_1', gh);
-                localStorage.setItem('agentic_anim_li_1', li);
-                localStorage.setItem('agentic_anim_completed', JSON.stringify(store.completedDays));
-                localStorage.setItem('agentic_anim_streak', store.streak);
+                localStorage.setItem('adv_agentic_gh_1', gh);
+                localStorage.setItem('adv_agentic_li_1', li);
+                localStorage.setItem('adv_agentic_completed', JSON.stringify(store.completedDays));
+                localStorage.setItem('adv_agentic_streak', store.streak);
                 router.render('/day/1');
             },
 
-            triggerAiAssistant() {
-                const statusEl = document.getElementById('aiStatusText');
-                statusEl.style.opacity = '0';
-                setTimeout(() => {
-                    const randomMsg = store.aiMessages[Math.floor(Math.random() * store.aiMessages.length)];
-                    statusEl.innerText = randomMsg;
-                    statusEl.style.opacity = '1';
-                }, 200);
+            triggerAdvancedAi() {
+                const box = document.getElementById('aiResponseBox');
+                const output = document.getElementById('aiOutputText');
+                box.classList.remove('hidden');
+                output.innerText = "Scanning repository code patterns... Neural match: 98.4%. Ready for automated PR validation.";
             }
         };
 
