@@ -31,7 +31,7 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             width: 100%;
             max-width: 400px;
-            height: 650px;
+            height: 680px;
             border-radius: 30px;
             padding: 30px 20px;
             display: flex;
@@ -47,7 +47,7 @@
             display: flex;
             gap: 6px;
             width: 100%;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
 
         .bar {
@@ -75,15 +75,15 @@
         /* Illustration / Animation Area */
         .illustration-container {
             position: relative;
-            margin-top: 20px;
-            margin-bottom: 15px;
+            margin-top: 5px;
+            margin-bottom: 5px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .bears-img {
-            width: 220px;
+            width: 180px;
             height: auto;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
             animation: floatBears 3s ease-in-out infinite;
@@ -97,25 +97,54 @@
         /* Typography */
         h1 {
             font-family: 'Caveat', cursive;
-            font-size: 3rem;
+            font-size: 2.6rem;
             font-weight: 600;
             color: #fce4ec;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             text-shadow: 0 2px 10px rgba(255, 77, 121, 0.3);
         }
 
         .subtitle {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 50px;
+            margin-bottom: 15px;
             text-align: center;
+        }
+
+        /* Date Picker Input Group */
+        .date-picker-group {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .date-picker-group label {
+            font-size: 0.75rem;
+            color: #ff4d79;
+            font-weight: 600;
+        }
+
+        .date-picker-group input {
+            background: transparent;
+            border: none;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            color-scheme: dark;
         }
 
         /* Action Buttons */
         .btn-group {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px;
             width: calc(100% - 40px);
             display: flex;
             justify-content: space-between;
@@ -124,9 +153,9 @@
         }
 
         .btn {
-            padding: 14px 28px;
+            padding: 14px 20px;
             border-radius: 30px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             border: none;
@@ -138,6 +167,7 @@
             color: white;
             flex: 1;
             box-shadow: 0 8px 25px rgba(255, 77, 121, 0.4);
+            text-align: center;
         }
 
         .btn-yes:hover {
@@ -158,7 +188,7 @@
             background: rgba(255, 255, 255, 0.15);
         }
 
-        /* Success State Styling */
+        /* Success Screen Styling */
         .success-screen {
             display: none;
             flex-direction: column;
@@ -170,14 +200,31 @@
 
         .success-screen h2 {
             font-family: 'Caveat', cursive;
-            font-size: 3.5rem;
+            font-size: 3rem;
             color: #ff4d79;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .success-screen p {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+        }
+
+        .btn-calendar {
+            background: #4285F4;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(66, 133, 244, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .btn-calendar:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -193,12 +240,17 @@
             </div>
 
             <div class="illustration-container">
-                <!-- Cute hugging bears placeholder graphic (using high-quality vector source) -->
                 <img src="https://media1.giphy.com/media/20k1un6aBQKLivWDIC/giphy.gif" alt="Cute hugging bears" class="bears-img">
             </div>
 
             <h1>Will you go out with me?</h1>
             <p class="subtitle">There is only one right answer...</p>
+
+            <!-- Date & Time Selector -->
+            <div class="date-picker-group">
+                <label for="datePicker">When are you free?</label>
+                <input type="datetime-local" id="datePicker">
+            </div>
 
             <div class="btn-group">
                 <button class="btn btn-no" id="noBtn">Think again...</button>
@@ -209,8 +261,9 @@
         <!-- Success Screen (Hidden by default) -->
         <div class="success-screen" id="successScreen">
             <h2>Yay! 🎉</h2>
-            <img src="https://media4.giphy.com/media/3o7TKSjRrfIPjeiVyM/giphy.gif" alt="Happy dancing bears" style="width: 200px; border-radius: 15px; margin-bottom: 20px;">
+            <img src="https://media4.giphy.com/media/3o7TKSjRrfIPjeiVyM/giphy.gif" alt="Happy dancing bears" style="width: 160px; border-radius: 15px; margin-bottom: 15px;">
             <p>Looking forward to our date! ❤️</p>
+            <a href="#" id="calendarLink" class="btn-calendar" target="_blank">📅 Add to Google Calendar</a>
         </div>
     </div>
 
@@ -219,8 +272,15 @@
         const yesBtn = document.getElementById('yesBtn');
         const mainScreen = document.getElementById('main-screen');
         const successScreen = document.getElementById('successScreen');
+        const datePicker = document.getElementById('datePicker');
+        const calendarLink = document.getElementById('calendarLink');
 
-        // Array of playful alternative labels for the "No" button
+        // Set default date picker value to tomorrow at 6:00 PM
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(18, 0, 0, 0);
+        datePicker.value = tomorrow.toISOString().slice(0, 16);
+
         const noMessages = [
             "Think again...",
             "Are you sure?",
@@ -233,20 +293,34 @@
 
         let clickCount = 0;
 
-        // Make the "No" button dodge or change text dynamically when clicked/hovered
         noBtn.addEventListener('click', () => {
             clickCount++;
-            // Cycle through the playful messages
             const messageIndex = clickCount % noMessages.length;
             noBtn.textContent = noMessages[messageIndex];
 
-            // Slightly grow the 'Yes' button each time 'No' is clicked
             let currentScale = 1 + (clickCount * 0.08);
             yesBtn.style.transform = `scale(${currentScale})`;
         });
 
-        // Trigger celebration state when "Yes!" is clicked
         yesBtn.addEventListener('click', () => {
+            // Get selected date value
+            const selectedDate = new Date(datePicker.value);
+            
+            if (!isNaN(selectedDate.getTime())) {
+                // Format for Google Calendar URL (YYYYMMDDTHHmmssZ)
+                const startIso = selectedDate.toISOString().replace(/-|:|\.\d+/g, '');
+                // Assume a 2-hour duration for the date
+                const endDate = new Date(selectedDate.getTime() + 2 * 60 * 60 * 1000);
+                const endIso = endDate.toISOString().replace(/-|:|\.\d+/g, '');
+
+                const text = encodeURIComponent("Our Date ❤️");
+                const details = encodeURIComponent("It's a date! Looking forward to spending time together.");
+                
+                // Build Google Calendar Link
+                const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${startIso}/${endIso}&details=${details}`;
+                calendarLink.href = gCalUrl;
+            }
+
             mainScreen.style.display = 'none';
             successScreen.style.display = 'flex';
         });
