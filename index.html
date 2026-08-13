@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ABTalks — 60-Day Coding Challenge Hub (Advanced Agentic Experience)</title>
+    <title>ABTalks — 60-Day Coding Challenge Hub (Daily Calendar & Task Manager)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
@@ -21,20 +22,19 @@
             --bg-base: #060811;
             --panel-glass: rgba(15, 23, 42, 0.78);
             --border-glow: rgba(56, 189, 248, 0.3);
-            --dialog-bar: rgba(10, 15, 30, 0.95);
         }
 
         body {
             background-color: var(--bg-base);
             background-image: 
-                radial-gradient(circle at 50% -20%, rgba(56, 189, 248, 0.18), transparent 60%),
-                radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.12), transparent 50%);
+                radial-gradient(circle at 50% -20%, rgba(56, 189, 248, 0.15), transparent 60%),
+                radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.1), transparent 50%);
             font-family: 'Plus Jakarta Sans', sans-serif;
             color: #f8fafc;
             min-height: 100vh;
         }
 
-        .agentic-panel {
+        .sys-panel {
             background: var(--panel-glass);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
@@ -43,15 +43,7 @@
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .agentic-dialog-bar {
-            background: var(--dialog-bar);
-            backdrop-filter: blur(50px);
-            -webkit-backdrop-filter: blur(50px);
-            border: 1px solid rgba(56, 189, 248, 0.5);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 35px rgba(56, 189, 248, 0.25);
-        }
-
-        .agentic-btn {
+        .sys-btn {
             background: linear-gradient(135deg, #38bdf8 0%, #0284c7 50%, #0369a1 100%);
             color: #ffffff;
             font-weight: 700;
@@ -59,26 +51,11 @@
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .agentic-btn:hover {
+        .sys-btn:hover {
             opacity: 0.95;
             transform: translateY(-2px);
             box-shadow: 0 15px 40px rgba(56, 189, 248, 0.6);
         }
-
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 0.6; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
-            50% { opacity: 1; box-shadow: 0 0 35px rgba(56, 189, 248, 0.8); }
-        }
-        .animate-ai-glow { animation: pulseGlow 3s ease-in-out infinite; }
-
-        @keyframes waveAnim {
-            0%, 100% { height: 6px; }
-            50% { height: 26px; }
-        }
-        .wave-bar-1 { animation: waveAnim 1.2s ease-in-out infinite; }
-        .wave-bar-2 { animation: waveAnim 0.9s ease-in-out infinite 0.2s; }
-        .wave-bar-3 { animation: waveAnim 1.4s ease-in-out infinite 0.4s; }
-        .wave-bar-4 { animation: waveAnim 1s ease-in-out infinite 0.1s; }
 
         @keyframes pageSlideIn {
             0% { opacity: 0; transform: translateY(14px) scale(0.98); }
@@ -89,18 +66,18 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 lg:p-10 selection:bg-cyan-500 selection:text-slate-950">
 
-    <!-- Ambient Floating Aura -->
+    <!-- Ambient Aura -->
     <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-sky-500/15 rounded-full blur-[150px] pointer-events-none"></div>
 
     <!-- RESPONSIVE HEADER -->
-    <header class="max-w-4xl mx-auto w-full agentic-panel px-5 py-3.5 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-3 z-20">
+    <header class="max-w-4xl mx-auto w-full sys-panel px-5 py-3.5 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-3 z-20">
         <div class="flex items-center gap-3 cursor-pointer group" onclick="router.navigate('/')">
-            <div class="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center font-bold text-cyan-300 text-sm animate-ai-glow">
-                🔮
+            <div class="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center font-bold text-cyan-300 text-sm">
+                📅
             </div>
             <div>
                 <span class="font-extrabold text-xs tracking-wider text-white uppercase block">ABTALKS</span>
-                <span class="text-[9px] text-cyan-400 font-mono">Advanced Agentic AI Hub</span>
+                <span class="text-[9px] text-cyan-400 font-mono">Daily Calendar & Task Hub</span>
             </div>
         </div>
 
@@ -108,41 +85,15 @@
             <button onclick="router.navigate('/')" id="r-home" class="px-3 py-1.5 rounded-lg transition-all text-slate-400">Home (/)</button>
             <button onclick="router.navigate('/dashboard')" id="r-dash" class="px-3 py-1.5 rounded-lg transition-all text-slate-400">Dashboard (/dashboard)</button>
             <button onclick="router.navigate('/day/1')" id="r-day" class="px-3 py-1.5 rounded-lg transition-all text-slate-400">Day 1 (/day/1)</button>
+            <button onclick="router.navigate('/calendar')" id="r-cal" class="px-3 py-1.5 rounded-lg transition-all text-slate-400">Calendar</button>
         </div>
     </header>
 
     <!-- DYNAMIC ROUTER VIEW CONTAINER -->
     <main id="appContainer" class="flex-grow max-w-4xl mx-auto w-full my-6 z-10 flex flex-col justify-center"></main>
 
-    <!-- ADVANCED AGENTIC AI DIALOG BAR -->
-    <div class="max-w-xl mx-auto w-full z-30 mb-4 px-2">
-        <div class="agentic-dialog-bar px-4 py-3 rounded-2xl flex flex-col gap-2">
-            <div class="flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                    <div class="flex items-end gap-1 px-1 h-6">
-                        <div class="w-1 bg-cyan-400 rounded-full wave-bar-1"></div>
-                        <div class="w-1 bg-indigo-400 rounded-full wave-bar-2"></div>
-                        <div class="w-1 bg-cyan-300 rounded-full wave-bar-3"></div>
-                        <div class="w-1 bg-sky-400 rounded-full wave-bar-4"></div>
-                    </div>
-                    <div class="text-xs">
-                        <span class="text-cyan-400 font-mono block text-[10px]">Neural Agent v2.4 (Active)</span>
-                        <span id="aiStatusText" class="text-white font-medium">Ready to optimize code snippets & generate daily sub-tasks.</span>
-                    </div>
-                </div>
-                <button onclick="app.triggerAdvancedAi()" class="bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-cyan-500/30 transition">
-                    Analyze Code ✦
-                </button>
-            </div>
-            <!-- AI Response Box -->
-            <div id="aiResponseBox" class="hidden bg-slate-950/80 border border-cyan-500/30 p-2.5 rounded-xl text-[11px] font-mono text-cyan-200">
-                🤖 AI: <span id="aiOutputText">Analyzing user repository structure...</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- HACKATHON COMPLIANT ROUTE MAP FOOTER -->
-    <footer class="max-w-4xl mx-auto w-full agentic-panel p-4 rounded-2xl text-xs font-mono text-slate-400 text-center z-20 space-y-1">
+    <!-- ROUTE MAP FOOTER -->
+    <footer class="max-w-4xl mx-auto w-full sys-panel p-4 rounded-2xl text-xs font-mono text-slate-400 text-center z-20 space-y-1">
         <div class="font-bold text-cyan-400">Route Map Specification:</div>
         <div class="text-slate-300">/</div>
         <div class="text-slate-300">/dashboard</div>
@@ -152,18 +103,31 @@
     <!-- APP ENGINE SCRIPT -->
     <script>
         const store = {
-            currentUser: JSON.parse(localStorage.getItem('adv_agentic_user')) || null,
-            streak: parseInt(localStorage.getItem('adv_agentic_streak')) || 0,
-            completedDays: JSON.parse(localStorage.getItem('adv_agentic_completed')) || [],
-            githubUrl: localStorage.getItem('adv_agentic_gh_1') || '',
-            linkedinUrl: localStorage.getItem('adv_agentic_li_1') || '',
+            currentUser: JSON.parse(localStorage.getItem('cal_user')) || null,
+            streak: parseInt(localStorage.getItem('cal_streak')) || 0,
+            completedDays: JSON.parse(localStorage.getItem('cal_completed')) || [],
+            githubUrl: localStorage.getItem('cal_gh_1') || '',
+            linkedinUrl: localStorage.getItem('cal_li_1') || '',
             authMode: 'login',
-            customTasks: JSON.parse(localStorage.getItem('adv_agentic_tasks')) || {
-                1: [
-                    { id: 't1', text: 'Initialize public GitHub repository', done: true },
-                    { id: 't2', text: 'Configure local Node/Python runtime', done: false },
-                    { id: 't3', text: 'Deploy boilerplate to Vercel/Netlify', done: false }
-                ]
+            calendarData: JSON.parse(localStorage.getItem('cal_daily_data')) || {
+                "Monday, August 17, 2026": {
+                    work: ["Review project proposals by 2:00 PM", "Run backend debugging tests"],
+                    personal: ["Morning workout session (30 mins)", "Read two chapters of book"],
+                    appointments: ["Team sync-up at 10:00 AM"],
+                    reminders: ["Submit weekly progress report"]
+                },
+                "Tuesday, August 18, 2026": {
+                    work: ["Prepare slide deck for client presentation", "Clear inbox and reply to stakeholders"],
+                    personal: ["Grocery shopping for meal prep", "Call family in evening"],
+                    appointments: ["Dentist check-up at 3:30 PM"],
+                    reminders: ["Back up local project files"]
+                },
+                "Wednesday, August 19, 2026": {
+                    work: ["Conduct code reviews for team PRs", "Finalize sprint planning goals"],
+                    personal: ["Evening jog in neighborhood", "Water indoor plants"],
+                    appointments: ["1-on-1 check-in with manager at 11:00 AM"],
+                    reminders: ["Pay monthly utility bills"]
+                }
             }
         };
 
@@ -182,17 +146,19 @@
                 
                 setTimeout(() => {
                     let html = '';
-                    ['home', 'dash', 'day'].forEach(id => {
+                    ['home', 'dash', 'day', 'cal'].forEach(id => {
                         const el = document.getElementById(`r-${id}`);
                         if (el) el.className = "px-3 py-1.5 rounded-lg transition-all text-slate-400";
                     });
                     if (path === '/') document.getElementById('r-home').className = "px-3 py-1.5 rounded-lg transition-all bg-cyan-500 text-slate-950 font-extrabold shadow-md";
                     if (path === '/dashboard') document.getElementById('r-dash').className = "px-3 py-1.5 rounded-lg transition-all bg-cyan-500 text-slate-950 font-extrabold shadow-md";
                     if (path === '/day/1') document.getElementById('r-day').className = "px-3 py-1.5 rounded-lg transition-all bg-cyan-500 text-slate-950 font-extrabold shadow-md";
+                    if (path === '/calendar') document.getElementById('r-cal').className = "px-3 py-1.5 rounded-lg transition-all bg-cyan-500 text-slate-950 font-extrabold shadow-md";
 
                     if (path === '/') html = this.views.home();
                     else if (path === '/dashboard') html = this.views.dashboard();
                     else if (path === '/day/1') html = this.views.day1();
+                    else if (path === '/calendar') html = this.views.calendar();
                     else html = this.views.home();
 
                     container.innerHTML = html;
@@ -205,25 +171,25 @@
                 home() {
                     const isAuth = store.currentUser !== null;
                     return `
-                        <div class="agentic-panel p-8 sm:p-12 rounded-[2.5rem] space-y-6 text-center relative overflow-hidden">
+                        <div class="sys-panel p-8 sm:p-12 rounded-[2.5rem] space-y-6 text-center relative overflow-hidden">
                             <div class="inline-flex items-center gap-2 bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-md">
-                                ⚡ Advanced Agentic AI • 60-Day Challenge Hub
+                                📅 60-Day Challenge & Daily Task Calendar
                             </div>
                             
                             <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight max-w-2xl mx-auto">
-                                Master 60 Days with <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-sky-200">Granular Task Breakdown.</span>
+                                Manage Tasks & Days with <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-sky-200">Crystal Clarity.</span>
                             </h1>
                             
                             <p class="text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl mx-auto">
-                                Featuring day-wise challenge tables, interactive sub-tasks, and real-time AI code verification for Indian college students.
+                                Integrated day-wise calendar schedules, work tasks, personal reminders, and clean daily management tailored for students.
                             </p>
 
                             <div class="pt-2 max-w-sm mx-auto space-y-3">
-                                <button onclick="router.navigate('/dashboard')" class="agentic-btn w-full py-4 rounded-2xl text-sm">
+                                <button onclick="router.navigate('/dashboard')" class="sys-btn w-full py-4 rounded-2xl text-sm">
                                     ${isAuth ? 'Open Dashboard ⚡' : 'Get Started / Sign In 🚀'}
                                 </button>
-                                <button onclick="router.navigate('/day/1')" class="w-full bg-white/5 border border-white/10 py-3.5 rounded-2xl text-xs font-bold text-slate-300 hover:bg-white/10 transition">
-                                    View Day 1 Roadmap
+                                <button onclick="router.navigate('/calendar')" class="w-full bg-white/5 border border-white/10 py-3.5 rounded-2xl text-xs font-bold text-slate-300 hover:bg-white/10 transition">
+                                    View Daily Calendar Schedule 🗓️
                                 </button>
                             </div>
                         </div>
@@ -238,9 +204,9 @@
                     if (!isAuth) {
                         const isLogin = store.authMode === 'login';
                         return `
-                            <div class="max-w-md mx-auto w-full agentic-panel p-8 sm:p-10 rounded-[2.5rem] space-y-6">
+                            <div class="max-w-md mx-auto w-full sys-panel p-8 sm:p-10 rounded-[2.5rem] space-y-6">
                                 <div class="flex justify-between items-center">
-                                    <span class="text-[10px] font-extrabold text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Agentic Gateway</span>
+                                    <span class="text-[10px] font-extrabold text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">Secure Gateway</span>
                                     <div class="flex gap-1 bg-slate-950 p-1 rounded-xl text-xs font-bold">
                                         <button onclick="store.authMode='login'; router.render('/dashboard')" class="px-3.5 py-1.5 rounded-lg ${isLogin ? 'bg-cyan-500 text-slate-950' : 'text-slate-400'}">Login</button>
                                         <button onclick="store.authMode='signup'; router.render('/dashboard')" class="px-3.5 py-1.5 rounded-lg ${!isLogin ? 'bg-cyan-500 text-slate-950' : 'text-slate-400'}">Sign Up</button>
@@ -248,7 +214,7 @@
                                 </div>
                                 <div class="space-y-1">
                                     <h2 class="text-xl font-extrabold text-white">${isLogin ? 'Welcome Back!' : 'Create Account'}</h2>
-                                    <p class="text-xs text-slate-300">Authenticate to access your 60-day curriculum table.</p>
+                                    <p class="text-xs text-slate-300">Authenticate to access your calendar and task manager.</p>
                                 </div>
                                 <div class="space-y-4 pt-1">
                                     ${!isLogin ? `
@@ -265,7 +231,7 @@
                                         <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Password</label>
                                         <input type="password" id="dashPass" placeholder="••••••••" class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400">
                                     </div>
-                                    <button onclick="app.handleAuth()" class="agentic-btn w-full py-3.5 rounded-xl text-sm mt-2">
+                                    <button onclick="app.handleAuth()" class="sys-btn w-full py-3.5 rounded-xl text-sm mt-2">
                                         ${isLogin ? 'Access Dashboard ⚡' : 'Initialize Account 🚀'}
                                     </button>
                                 </div>
@@ -273,55 +239,30 @@
                         `;
                     }
 
-                    // Build 60-Day Table preview (showing first 10 days for brevity in view)
-                    let tableRows = '';
-                    for (let i = 1; i <= 10; i++) {
-                        const done = store.completedDays.includes(i);
-                        tableRows += `
-                            <tr class="border-b border-white/10 hover:bg-white/5 transition">
-                                <td class="p-3 font-mono text-xs text-cyan-300">Day ${i}</td>
-                                <td class="p-3 text-xs text-white">${i === 1 ? 'Environment Setup & Hello World' : 'Advanced Architecture & API Integration'}</td>
-                                <td class="p-3 text-xs"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${done ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">${done ? 'Completed ✓' : 'Pending'}</span></td>
-                                <td class="p-3 text-xs text-right"><button onclick="router.navigate('/day/1')" class="text-cyan-400 hover:underline font-bold">Open →</button></td>
-                            </tr>
-                        `;
-                    }
-
                     return `
                         <div class="space-y-6">
                             <!-- Stats Widget -->
-                            <div class="agentic-panel p-6 sm:p-8 rounded-[2.5rem] flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div class="sys-panel p-6 sm:p-8 rounded-[2.5rem] flex flex-col sm:flex-row justify-between items-center gap-4">
                                 <div class="space-y-1 text-center sm:text-left">
                                     <span class="text-xs font-bold text-cyan-400 uppercase tracking-widest">Scholar: ${store.currentUser.name}</span>
                                     <div class="text-4xl font-extrabold text-white mt-1">${store.streak} <span class="text-base text-cyan-300 font-normal">Day Streak 🔥</span></div>
                                 </div>
-                                <div class="text-center sm:text-right">
+                                <div class="text-center sm:text-right flex flex-col gap-2">
                                     <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Completion Rate</span>
-                                    <div class="text-3xl font-extrabold text-emerald-400 mt-1">${completionRate}%</div>
+                                    <div class="text-3xl font-extrabold text-emerald-400">${completionRate}%</div>
+                                    <button onclick="router.navigate('/calendar')" class="text-xs text-cyan-300 underline font-bold">Open Daily Calendar →</button>
                                 </div>
                             </div>
 
-                            <!-- Day-Wise Challenge Table -->
-                            <div class="agentic-panel p-6 rounded-[2.5rem] space-y-4">
+                            <!-- Task Management Quick Panel -->
+                            <div class="sys-panel p-6 rounded-[2.5rem] space-y-4">
                                 <div class="flex justify-between items-center">
-                                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">60-Day Curriculum Master Table</h3>
-                                    <span class="text-xs text-slate-400">Showing Days 1–10</span>
+                                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">Quick Task Manager</h3>
+                                    <span class="text-xs text-slate-400">Manage daily items</span>
                                 </div>
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-left border-collapse">
-                                        <thead>
-                                            <tr class="border-b border-white/20 text-[10px] uppercase font-mono text-slate-400">
-                                                <th class="p-3">Timeline</th>
-                                                <th class="p-3">Challenge Topic</th>
-                                                <th class="p-3">Status</th>
-                                                <th class="p-3 text-right">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ${tableRows}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <button onclick="router.navigate('/calendar')" class="sys-btn w-full py-3 rounded-xl text-xs">
+                                    View & Edit Daywise Calendar & Tasks 📅
+                                </button>
                             </div>
 
                             <div class="text-center">
@@ -331,65 +272,126 @@
                     `;
                 },
 
-                day1() {
-                    const isSubmitted = store.completedDays.includes(1);
-                    const tasks = store.customTasks[1] || [];
+                calendar() {
+                    let calendarHtml = '';
+                    for (const [dayName, categories] of Object.entries(store.calendarData)) {
+                        calendarHtml += `
+                            <div class="sys-panel p-6 rounded-[2rem] space-y-4">
+                                <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                                    <h3 class="text-sm font-bold text-cyan-300">${dayName}</h3>
+                                    <button onclick="app.addNewTaskPrompt('${dayName}')" class="text-xs bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 px-3 py-1 rounded-lg hover:bg-cyan-500/30 transition">+ Add Task</button>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                                    <!-- Work Tasks -->
+                                    <div class="bg-slate-950/50 p-3.5 rounded-xl border border-white/10 space-y-2">
+                                        <div class="font-bold uppercase tracking-wider text-slate-400 text-[10px]">Work Tasks</div>
+                                        <ul class="space-y-1 list-disc list-inside text-slate-200">
+                                            ${categories.work.map((t, idx) => `
+                                                <li class="flex justify-between items-center group">
+                                                    <span>${t}</span>
+                                                    <button onclick="app.removeTaskItem('${dayName}', 'work', ${idx})" class="text-slate-500 hover:text-red-400 text-[10px] opacity-0 group-hover:opacity-100 transition">✕</button>
+                                                </li>
+                                            `).join('')}
+                                            ${categories.work.length === 0 ? '<li class="text-slate-600 italic">No tasks listed</li>' : ''}
+                                        </ul>
+                                    </div>
 
-                    let taskListHtml = tasks.map(t => `
-                        <div class="flex items-center justify-between bg-slate-950/60 p-3 rounded-xl border border-white/10">
-                            <label class="flex items-center gap-3 cursor-pointer text-xs text-slate-200">
-                                <input type="checkbox" ${t.done ? 'checked' : ''} onchange="app.toggleTask('${t.id}')" class="w-4 h-4 rounded border-white/20 text-cyan-500 focus:ring-0">
-                                <span class="${t.done ? 'line-through text-slate-500' : ''}">${t.text}</span>
-                            </label>
-                            <button onclick="app.removeTask('${t.id}')" class="text-slate-500 hover:text-red-400 text-xs">✕</button>
-                        </div>
-                    `).join('');
+                                    <!-- Personal Tasks -->
+                                    <div class="bg-slate-950/50 p-3.5 rounded-xl border border-white/10 space-y-2">
+                                        <div class="font-bold uppercase tracking-wider text-slate-400 text-[10px]">Personal Tasks</div>
+                                        <ul class="space-y-1 list-disc list-inside text-slate-200">
+                                            ${categories.personal.map((t, idx) => `
+                                                <li class="flex justify-between items-center group">
+                                                    <span>${t}</span>
+                                                    <button onclick="app.removeTaskItem('${dayName}', 'personal', ${idx})" class="text-slate-500 hover:text-red-400 text-[10px] opacity-0 group-hover:opacity-100 transition">✕</button>
+                                                </li>
+                                            `).join('')}
+                                            ${categories.personal.length === 0 ? '<li class="text-slate-600 italic">No tasks listed</li>' : ''}
+                                        </ul>
+                                    </div>
+
+                                    <!-- Appointments -->
+                                    <div class="bg-slate-950/50 p-3.5 rounded-xl border border-white/10 space-y-2">
+                                        <div class="font-bold uppercase tracking-wider text-slate-400 text-[10px]">Appointments</div>
+                                        <ul class="space-y-1 list-disc list-inside text-slate-200">
+                                            ${categories.appointments.map((t, idx) => `
+                                                <li class="flex justify-between items-center group">
+                                                    <span>${t}</span>
+                                                    <button onclick="app.removeTaskItem('${dayName}', 'appointments', ${idx})" class="text-slate-500 hover:text-red-400 text-[10px] opacity-0 group-hover:opacity-100 transition">✕</button>
+                                                </li>
+                                            `).join('')}
+                                            ${categories.appointments.length === 0 ? '<li class="text-slate-600 italic">No appointments listed</li>' : ''}
+                                        </ul>
+                                    </div>
+
+                                    <!-- Reminders -->
+                                    <div class="bg-slate-950/50 p-3.5 rounded-xl border border-white/10 space-y-2">
+                                        <div class="font-bold uppercase tracking-wider text-slate-400 text-[10px]">Reminders</div>
+                                        <ul class="space-y-1 list-disc list-inside text-slate-200">
+                                            ${categories.reminders.map((t, idx) => `
+                                                <li class="flex justify-between items-center group">
+                                                    <span>${t}</span>
+                                                    <button onclick="app.removeTaskItem('${dayName}', 'reminders', ${idx})" class="text-slate-500 hover:text-red-400 text-[10px] opacity-0 group-hover:opacity-100 transition">✕</button>
+                                                </li>
+                                            `).join('')}
+                                            ${categories.reminders.length === 0 ? '<li class="text-slate-600 italic">No reminders listed</li>' : ''}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
 
                     return `
-                        <div class="max-w-2xl mx-auto w-full agentic-panel p-8 sm:p-10 rounded-[2.5rem] space-y-6">
+                        <div class="space-y-6">
+                            <div class="sys-panel p-6 rounded-[2.5rem] flex justify-between items-center">
+                                <div>
+                                    <h2 class="text-xl font-extrabold text-white">Day-Wise Calendar & Task Hub</h2>
+                                    <p class="text-xs text-slate-300">Clear, organized daily schedule divided by category.</p>
+                                </div>
+                                <button onclick="router.navigate('/dashboard')" class="text-xs text-cyan-300 underline font-bold">← Dashboard</button>
+                            </div>
+
+                            <div class="space-y-6">
+                                ${calendarHtml}
+                            </div>
+                        </div>
+                    `;
+                },
+
+                day1() {
+                    const isSubmitted = store.completedDays.includes(1);
+
+                    return `
+                        <div class="max-w-2xl mx-auto w-full sys-panel p-8 sm:p-10 rounded-[2.5rem] space-y-6">
                             <div class="flex justify-between items-center">
-                                <button onclick="router.navigate('/dashboard')" class="text-xs text-slate-400 hover:text-white font-bold">← Dashboard</button>
+                                <button onclick="router.navigate('/dashboard')" class="text-xs sm:text-sm text-slate-400 hover:text-white font-bold transition-colors">← Dashboard</button>
                                 <span class="text-xs font-bold text-cyan-300 bg-cyan-500/10 px-3.5 py-1 rounded-full border border-cyan-500/20">Day 1 of 60</span>
                             </div>
 
                             <div class="space-y-2">
                                 <h1 class="text-xl sm:text-2xl font-extrabold text-white">Environment Setup & Hello World</h1>
-                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Complete today's modular sub-tasks, push to GitHub, and submit verification proof.</p>
-                            </div>
-
-                            <!-- Interactive Task Option Section -->
-                            <div class="space-y-3 bg-slate-950/40 p-5 rounded-2xl border border-white/10">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Day 1 Granular Tasks</span>
-                                    <span class="text-[10px] text-slate-400">${tasks.filter(t=>t.done).length}/${tasks.length} Done</span>
-                                </div>
-                                <div class="space-y-2" id="taskContainer">
-                                    ${taskListHtml}
-                                </div>
-                                <!-- Add Task Input -->
-                                <div class="flex gap-2 pt-2">
-                                    <input type="text" id="newTaskInput" placeholder="Add custom sub-task..." class="flex-1 bg-slate-950/80 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
-                                    <button onclick="app.addTask()" class="bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 px-4 py-2 rounded-xl text-xs font-bold hover:bg-cyan-500/30 transition">+ Add</button>
-                                </div>
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Set up your workspace, create your first repository, and submit verification proof.</p>
                             </div>
 
                             <div class="space-y-4 pt-2">
                                 <div class="space-y-1">
                                     <label class="block text-xs font-bold uppercase text-slate-400">GitHub Repository / Commit URL</label>
-                                    <input type="text" id="ghInput" value="${store.githubUrl}" placeholder="https://github.com/username/repo-day1" class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400">
+                                    <input type="text" id="ghInput" value="${store.githubUrl}" placeholder="https://github.com/username/repo-day1" class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-400">
                                 </div>
                                 <div class="space-y-1">
                                     <label class="block text-xs font-bold uppercase text-slate-400">LinkedIn Post URL</label>
-                                    <input type="text" id="liInput" value="${store.linkedinUrl}" placeholder="https://linkedin.com/posts/..." class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-cyan-400">
+                                    <input type="text" id="liInput" value="${store.linkedinUrl}" placeholder="https://linkedin.com/posts/..." class="w-full bg-slate-950/80 border border-white/15 rounded-xl px-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-400">
                                 </div>
-                                <button onclick="app.submitDay1()" class="agentic-btn w-full py-3.5 rounded-xl text-xs sm:text-sm">
+                                <button onclick="app.submitDay1()" class="sys-btn w-full py-3.5 rounded-xl text-xs sm:text-sm">
                                     ${isSubmitted ? 'Update Submission ✓' : 'Submit Proof & Sync Streak ⚡'}
                                 </button>
                             </div>
 
                             ${isSubmitted ? `
-                                <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl text-center text-xs text-emerald-300 font-bold">
-                                    🎉 Day 1 Verified Successfully!
+                                <div class="sys-panel bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl text-center text-xs sm:text-sm text-emerald-300 font-bold">
+                                    🎉 Day 1 Verified Successfully! Your public learning streak is active.
                                 </div>
                             ` : ''}
                         </div>
@@ -410,40 +412,34 @@
                     return;
                 }
                 store.currentUser = { name, email };
-                localStorage.setItem('adv_agentic_user', JSON.stringify(store.currentUser));
+                localStorage.setItem('cal_user', JSON.stringify(store.currentUser));
                 router.navigate('/dashboard');
             },
 
             handleLogout() {
                 store.currentUser = null;
-                localStorage.removeItem('adv_agentic_user');
+                localStorage.removeItem('cal_user');
                 router.navigate('/dashboard');
             },
 
-            toggleTask(id) {
-                const tasks = store.customTasks[1];
-                const task = tasks.find(t => t.id === id);
-                if (task) {
-                    task.done = !task.done;
-                    localStorage.setItem('adv_agentic_tasks', JSON.stringify(store.customTasks));
-                    router.render('/day/1');
+            addNewTaskPrompt(dayName) {
+                const category = prompt("Enter category (work, personal, appointments, reminders):", "work");
+                if (!category || !store.calendarData[dayName][category.toLowerCase()]) {
+                    alert("Invalid category. Choose from: work, personal, appointments, reminders");
+                    return;
                 }
+                const taskText = prompt("Enter task or activity description:");
+                if (!taskText) return;
+
+                store.calendarData[dayName][category.toLowerCase()].push(taskText);
+                localStorage.setItem('cal_daily_data', JSON.stringify(store.calendarData));
+                router.render('/calendar');
             },
 
-            addTask() {
-                const input = document.getElementById('newTaskInput');
-                const val = input.value.trim();
-                if (!val) return;
-                if (!store.customTasks[1]) store.customTasks[1] = [];
-                store.customTasks[1].push({ id: 't_' + Date.now(), text: val, done: false });
-                localStorage.setItem('adv_agentic_tasks', JSON.stringify(store.customTasks));
-                router.render('/day/1');
-            },
-
-            removeTask(id) {
-                store.customTasks[1] = store.customTasks[1].filter(t => t.id !== id);
-                localStorage.setItem('adv_agentic_tasks', JSON.stringify(store.customTasks));
-                router.render('/day/1');
+            removeTaskItem(dayName, category, idx) {
+                store.calendarData[dayName][category].splice(idx, 1);
+                localStorage.setItem('cal_daily_data', JSON.stringify(store.calendarData));
+                router.render('/calendar');
             },
 
             submitDay1() {
@@ -459,18 +455,11 @@
                     store.completedDays.push(1);
                     store.streak = 1;
                 }
-                localStorage.setItem('adv_agentic_gh_1', gh);
-                localStorage.setItem('adv_agentic_li_1', li);
-                localStorage.setItem('adv_agentic_completed', JSON.stringify(store.completedDays));
-                localStorage.setItem('adv_agentic_streak', store.streak);
+                localStorage.setItem('cal_gh_1', gh);
+                localStorage.setItem('cal_li_1', li);
+                localStorage.setItem('cal_completed', JSON.stringify(store.completedDays));
+                localStorage.setItem('cal_streak', store.streak);
                 router.render('/day/1');
-            },
-
-            triggerAdvancedAi() {
-                const box = document.getElementById('aiResponseBox');
-                const output = document.getElementById('aiOutputText');
-                box.classList.remove('hidden');
-                output.innerText = "Scanning repository code patterns... Neural match: 98.4%. Ready for automated PR validation.";
             }
         };
 
