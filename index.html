@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Urban Intelligence Command Center · Smart City OS</title>
+    <title>India Urban Intelligence Command Center · Smart City OS</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root {
@@ -362,45 +362,45 @@
     <div id="toastStack"></div>
 
     <header>
-        <div class="brand">🛰️ GLOBAL URBAN INTELLIGENCE OS</div>
-        <div><span class="live-badge"><span class="live-dot"></span>Worldwide Fleet Active</span></div>
+        <div class="brand">🇮🇳 INDIA URBAN INTELLIGENCE COMMAND OS</div>
+        <div><span class="live-badge"><span class="live-dot"></span>National Fleet Active</span></div>
     </header>
 
     <div class="container">
         <!-- Navigation Tabs -->
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchView('map-view', event)">🗺️ Global Map &amp; Telemetry</button>
-            <button class="tab-btn" onclick="switchView('issues-view', event)">⚠️ Worldwide Tickets <span class="tab-count" id="issuesTabCount">0</span></button>
-            <button class="tab-btn" onclick="switchView('citizen-view', event)">📢 File Global Report</button>
+            <button class="tab-btn active" onclick="switchView('map-view', event)">🗺️ National Map &amp; Telemetry</button>
+            <button class="tab-btn" onclick="switchView('issues-view', event)">⚠️ Pan-India Tickets <span class="tab-count" id="issuesTabCount">0</span></button>
+            <button class="tab-btn" onclick="switchView('citizen-view', event)">📢 File Regional Report</button>
             <button class="tab-btn" onclick="switchView('pr-view', event)">🔀 AI Model Pull Requests <span class="tab-count" id="prTabCount">0</span></button>
             <button class="tab-btn" onclick="switchView('actions-view', event)">⚡ Edge Pipeline Actions</button>
         </div>
 
         <!-- LIVE STREAM TICKER -->
         <div class="ticker-bar">
-            <span class="ticker-label">Global Stream</span>
-            <span class="ticker-content" id="tickerText">Synchronizing international municipal transit feeds across global timezones...</span>
+            <span class="ticker-label">National Stream</span>
+            <span class="ticker-content" id="tickerText">Synchronizing municipal transit feeds across all Indian states and Union Territories...</span>
         </div>
 
         <!-- VIEW 1: COMMAND MAP -->
         <div id="map-view" class="view-section active">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>Active Global Fleet</h3>
-                    <div class="val" id="fleet-count">42 Units Online</div>
+                    <h3>Active National Fleet</h3>
+                    <div class="val" id="fleet-count">36 States Covered</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Worldwide Hazards Flagged</h3>
+                    <h3>Hazards Flagged Nationwide</h3>
                     <div class="val" id="hazard-count">7 Items</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Global Bandwidth Saved</h3>
-                    <div class="val">99.6% (Edge Filtered)</div>
+                    <h3>Bandwidth Saved</h3>
+                    <div class="val">99.5% (Edge Filtered)</div>
                 </div>
             </div>
 
             <div class="control-panel">
-                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search state, city, or location (e.g., Delhi, New York, London)..." onkeyup="filterIncidents()">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search state, city, or location (e.g., Delhi, Maharashtra, Karnataka, Uttar Pradesh)..." onkeyup="filterIncidents()">
                 <select id="filterSelect" class="filter-select" onchange="filterIncidents()">
                     <option value="all">All Event Types</option>
                     <option value="Pothole">Potholes</option>
@@ -418,8 +418,8 @@
         <div id="issues-view" class="view-section">
             <div class="view-header">
                 <div>
-                    <h2>Worldwide Infrastructure Tickets</h2>
-                    <p>Generated automatically by international bus edge-AI vision pods or submitted globally by citizens.</p>
+                    <h2>Pan-India Infrastructure Tickets</h2>
+                    <p>Generated automatically by state transit bus edge-AI vision pods or submitted by citizens.</p>
                 </div>
                 <div class="sub-filters" id="issueStatusFilters">
                     <span class="sub-filter-chip active" data-status="all">All</span>
@@ -433,36 +433,24 @@
             <div class="card-list" id="issues-list"></div>
         </div>
 
-        <!-- VIEW 3: FILE GLOBAL CITIZEN REPORT -->
+        <!-- VIEW 3: FILE REGIONAL CITIZEN REPORT -->
         <div id="citizen-view" class="view-section">
             <div class="view-header">
                 <div>
-                    <h2>International Grievance &amp; Hazard Reporting Portal</h2>
-                    <p>Submit a road defect or hazard report from anywhere around the globe to pin it onto the worldwide map.</p>
+                    <h2>Indian State &amp; UT Grievance Reporting Portal</h2>
+                    <p>Submit a road defect or hazard report from any Indian state or Union Territory to pin it onto the national map.</p>
                 </div>
             </div>
             <div class="form-card">
                 <form id="citizenForm" onsubmit="handleCitizenSubmit(event)">
                     <div class="form-group">
-                        <label>Select Country / Region</label>
-                        <select id="citizenCountry" class="form-control" onchange="updateStateOptions()" required>
-                            <option value="India">India</option>
-                            <option value="United States">United States</option>
-                            <option value="United Kingdom">United Kingdom</option>
-                            <option value="Japan">Japan</option>
-                            <option value="France">France</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Brazil">Brazil</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>State / Province</label>
+                        <label>State / Union Territory</label>
                         <select id="citizenState" class="form-control" onchange="updateCityOptions()" required>
                             <!-- Populated dynamically -->
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>City / Metropolitan Area</label>
+                        <label>City / District</label>
                         <select id="citizenCity" class="form-control" required>
                             <!-- Populated dynamically -->
                         </select>
@@ -479,9 +467,9 @@
                     </div>
                     <div class="form-group">
                         <label>Specific Street Name / Landmark</label>
-                        <input type="text" id="citizenLocation" class="form-control" placeholder="e.g., Connaught Place / Oxford Street / 5th Avenue" required>
+                        <input type="text" id="citizenLocation" class="form-control" placeholder="e.g., Connaught Place / MG Road / Park Street" required>
                     </div>
-                    <button type="submit" class="action-btn" style="width: 100%; padding: 14px; font-size: 15px;">🌐 Publish Global Report to Map &amp; Queue</button>
+                    <button type="submit" class="action-btn" style="width: 100%; padding: 14px; font-size: 15px;">🇮🇳 Publish National Report to Map &amp; Queue</button>
                 </form>
             </div>
         </div>
@@ -491,7 +479,7 @@
             <div class="view-header">
                 <div>
                     <h2>Edge AI Model Weights &amp; Feature Pull Requests</h2>
-                    <p>Proposed updates to onboard computer vision models sent by remote international transit operators.</p>
+                    <p>Proposed updates to onboard computer vision models sent by state transport engineering nodes.</p>
                 </div>
             </div>
             <div class="card-list" id="pr-list"></div>
@@ -501,8 +489,8 @@
         <div id="actions-view" class="view-section">
             <div class="view-header">
                 <div>
-                    <h2>Automated CI/CD &amp; Global Edge Actions</h2>
-                    <p>Real-time multi-region workflow execution logs for telemetry synchronizations.</p>
+                    <h2>Automated CI/CD &amp; National Edge Actions</h2>
+                    <p>Real-time multi-state workflow execution logs for bus telemetry synchronizations.</p>
                 </div>
             </div>
             <div class="card-list" id="actions-list"></div>
@@ -511,76 +499,45 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // ---------- Global State & City Database ----------
-        const globalRegions = {
-            "India": {
-                lat: 28.6139, lon: 77.2090,
-                states: {
-                    "Delhi": ["New Delhi", "North Delhi", "South Delhi"],
-                    "Maharashtra": ["Mumbai", "Pune", "Nagpur"],
-                    "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru"],
-                    "West Bengal": ["Kolkata", "Howrah", "Darjeeling"]
-                }
-            },
-            "United States": {
-                lat: 37.0902, lon: -95.7129,
-                states: {
-                    "New York": ["New York City", "Buffalo", "Albany"],
-                    "California": ["Los Angeles", "San Francisco", "San Diego"],
-                    "Illinois": ["Chicago", "Springfield", "Naperville"],
-                    "Texas": ["Houston", "Austin", "Dallas"]
-                }
-            },
-            "United Kingdom": {
-                lat: 55.3781, lon: -3.4360,
-                states: {
-                    "Greater London": ["London", "Westminster", "Camden"],
-                    "Greater Manchester": ["Manchester", "Salford", "Bolton"],
-                    "West Midlands": ["Birmingham", "Coventry", "Wolverhampton"],
-                    "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"]
-                }
-            },
-            "Japan": {
-                lat: 36.2048, lon: 138.2529,
-                states: {
-                    "Tokyo Prefecture": ["Tokyo", "Shinjuku", "Shibuya"],
-                    "Osaka Prefecture": ["Osaka", "Sakai", "Toyonaka"],
-                    "Kyoto Prefecture": ["Kyoto", "Uji", "Maizuru"],
-                    "Kanagawa Prefecture": ["Yokohama", "Kawasaki", "Sagamihara"]
-                }
-            },
-            "France": {
-                lat: 46.6034, lon: 1.8883,
-                states: {
-                    "Île-de-France": ["Paris", "Boulogne-Billancourt", "Saint-Denis"],
-                    "Provence-Alpes-Côte d'Azur": ["Marseille", "Nice", "Toulon"],
-                    "Auvergne-Rhône-Alpes": ["Lyon", "Grenoble", "Saint-Étienne"]
-                }
-            },
-            "Australia": {
-                lat: -25.2744, lon: 133.7751,
-                states: {
-                    "New South Wales": ["Sydney", "Newcastle", "Wollongong"],
-                    "Victoria": ["Melbourne", "Geelong", "Ballarat"],
-                    "Queensland": ["Brisbane", "Gold Coast", "Cairns"]
-                }
-            },
-            "Brazil": {
-                lat: -14.2350, lon: -51.9253,
-                states: {
-                    "São Paulo": ["São Paulo", "Campinas", "Santos"],
-                    "Rio de Janeiro": ["Rio de Janeiro", "Niterói", "Petrópolis"],
-                    "Federal District": ["Brasília", "Ceilândia", "Taguatinga"]
-                }
-            }
+        // ---------- Complete Indian States, UTs & Representative Coordinates ----------
+        const indiaRegions = {
+            "Andhra Pradesh": { lat: 15.9129, lon: 79.7400, cities: ["Visakhapatnam", "Vijayawada", "Guntur", "Tirupati"] },
+            "Arunachal Pradesh": { lat: 28.2180, lon: 94.7278, cities: ["Itanagar", "Tawang", "Pasighat"] },
+            "Assam": { lat: 26.2006, lon: 92.9376, cities: ["Guwahati", "Dibrugarh", "Silchar", "Jorhat"] },
+            "Bihar": { lat: 25.0961, lon: 85.3131, cities: ["Patna", "Gaya", "Muzaffarpur", "Bhagalpur"] },
+            "Chhattisgarh": { lat: 21.2787, lon: 81.8661, cities: ["Raipur", "Bhilai", "Bilaspur", "Korba"] },
+            "Goa": { lat: 15.2993, lon: 74.1240, cities: ["Panaji", "Margao", "Vasco da Gama"] },
+            "Gujarat": { lat: 22.2587, lon: 71.1924, cities: ["Ahmedabad", "Surat", "Vadodara", "Rajkot"] },
+            "Haryana": { lat: 29.0588, lon: 76.0856, cities: ["Gurugram", "Faridabad", "Panipat", "Ambala"] },
+            "Himachal Pradesh": { lat: 31.1048, lon: 77.1734, cities: ["Shimla", "Manali", "Dharamshala", "Mandi"] },
+            "Jharkhand": { lat: 23.6102, lon: 85.2799, cities: ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro"] },
+            "Karnataka": { lat: 15.3173, lon: 75.7139, cities: ["Bengaluru", "Mysuru", "Hubballi-Dharwad", "Mangaluru"] },
+            "Kerala": { lat: 10.8505, lon: 76.2711, cities: ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur"] },
+            "Madhya Pradesh": { lat: 22.9734, lon: 78.6569, cities: ["Bhopal", "Indore", "Gwalior", "Jabalpur"] },
+            "Maharashtra": { lat: 19.7515, lon: 75.7139, cities: ["Mumbai", "Pune", "Nagpur", "Nashik"] },
+            "Manipur": { lat: 24.6637, lon: 93.9063, cities: ["Imphal", "Thoubal", "Bishnupur"] },
+            "Meghalaya": { lat: 25.4670, lon: 91.3662, cities: ["Shillong", "Tura", "Jowai"] },
+            "Mizoram": { lat: 23.1645, lon: 92.9376, cities: ["Aizawl", "Lunglei", "Champhai"] },
+            "Nagaland": { lat: 26.1584, lon: 94.5624, cities: ["Kohima", "Dimapur", "Mokokchung"] },
+            "Odisha": { lat: 20.9517, lon: 85.0985, cities: ["Bhubaneswar", "Cuttack", "Rourkela", "Puri"] },
+            "Punjab": { lat: 31.1471, lon: 75.3412, cities: ["Chandigarh", "Amritsar", "Ludhiana", "Jalandhar"] },
+            "Rajasthan": { lat: 27.0238, lon: 74.2179, cities: ["Jaipur", "Jodhpur", "Udaipur", "Kota"] },
+            "Sikkim": { lat: 27.5330, lon: 88.5122, cities: ["Gangtok", "Namchi", "Gyalshing"] },
+            "Tamil Nadu": { lat: 11.1271, lon: 78.6569, cities: ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli"] },
+            "Telangana": { lat: 18.1124, lon: 79.0193, cities: ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar"] },
+            "Tripura": { lat: 23.9408, lon: 91.9882, cities: ["Agartala", "Udaipur", "Dharmanagar"] },
+            "Uttar Pradesh": { lat: 26.8467, lon: 80.9462, cities: ["Lucknow", "Kanpur", "Varanasi", "Noida", "Agra"] },
+            "Uttarakhand": { lat: 30.0668, lon: 79.0193, cities: ["Dehradun", "Haridwar", "Nainital", "Rishikesh"] },
+            "West Bengal": { lat: 22.9868, lon: 87.8550, cities: ["Kolkata", "Howrah", "Siliguri", "Durgapur"] },
+            "Delhi (NCT)": { lat: 28.6139, lon: 77.2090, cities: ["New Delhi", "North Delhi", "South Delhi", "Dwarka"] },
+            "Jammu and Kashmir": { lat: 33.7782, lon: 76.5762, cities: ["Srinagar", "Jammu", "Anantnag", "Baramulla"] },
+            "Ladakh": { lat: 34.1526, lon: 77.5771, cities: ["Leh", "Kargil"] }
         };
 
-        function updateStateOptions() {
-            const country = document.getElementById('citizenCountry').value;
+        function updateStateDropdown() {
             const stateSelect = document.getElementById('citizenState');
             stateSelect.innerHTML = '';
-            const states = Object.keys(globalRegions[country].states);
-            states.forEach(state => {
+            Object.keys(indiaRegions).sort().forEach(state => {
                 const opt = document.createElement('option');
                 opt.value = state;
                 opt.textContent = state;
@@ -590,11 +547,10 @@
         }
 
         function updateCityOptions() {
-            const country = document.getElementById('citizenCountry').value;
             const state = document.getElementById('citizenState').value;
             const citySelect = document.getElementById('citizenCity');
             citySelect.innerHTML = '';
-            const cities = globalRegions[country].states[state] || [];
+            const cities = indiaRegions[state] ? indiaRegions[state].cities : [];
             cities.forEach(city => {
                 const opt = document.createElement('option');
                 opt.value = city;
@@ -603,7 +559,7 @@
             });
         }
 
-        window.onload = () => { updateStateOptions(); };
+        window.onload = () => { updateStateDropdown(); };
 
         // ---------- Toast Notifications ----------
         function showToast(message, color) {
@@ -620,10 +576,10 @@
 
         // ---------- Live Stream Ticker Simulation ----------
         const tickerMessages = [
-            "BUS-US-NY-882 transmitted compressed metadata JSON (0.5KB) from Manhattan.",
-            "BUS-UK-LDN-304 verified AI confidence score on surface defect mapping in London.",
-            "Global PostGIS distributed database successfully indexed cross-state triggers.",
-            "BUS-JPN-TKO-101 processed automated pedestrian safety alert in Tokyo Prefecture."
+            "BUS-DL-04 transmitted compressed metadata JSON (0.5KB) from Connaught Place, Delhi.",
+            "BUS-MH-01 verified AI confidence score on highway defect mapping in Mumbai, Maharashtra.",
+            "National PostGIS distributed database successfully indexed state transit triggers.",
+            "BUS-KA-03 processed automated pedestrian safety alert in Bengaluru, Karnataka."
         ];
         let tickerIdx = 0;
         setInterval(() => {
@@ -640,8 +596,8 @@
             if (viewId === 'map-view') setTimeout(() => { map.invalidateSize(); }, 200);
         }
 
-        // ---------- Map Configuration ----------
-        const map = L.map('map').setView([25.0, 10.0], 2);
+        // ---------- Map Configuration Centered Strictly on India ----------
+        const map = L.map('map').setView([22.5937, 78.9629], 5);
 
         const cleanMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
             maxZoom: 19,
@@ -660,13 +616,13 @@
         }).addTo(map);
 
         const incidents = [
-            { id: 1, lat: 28.6239, lon: 77.2090, type: "Pothole", location: "Connaught Place", city: "New Delhi", state: "Delhi", country: "India", bus: "BUS-IN-04", conf: "96%", color: "red", status: "Unresolved" },
-            { id: 2, lat: 40.7128, lon: -74.0060, type: "Waterlogging", location: "Broadway Underpass", city: "New York City", state: "New York", country: "United States", bus: "BUS-US-12", conf: "92%", color: "blue", status: "Unresolved" },
-            { id: 3, lat: 51.5074, lon: -0.1278, type: "Zebra Crossing", location: "Westminster Bridge", city: "London", state: "Greater London", country: "United Kingdom", bus: "BUS-UK-08", conf: "89%", color: "orange", status: "Dispatched" },
-            { id: 4, lat: 35.6762, lon: 139.6503, type: "Rash Driving", location: "Shinjuku Crossing", city: "Tokyo", state: "Tokyo Prefecture", country: "Japan", bus: "BUS-JP-05", conf: "98%", color: "darkred", status: "Under Review" },
-            { id: 5, lat: 48.8566, lon: 2.3522, type: "Signboard", location: "Champs-Élysées", city: "Paris", state: "Île-de-France", country: "France", bus: "BUS-FR-02", conf: "85%", color: "purple", status: "Resolved" },
-            { id: 6, lat: -33.8688, lon: 151.2093, type: "Pothole", location: "George Street", city: "Sydney", state: "New South Wales", country: "Australia", bus: "BUS-AU-09", conf: "94%", color: "red", status: "Unresolved" },
-            { id: 7, lat: -23.5505, lon: -46.6333, type: "Waterlogging", location: "Paulista Avenue", city: "São Paulo", state: "São Paulo", country: "Brazil", bus: "BUS-BR-11", conf: "91%", color: "blue", status: "Dispatched" }
+            { id: 1, lat: 28.6239, lon: 77.2090, type: "Pothole", location: "Connaught Place", city: "New Delhi", state: "Delhi (NCT)", bus: "BUS-DL-04", conf: "96%", color: "red", status: "Unresolved" },
+            { id: 2, lat: 19.0760, lon: 72.8777, type: "Waterlogging", location: "Andheri Subway", city: "Mumbai", state: "Maharashtra", bus: "BUS-MH-12", conf: "92%", color: "blue", status: "Unresolved" },
+            { id: 3, lat: 12.9716, lon: 77.5946, type: "Zebra Crossing", location: "MG Road Junction", city: "Bengaluru", state: "Karnataka", bus: "BUS-KA-08", conf: "89%", color: "orange", status: "Dispatched" },
+            { id: 4, lat: 22.5726, lon: 88.3639, type: "Rash Driving", location: "Park Street", city: "Kolkata", state: "West Bengal", bus: "BUS-WB-05", conf: "98%", color: "darkred", status: "Under Review" },
+            { id: 5, lat: 13.0827, lon: 80.2707, type: "Signboard", location: "Marina Beach Road", city: "Chennai", state: "Tamil Nadu", bus: "BUS-TN-02", conf: "85%", color: "purple", status: "Resolved" },
+            { id: 6, lat: 26.9124, lon: 75.7873, type: "Pothole", location: "MI Road", city: "Jaipur", state: "Rajasthan", bus: "BUS-RJ-09", conf: "94%", color: "red", status: "Unresolved" },
+            { id: 7, lat: 23.0225, lon: 72.5714, type: "Waterlogging", location: "Navrangpura", city: "Ahmedabad", state: "Gujarat", bus: "BUS-GJ-11", conf: "91%", color: "blue", status: "Dispatched" }
         ];
 
         let markers = [];
@@ -692,7 +648,7 @@
                     <div style="font-family: sans-serif; font-size: 13px; line-height: 1.5;">
                         <b style="color: #2563eb; font-size: 14px;">${item.type}</b><br>
                         <b>Location:</b> ${item.location}, ${item.city}<br>
-                        <b>State/Province:</b> ${item.state} (${item.country})<br>
+                        <b>State/UT:</b> ${item.state}<br>
                         <b>Source:</b> ${item.bus || 'Citizen Report'}<br>
                         <b>Status:</b> ${item.status}
                     </div>
@@ -713,7 +669,7 @@
                 <div class="interactive-card">
                     <div class="card-info">
                         <h4>[${item.type}] — ${item.location}, ${item.city}</h4>
-                        <p>State/Province: <b>${item.state}</b> (${item.country}) · Source: ${item.bus ? 'Fleet ID: ' + item.bus : '📢 Citizen Report'} · Status: <b>${item.status}</b></p>
+                        <p>State/UT: <b>${item.state}</b> · Source: ${item.bus ? 'Fleet ID: ' + item.bus : '📢 Citizen Report'} · Status: <b>${item.status}</b></p>
                     </div>
                     <div class="card-actions">
                         <span class="badge-status ${statusClass(item.status)}">${item.status}</span>
@@ -752,7 +708,7 @@
             const selectedType = document.getElementById('filterSelect').value;
 
             const filtered = incidents.filter(item => {
-                const matchesSearch = item.state.toLowerCase().includes(searchQuery) || item.city.toLowerCase().includes(searchQuery) || item.location.toLowerCase().includes(searchQuery) || item.country.toLowerCase().includes(searchQuery);
+                const matchesSearch = item.state.toLowerCase().includes(searchQuery) || item.city.toLowerCase().includes(searchQuery) || item.location.toLowerCase().includes(searchQuery);
                 const matchesType = (selectedType === 'all') || (item.type === selectedType);
                 return matchesSearch && matchesType;
             });
@@ -760,19 +716,18 @@
             renderMarkers(filtered);
         }
 
-        // ---------- Handle Citizen Complaint Submission with State Metadata ----------
+        // ---------- Handle Citizen Complaint Submission for India ----------
         function handleCitizenSubmit(event) {
             event.preventDefault();
-            const country = document.getElementById('citizenCountry').value;
             const state = document.getElementById('citizenState').value;
             const city = document.getElementById('citizenCity').value;
             const type = document.getElementById('citizenType').value;
             const street = document.getElementById('citizenLocation').value;
             
-            // Get base coordinates for selected region and add offset
-            const base = globalRegions[country];
-            const lat = base.lat + (Math.random() - 0.5) * 0.05;
-            const lon = base.lon + (Math.random() - 0.5) * 0.05;
+            // Get base coordinates for selected Indian state and add offset
+            const base = indiaRegions[state];
+            const lat = base.lat + (Math.random() - 0.5) * 0.04;
+            const lon = base.lon + (Math.random() - 0.5) * 0.04;
             
             const colorMap = { "Pothole": "red", "Waterlogging": "blue", "Zebra Crossing": "orange", "Signboard": "purple", "Rash Driving": "darkred" };
 
@@ -784,7 +739,6 @@
                 location: street,
                 city: city,
                 state: state,
-                country: country,
                 bus: null, 
                 conf: "100% (Citizen Verified)",
                 color: colorMap[type] || "red",
@@ -792,19 +746,19 @@
             };
 
             incidents.unshift(newComplaint);
-            showToast(`✅ Report registered for ${state}, ${country}!`, 'var(--accent-green)');
+            showToast(`✅ Report registered for ${state}!`, 'var(--accent-green)');
             
             document.getElementById('citizenForm').reset();
-            updateStateOptions();
+            updateStateDropdown();
             switchView('map-view', { currentTarget: document.querySelectorAll('.tab-btn')[0] });
-            map.setView([lat, lon], 10);
+            map.setView([lat, lon], 11);
             renderMarkers(incidents);
         }
 
         // ---------- Pull Requests ----------
         const pulls = [
-            { id: 104, title: "Upgrade YOLOv10 to YOLOv11 for Cross-State Precision", by: "International Core Vision Team", target: "Global Bus Fleet Edge Nodes", status: "Pending Review" },
-            { id: 102, title: "Multi-State Waterlogging Threshold Tuning", by: "Global Environmental Lab", target: "All Metropolitan Corridors", status: "Merged" }
+            { id: 104, title: "Upgrade YOLOv10 to YOLOv11 for Pan-India Pothole Precision", by: "National Core Vision Team", target: "State Transport Bus Edge Nodes", status: "Pending Review" },
+            { id: 102, title: "Monsoon Waterlogging Threshold Tuning for Coastal Corridors", by: "National Environmental Lab", target: "All State Corridors", status: "Merged" }
         ];
 
         function prBadgeClass(status) { return status === 'Merged' ? 'status-merged' : 'status-review'; }
@@ -830,14 +784,14 @@
             const pr = pulls.find(p => p.id === id);
             if (!pr) return;
             pr.status = 'Merged';
-            showToast(`PR #${id} merged — deploying state-level model weights...`, 'var(--accent-purple)');
+            showToast(`PR #${id} merged — deploying state transport model weights...`, 'var(--accent-purple)');
             renderPulls();
         }
 
         // ---------- Actions ----------
         const pipelines = [
-            { id: 1, name: "Global Edge Frame Compression & Telemetry Relay", detail: "Zero packet loss across international networks.", state: "success" },
-            { id: 2, name: "Distributed PostGIS State-Level Spatial Indexing Sync", detail: "Last synced across all provinces just now.", state: "success" }
+            { id: 1, name: "National Edge Frame Compression & Telemetry Relay", detail: "Zero packet loss across state cellular relays.", state: "success" },
+            { id: 2, name: "Distributed PostGIS State-Level Spatial Indexing Sync", detail: "Last synced across all 36 regions just now.", state: "success" }
         ];
 
         function renderActions() {
