@@ -336,6 +336,37 @@
         .card-info p { margin: 0; font-size: 13px; color: var(--text-muted); line-height: 1.4; }
         .card-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
+        /* Team Member Specific Grid Styles */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .team-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform .2s, border-color .2s;
+        }
+        .team-card:hover { transform: translateY(-3px); border-color: var(--accent-cyan); }
+        .team-avatar {
+            width: 64px; height: 64px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; font-weight: 800; color: #04141f;
+            box-shadow: 0 4px 12px rgba(6,182,212,0.3);
+            flex-shrink: 0;
+            border: 2px solid rgba(255,255,255,0.15);
+        }
+        .team-details h3 { margin: 0 0 4px 0; font-size: 18px; color: var(--text-main); }
+        .team-role { font-size: 13px; font-weight: 600; color: var(--accent-cyan); margin-bottom: 8px; display: inline-block; }
+        .team-status { font-size: 12px; color: #34d399; display: flex; align-items: center; gap: 6px; }
+
         .action-btn {
             background-color: var(--accent-blue);
             color: white;
@@ -413,7 +444,6 @@
         .status-resolved { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
         .status-dispatched { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
         .status-review { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-        .status-merged { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3); }
 
         #toastStack {
             position: fixed; top: 24px; right: 24px;
@@ -595,7 +625,7 @@
             <button class="tab-btn active" onclick="switchView('map-view', event)">🗺️ National Map</button>
             <button class="tab-btn" onclick="switchView('issues-view', event)">⚠️ Pan-India Tickets <span class="tab-count" id="issuesTabCount">0</span></button>
             <button class="tab-btn highlight-tab" onclick="switchView('citizen-view', event)">📢 Report an Issue</button>
-            <button class="tab-btn" onclick="switchView('pr-view', event)">🔀 AI Model PRs <span class="tab-count" id="prTabCount">0</span></button>
+            <button class="tab-btn" onclick="switchView('team-view', event)">👥 Team Members</button>
             <button class="tab-btn" onclick="switchView('actions-view', event)">⚡ Edge Actions</button>
         </div>
 
@@ -706,15 +736,40 @@
             </div>
         </div>
 
-        <!-- VIEW 4: PULL REQUESTS -->
-        <div id="pr-view" class="view-section">
+        <!-- VIEW 4: TEAM MEMBERS -->
+        <div id="team-view" class="view-section">
             <div class="view-header">
                 <div>
-                    <h2>Edge AI Model Weights &amp; Feature Pull Requests</h2>
-                    <p>Proposed updates to onboard computer vision models sent by state transport engineering nodes.</p>
+                    <h2>Project Development Team</h2>
+                    <p>Core contributors building the AI-Powered Mobile Urban Intelligence Platform.</p>
                 </div>
             </div>
-            <div class="card-list" id="pr-list"></div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar" style="background: linear-gradient(135deg, #f43f5e, #fb7185);">MK</div>
+                    <div class="team-details">
+                        <h3>Mahima Kushwaha</h3>
+                        <span class="team-role">UI/UX Designer</span>
+                        <div class="team-status"><span class="live-dot" style="background:#f43f5e; box-shadow:0 0 8px #f43f5e;"></span> Designing GIS Interfaces</div>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">IT</div>
+                    <div class="team-details">
+                        <h3>Ishaan Thusoo</h3>
+                        <span class="team-role">Full Stack Development</span>
+                        <div class="team-status"><span class="live-dot"></span> System Architecture &amp; APIs</div>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">DJ</div>
+                    <div class="team-details">
+                        <h3>Diksha Jukaria</h3>
+                        <span class="team-role">AI Engineer</span>
+                        <div class="team-status"><span class="live-dot" style="background:#ec4899; box-shadow:0 0 8px #ec4899;"></span> Edge YOLOv10 &amp; Vision Pipelines</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- VIEW 5: ACTIONS -->
@@ -739,10 +794,10 @@
             <button class="chat-close" onclick="toggleChat()">✕</button>
         </div>
         <div class="chat-body" id="chatBody">
-            <div class="chat-msg bot">Hello! I'm your Urban Intelligence AI assistant. Ask me about active municipal tickets, fleet status, or how to report a hazard.</div>
+            <div class="chat-msg bot">Hello! I'm your Urban Intelligence AI assistant. Ask me about active municipal tickets, fleet status, or our team members!</div>
         </div>
         <div class="chat-footer">
-            <input type="text" id="chatInput" class="chat-input" placeholder="Type a message or 'status'..." onkeypress="handleChatKey(event)">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Type a message or 'team'..." onkeypress="handleChatKey(event)">
             <button class="chat-send" onclick="sendChatMessage()">Send</button>
         </div>
     </div>
@@ -852,7 +907,6 @@
             if (viewId === 'map-view') setTimeout(() => { map.invalidateSize(); }, 200);
         }
 
-        // ---------- Map setup with Hybrid Labeled Satellite ----------
         const map = L.map('map').setView([22.5937, 78.9629], 5);
 
         const cleanMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
@@ -860,10 +914,9 @@
             attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
         });
 
-        // Satellite base layer (Imagery) + Reference Overlay (Labels and State/Country Names)
         const satelliteImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 19,
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP'
+            attribution: 'Tiles &copy; Esri'
         });
 
         const satelliteLabels = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
@@ -1130,49 +1183,16 @@
 
             if(q.includes('status') || q.includes('summary') || q.includes('overview')) {
                 return `Current National Status: ${total} total hazards logged across India, with ${unresolved} pending municipal dispatch. All state transit edge nodes are active.`;
+            } else if(q.includes('team') || q.includes('who')) {
+                return `Our project team features Mahima Kushwaha (UI/UX Designer), Ishaan Thusoo (Full Stack Development), and Diksha Jukaria (AI Engineer).`;
             } else if(q.includes('pothole')) {
                 const count = incidents.filter(i => i.type === 'Pothole').length;
                 return `We currently have ${count} pothole tickets logged across various states. You can click 'Report an Issue' to drop a pin for a new one!`;
             } else if(q.includes('fleet') || q.includes('bus')) {
                 return `The active national fleet consists of AI-equipped municipal transit buses processing video streams locally via edge computing.`;
-            } else if(q.includes('report') || q.includes('complaint')) {
-                return `To report an issue, click the 'Report an Issue' tab or use the 'Click Map to Report' button to drop a precise pin.`;
             } else {
-                return `I'm your UrbanAI Copilot! I monitor pan-India infrastructure tickets. Try asking me about 'status', 'potholes', or 'fleet'.`;
+                return `I'm your UrbanAI Copilot! Try asking me about 'status', 'team', or 'potholes'.`;
             }
-        }
-
-        // ---------- Pull Requests ----------
-        const pulls = [
-            { id: 104, title: "Upgrade YOLOv10 to YOLOv11 for Pan-India Pothole Precision", by: "National Core Vision Team", target: "State Transport Bus Edge Nodes", status: "Pending Review" },
-            { id: 102, title: "Monsoon Waterlogging Threshold Tuning for Coastal Corridors", by: "National Environmental Lab", target: "All State Corridors", status: "Merged" }
-        ];
-
-        function prBadgeClass(status) { return status === 'Merged' ? 'status-merged' : 'status-review'; }
-
-        function renderPulls() {
-            const list = document.getElementById('pr-list');
-            list.innerHTML = pulls.map(p => `
-                <div class="interactive-card">
-                    <div class="card-info">
-                        <h4>PR #${p.id}: ${p.title}</h4>
-                        <p>Submitted by: ${p.by} · Target: ${p.target}</p>
-                    </div>
-                    <div class="card-actions">
-                        <span class="badge-status ${prBadgeClass(p.status)}">${p.status}</span>
-                        ${p.status === 'Pending Review' ? `<button class="action-btn" onclick="mergePull(${p.id})">Merge &amp; Deploy</button>` : ''}
-                    </div>
-                </div>
-            `).join('');
-            document.getElementById('prTabCount').innerText = pulls.filter(p => p.status === 'Pending Review').length;
-        }
-
-        function mergePull(id) {
-            const pr = pulls.find(p => p.id === id);
-            if (!pr) return;
-            pr.status = 'Merged';
-            showToast(`PR #${id} merged — deploying state transport model weights...`, 'var(--accent-purple)');
-            renderPulls();
         }
 
         // ---------- Actions ----------
@@ -1210,7 +1230,6 @@
         }
 
         renderMarkers(incidents);
-        renderPulls();
         renderActions();
     </script>
 </body>
