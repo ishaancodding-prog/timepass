@@ -336,7 +336,7 @@
         .card-info p { margin: 0; font-size: 13px; color: var(--text-muted); line-height: 1.4; }
         .card-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
-        /* Team Member Specific Grid Styles */
+        /* Team Member Specific Grid Styles with PFP */
         .team-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -355,13 +355,11 @@
         }
         .team-card:hover { transform: translateY(-3px); border-color: var(--accent-cyan); }
         .team-avatar {
-            width: 64px; height: 64px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
-            display: flex; align-items: center; justify-content: center;
-            font-size: 26px; font-weight: 800; color: #04141f;
+            width: 68px; height: 68px; border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-cyan);
             box-shadow: 0 4px 12px rgba(6,182,212,0.3);
             flex-shrink: 0;
-            border: 2px solid rgba(255,255,255,0.15);
         }
         .team-details h3 { margin: 0 0 4px 0; font-size: 18px; color: var(--text-main); }
         .team-role { font-size: 13px; font-weight: 600; color: var(--accent-cyan); margin-bottom: 8px; display: inline-block; }
@@ -470,59 +468,60 @@
         .run-success { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .2; } }
 
+        /* ---------- Circular Floating Buttons ---------- */
         .fab-report {
             position: fixed;
             bottom: 26px;
             right: 26px;
             z-index: 500;
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
             color: #04141f;
             border: none;
-            padding: 14px 20px;
-            border-radius: 999px;
-            font-weight: 800;
-            font-size: 13.5px;
+            border-radius: 50%;
+            font-size: 22px;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.35);
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.4);
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: transform .15s ease, box-shadow .15s ease;
+            justify-content: center;
+            transition: transform .2s ease, box-shadow .2s ease;
         }
-        .fab-report:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 14px 30px rgba(6, 182, 212, 0.45); }
-        .fab-report:active { transform: scale(0.97); }
+        .fab-report:hover { transform: scale(1.08); box-shadow: 0 14px 30px rgba(6, 182, 212, 0.6); }
+        .fab-report:active { transform: scale(0.95); }
 
-        /* AI Chatbot Widget Styles */
+        /* Circular UrbanAI Chatbot Button & Window */
         .chat-fab {
             position: fixed;
             bottom: 26px;
-            right: 175px;
+            right: 100px;
             z-index: 500;
+            width: 60px;
+            height: 60px;
             background: var(--bg-card);
-            border: 1px solid var(--accent-cyan);
+            border: 2px solid var(--accent-cyan);
             color: var(--accent-cyan);
-            padding: 12px 18px;
-            border-radius: 999px;
-            font-weight: 700;
-            font-size: 13px;
+            border-radius: 50%;
+            font-size: 22px;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.25);
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3);
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
             transition: all 0.2s ease;
         }
-        .chat-fab:hover { background: rgba(6,182,212,0.1); transform: translateY(-2px); }
+        .chat-fab:hover { background: rgba(6,182,212,0.15); transform: scale(1.08); }
 
         .chat-window {
             position: fixed;
-            bottom: 90px;
+            bottom: 100px;
             right: 26px;
             width: 360px;
             height: 480px;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 14px;
+            border-radius: 16px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             z-index: 600;
             display: none;
@@ -555,7 +554,7 @@
         .chat-msg {
             max-width: 85%;
             padding: 10px 14px;
-            border-radius: 10px;
+            border-radius: 12px;
             line-height: 1.4;
         }
         .chat-msg.bot {
@@ -746,7 +745,7 @@
             </div>
             <div class="team-grid">
                 <div class="team-card">
-                    <div class="team-avatar" style="background: linear-gradient(135deg, #f43f5e, #fb7185);">MK</div>
+                    <img class="team-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Mahima Kushwaha">
                     <div class="team-details">
                         <h3>Mahima Kushwaha</h3>
                         <span class="team-role">UI/UX Designer</span>
@@ -754,7 +753,7 @@
                     </div>
                 </div>
                 <div class="team-card">
-                    <div class="team-avatar" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">IT</div>
+                    <img class="team-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" alt="Ishaan Thusoo">
                     <div class="team-details">
                         <h3>Ishaan Thusoo</h3>
                         <span class="team-role">Full Stack Development</span>
@@ -762,7 +761,7 @@
                     </div>
                 </div>
                 <div class="team-card">
-                    <div class="team-avatar" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">DJ</div>
+                    <img class="team-avatar" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80" alt="Diksha Jukaria">
                     <div class="team-details">
                         <h3>Diksha Jukaria</h3>
                         <span class="team-role">AI Engineer</span>
@@ -784,13 +783,14 @@
         </div>
     </div>
 
-    <button class="fab-report" onclick="startPinDrop()">📍 Report an Issue</button>
+    <!-- Circular Floating Action Buttons -->
+    <button class="fab-report" onclick="startPinDrop()" title="Report an Issue">📍</button>
+    <button class="chat-fab" onclick="toggleChat()" title="UrbanAI Assistant">🤖</button>
 
-    <!-- AI Chatbot Widgets -->
-    <button class="chat-fab" onclick="toggleChat()">💬 UrbanAI Assistant</button>
+    <!-- Circular AI Chatbot Window -->
     <div class="chat-window" id="chatWindow">
         <div class="chat-header">
-            <div class="chat-title">🤖 UrbanAI Copilot (Smart City OS)</div>
+            <div class="chat-title">🤖 UrbanAI Copilot</div>
             <button class="chat-close" onclick="toggleChat()">✕</button>
         </div>
         <div class="chat-body" id="chatBody">
@@ -1195,42 +1195,7 @@
             }
         }
 
-        // ---------- Actions ----------
-        const pipelines = [
-            { id: 1, name: "National Edge Frame Compression & Telemetry Relay", detail: "Zero packet loss across state cellular relays.", state: "success" },
-            { id: 2, name: "Distributed PostGIS State-Level Spatial Indexing Sync", detail: "Last synced across all 36 regions just now.", state: "success" }
-        ];
-
-        function renderActions() {
-            const list = document.getElementById('actions-list');
-            list.innerHTML = pipelines.map(p => `
-                <div class="interactive-card">
-                    <div class="card-info">
-                        <h4><span class="run-dot ${p.state === 'running' ? 'run-running' : 'run-success'}"></span>${p.name}</h4>
-                        <p id="pipeline-detail-${p.id}">${p.state === 'running' ? 'Running diagnostics…' : 'Status: ' + p.detail}</p>
-                    </div>
-                    <button class="action-btn" ${p.state === 'running' ? 'disabled' : ''} onclick="runPipeline(${p.id})">
-                        ${p.state === 'running' ? 'Running…' : (p.id === 1 ? 'Run Diagnostics' : 'Force Sync')}
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function runPipeline(id) {
-            const p = pipelines.find(x => x.id === id);
-            if (!p) return;
-            p.state = 'running';
-            renderActions();
-            setTimeout(() => {
-                p.state = 'success';
-                p.detail = id === 1 ? 'Diagnostics normal. All state transit pods synchronized.' : 'State databases re-indexed successfully.';
-                renderActions();
-                showToast(id === 1 ? 'Diagnostics complete — all regional nodes optimal.' : 'State-level spatial index synchronized.');
-            }, 1400);
-        }
-
         renderMarkers(incidents);
-        renderActions();
     </script>
 </body>
 </html>
