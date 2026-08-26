@@ -3,220 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>municipal-ai / urban-intelligence-platform · GitHub</title>
+    <title>Urban Intelligence Command Center · Smart City OS</title>
     <!-- Leaflet CSS for Map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #111827;
+            --border-color: #1f2937;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #0d1117;
-            color: #c9d1d9;
+            background-color: var(--bg-main);
+            color: var(--text-main);
         }
+        /* Top Navigation Header */
         header {
-            background-color: #161b22;
-            border-bottom: 1px solid #30363d;
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
             padding: 16px 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .repo-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #58a6ff;
-            text-decoration: none;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            letter-spacing: 0.5px;
         }
-        .repo-title span {
-            color: #8b949e;
-            font-weight: 300;
-        }
-        .badge {
-            background-color: #238636;
-            color: #ffffff;
+        .live-badge {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
             padding: 4px 10px;
             border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
         }
+        /* Main Container & Navigation Tabs */
         .container {
-            max-width: 1280px;
+            max-width: 1400px;
             margin: 24px auto;
-            padding: 0 16px;
+            padding: 0 24px;
         }
         .nav-tabs {
             display: flex;
-            border-bottom: 1px solid #30363d;
+            border-bottom: 1px solid var(--border-color);
             margin-bottom: 24px;
-            gap: 16px;
+            gap: 8px;
         }
-        .tab {
-            padding: 8px 16px;
-            color: #c9d1d9;
-            border-bottom: 2px solid #f78166;
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 20px;
+            color: var(--text-muted);
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-        }
-        .tab-inactive {
             border-bottom: 2px solid transparent;
-            color: #8b949e;
+            transition: all 0.2s ease;
         }
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+        .tab-btn.active {
+            color: var(--accent-cyan);
+            border-bottom-color: var(--accent-cyan);
+            background-color: rgba(6, 182, 212, 0.05);
+            border-radius: 6px 6px 0 0;
+        }
+        /* Dashboard Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
             margin-bottom: 24px;
         }
         .stat-card {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 16px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         .stat-card h3 {
             margin: 0 0 8px 0;
-            font-size: 14px;
-            color: #8b949e;
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .stat-card .val {
-            font-size: 24px;
-            font-weight: 600;
-            color: #f0f6fc;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-main);
         }
+        /* Control Panel */
         .control-panel {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 6px 6px 0 0;
-            padding: 16px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px 10px 0 0;
+            padding: 16px 20px;
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 16px;
             align-items: center;
             justify-content: space-between;
             border-bottom: none;
         }
         .search-input, .filter-select {
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            color: #c9d1d9;
-            padding: 8px 12px;
-            border-radius: 6px;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 16px;
+            border-radius: 8px;
             font-size: 14px;
             outline: none;
         }
         .search-input {
             flex: 1;
-            min-width: 240px;
+            min-width: 280px;
         }
         .search-input:focus, .filter-select:focus {
-            border-color: #58a6ff;
-            box-shadow: 0 0 3px rgba(88, 166, 255, 0.4);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
         }
+        /* Map Layout */
         .map-wrapper {
-            border: 1px solid #30363d;
-            border-radius: 0 0 6px 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 0 0 10px 10px;
             overflow: hidden;
             background: #ffffff;
-            height: 500px;
+            height: 550px;
             width: 100%;
             margin-bottom: 32px;
         }
-        .markdown-body {
-            background-color: #161b22;
-            border: 1px solid #30363d;
+        /* Dynamic Tab Views */
+        .view-section {
+            display: none;
+        }
+        .view-section.active {
+            display: block;
+        }
+        /* Interactive Cards/Tables for Issues, PRs, Actions */
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .interactive-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: border-color 0.2s;
+        }
+        .interactive-card:hover {
+            border-color: var(--accent-blue);
+        }
+        .card-info h4 {
+            margin: 0 0 6px 0;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+        .card-info p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .action-btn {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 8px 16px;
             border-radius: 6px;
-            padding: 32px;
-            margin-bottom: 32px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
         }
-        .markdown-body h1, .markdown-body h2 {
-            border-bottom: 1px solid #21262d;
-            padding-bottom: .3em;
-            color: #f0f6fc;
-            margin-top: 0;
+        .action-btn:hover {
+            background-color: #2563eb;
         }
-        ul { padding-left: 20px; color: #8b949e; }
-        li { margin-bottom: 8px; color: #c9d1d9; }
-        strong { color: #f0f6fc; }
+        .badge-status {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-open { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .status-merged { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .status-active { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
     </style>
 </head>
 <body>
 
     <header>
-        <div>
-            <a href="#" class="repo-title">municipal-ai <span>/</span> <strong>urban-intelligence-platform</strong></a>
+        <div class="brand">
+            🛰️ URBAN INTELLIGENCE COMMAND OS
         </div>
         <div>
-            <span class="badge">Live Production v1.2</span>
+            <span class="live-badge">Fleet Active · Live Feed</span>
         </div>
     </header>
 
     <div class="container">
+        <!-- Interactive Navigation Tabs -->
         <div class="nav-tabs">
-            <div class="tab">💻 Code & Command Center</div>
-            <div class="tab tab-inactive">📊 Telemetry Logs</div>
-            <div class="tab tab-inactive">⚙️ Edge Pod Configurations</div>
+            <button class="tab-btn active" onclick="switchView('map-view', event)">🗺️ Command Map & Telemetry</button>
+            <button class="tab-btn" onclick="switchView('issues-view', event)">⚠️ Municipal Issues (Tickets)</button>
+            <button class="tab-btn" onclick="switchView('pr-view', event)">🔀 AI Model Pull Requests</button>
+            <button class="tab-btn" onclick="switchView('actions-view', event)">⚡ Edge Pipeline Actions</button>
         </div>
 
-        <!-- System Summary Metric Counters -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Active Fleet Nodes</h3>
-                <div class="val" id="fleet-count">3 Buses Online</div>
+        <!-- VIEW 1: COMMAND MAP -->
+        <div id="map-view" class="view-section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Active Fleet Buses</h3>
+                    <div class="val">14 Units Online</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Hazards Flagged Today</h3>
+                    <div class="val" id="hazard-count">5 Items</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Bandwidth Saved</h3>
+                    <div class="val">99.4% (Edge Filtered)</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <h3>Total Hazards Flagged</h3>
-                <div class="val" id="hazard-count">5 Items</div>
+
+            <div class="control-panel">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search location name (e.g., Connaught, Ring Road, Nehru)..." onkeyup="filterIncidents()">
+                <select id="filterSelect" class="filter-select" onchange="filterIncidents()">
+                    <option value="all">All Event Types</option>
+                    <option value="Pothole">Potholes</option>
+                    <option value="Waterlogging">Waterlogging</option>
+                    <option value="Zebra Crossing">Missing Zebra Crossing</option>
+                    <option value="Rash Driving">Rash Driving</option>
+                    <option value="Signboard">Damaged Signboard</option>
+                </select>
             </div>
-            <div class="stat-card">
-                <h3>Bandwidth Saved</h3>
-                <div class="val">99.4% (Edge Filtered)</div>
+
+            <div class="map-wrapper" id="map"></div>
+        </div>
+
+        <!-- VIEW 2: MUNICIPAL ISSUES -->
+        <div id="issues-view" class="view-section">
+            <h2 style="margin-top:0; color:var(--text-main);">Active Municipal Infrastructure Tickets</h2>
+            <p style="color:var(--text-muted); margin-bottom: 20px;">Automatically generated by bus edge-AI vision pods requiring municipal department dispatch.</p>
+            <div class="card-list" id="issues-list">
+                <!-- Populated via JS -->
             </div>
         </div>
 
-        <!-- Interactive Control Panel with Location Search & Filters -->
-        <div class="control-panel">
-            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by location name (e.g., Connaught, Ring Road, Nehru)..." onkeyup="filterIncidents()">
-            <select id="filterSelect" class="filter-select" onchange="filterIncidents()">
-                <option value="all">All Event Types</option>
-                <option value="Pothole">Potholes</option>
-                <option value="Waterlogging">Waterlogging</option>
-                <option value="Zebra Crossing">Missing Zebra Crossing</option>
-                <option value="Rash Driving">Rash Driving</option>
-                <option value="Signboard">Damaged Signboard</option>
-            </select>
+        <!-- VIEW 3: PULL REQUESTS (AI MODEL UPDATES) -->
+        <div id="pr-view" class="view-section">
+            <h2 style="margin-top:0; color:var(--text-main);">Edge AI Model Weights & Feature Pull Requests</h2>
+            <p style="color:var(--text-muted); margin-bottom: 20px;">Proposed updates to onboard computer vision models sent by remote engineering nodes.</p>
+            <div class="card-list">
+                <div class="interactive-card">
+                    <div class="card-info">
+                        <h4>PR #104: Upgrade YOLOv10 to YOLOv11 for Pothole Precision</h4>
+                        <p>Submitted by: Core Vision Team · Target: Entire Bus Fleet Edge Modules</p>
+                    </div>
+                    <div>
+                        <span class="badge-status status-open">Pending Review</span>
+                        <button class="action-btn" onclick="alert('Pull Request approved! Deploying weights to bus fleet...')">Merge & Deploy</button>
+                    </div>
+                </div>
+                <div class="interactive-card">
+                    <div class="card-info">
+                        <h4>PR #102: Night-Vision Waterlogging Threshold Tuning</h4>
+                        <p>Submitted by: Environmental AI Lab · Target: Route 522 & Ring Road Line</p>
+                    </div>
+                    <div>
+                        <span class="badge-status status-merged">Merged</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Map Container -->
-        <div class="map-wrapper" id="map"></div>
-
-        <!-- Architecture Overview -->
-        <div class="markdown-body">
-            <h1>Platform Features & Capabilities</h1>
-            <p>This decentralized municipal intelligence setup converts regular transit networks into dynamic environmental and road-surface sensors.</p>
-            <h2>New Upgrades in v1.2</h2>
-            <ul>
-                <li><strong>Interactive Location Search:</strong> Type any street or zone name in the search bar above to isolate specific neighborhood reports instantly.</li>
-                <li><strong>Category Filtering:</strong> Dynamically toggle between structural road hazards, environmental waterlogging, and safety violations.</li>
-                <li><strong>High-Resolution Satellite Layer:</strong> Switch map tiles between high-definition satellite terrain and clean vector mapping seamlessly.</li>
-            </ul>
+        <!-- VIEW 4: ACTIONS (PIPELINE STATUS) -->
+        <div id="actions-view" class="view-section">
+            <h2 style="margin-top:0; color:var(--text-main);">Automated CI/CD & Edge Telemetry Actions</h2>
+            <p style="color:var(--text-muted); margin-bottom: 20px;">Real-time workflow execution logs for bus telemetry synchronizations.</p>
+            <div class="card-list">
+                <div class="interactive-card">
+                    <div class="card-info">
+                        <h4>🟢 Edge Frame Compression & Metadata Stream</h4>
+                        <p>Status: Running smoothly. Zero packet loss across cellular relays.</p>
+                    </div>
+                    <button class="action-btn" style="background:#10b981;" onclick="alert('Pipeline diagnostics normal. All edge pods synchronized.')">Run Diagnostics</button>
+                </div>
+                <div class="interactive-card">
+                    <div class="card-info">
+                        <h4>🔵 PostGIS Geospatial Spatial Indexing Sync</h4>
+                        <p>Status: Last synced 2 minutes ago.</p>
+                    </div>
+                    <button class="action-btn" style="background:#3b82f6;" onclick="alert('Spatial database re-indexed successfully.')">Force Sync</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Leaflet JS Library -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        // Tab Switching Logic
+        function switchView(viewId, event) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(viewId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            if (viewId === 'map-view') {
+                setTimeout(() => { map.invalidateSize(); }, 200);
+            }
+        }
+
         // Initialize Map centered around Delhi
         const map = L.map('map').setView([28.6139, 77.2090], 13);
 
-        // Map Layers
         const cleanMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
             maxZoom: 19,
             attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
         });
 
         const satelliteView = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and GIS Community'
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, UPR-EGP'
         });
 
         cleanMap.addTo(map);
@@ -226,36 +355,32 @@
             "Satellite View (Esri Imagery)": satelliteView
         }).addTo(map);
 
-        // Extended Incident Dataset with Location Descriptions
+        // Incident Data
         const incidents = [
-            { lat: 28.6239, lon: 77.2090, type: "Pothole", location: "Connaught Place Outer Circle", bus: "BUS-DL-04-1234", conf: "96%", color: "red" },
-            { lat: 28.6039, lon: 77.1990, type: "Waterlogging", location: "Ring Road Underpass", bus: "BUS-DL-01-9876", conf: "92%", color: "blue" },
-            { lat: 28.6189, lon: 77.2290, type: "Zebra Crossing", location: "Nehru Place Bus Terminal", bus: "BUS-DL-08-4321", conf: "89%", color: "orange" },
-            { lat: 28.6099, lon: 77.1890, type: "Rash Driving", location: "Lodhi Road Intersection", bus: "BUS-DL-04-1234", conf: "98%", color: "darkred" },
-            { lat: 28.6289, lon: 77.2190, type: "Signboard", location: "Rajiv Chowk North Lane", bus: "BUS-DL-01-9876", conf: "85%", color: "purple" }
+            { id: 1, lat: 28.6239, lon: 77.2090, type: "Pothole", location: "Connaught Place Outer Circle", bus: "BUS-DL-04-1234", conf: "96%", color: "red", status: "Unresolved" },
+            { id: 2, lat: 28.6039, lon: 77.1990, type: "Waterlogging", location: "Ring Road Underpass", bus: "BUS-DL-01-9876", conf: "92%", color: "blue", status: "Unresolved" },
+            { id: 3, lat: 28.6189, lon: 77.2290, type: "Zebra Crossing", location: "Nehru Place Bus Terminal", bus: "BUS-DL-08-4321", conf: "89%", color: "orange", status: "Dispatched" },
+            { id: 4, lat: 28.6099, lon: 77.1890, type: "Rash Driving", location: "Lodhi Road Intersection", bus: "BUS-DL-04-1234", conf: "98%", color: "darkred", status: "Under Review" },
+            { id: 5, lat: 28.6289, lon: 77.2190, type: "Signboard", location: "Rajiv Chowk North Lane", bus: "BUS-DL-01-9876", conf: "85%", color: "purple", status: "Resolved" }
         ];
 
         let markers = [];
 
         function renderMarkers(dataToRender) {
-            // Clear existing markers
             markers.forEach(m => map.removeLayer(m));
             markers = [];
 
             dataToRender.forEach(item => {
-                const markerHtml = `<div style="background-color: ${item.color}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.4);"></div>`;
-                const customIcon = L.divIcon({
-                    className: 'custom-pin',
-                    html: markerHtml,
-                    iconSize: [14, 14]
-                });
+                const markerHtml = `<div style="background-color: ${item.color}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 6px rgba(0,0,0,0.6);"></div>`;
+                const customIcon = L.divIcon({ className: 'custom-pin', html: markerHtml, iconSize: [14, 14] });
 
                 const popupContent = `
                     <div style="font-family: sans-serif; font-size: 13px;">
                         <b style="color: #0366d6;">${item.type}</b><br>
                         <b>Location:</b> ${item.location}<br>
                         <b>Bus ID:</b> ${item.bus}<br>
-                        <b>AI Confidence:</b> ${item.conf}<br>
+                        <b>Confidence:</b> ${item.conf}<br>
+                        <b>Status:</b> ${item.status}
                     </div>
                 `;
 
@@ -267,12 +392,38 @@
             });
 
             document.getElementById('hazard-count').innerText = `${dataToRender.length} Items`;
+            renderIssuesList(dataToRender);
         }
 
-        // Initial render
-        renderMarkers(incidents);
+        function renderIssuesList(data) {
+            const listContainer = document.getElementById('issues-list');
+            listContainer.innerHTML = '';
 
-        // Search & Filter Logic
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'interactive-card';
+                card.innerHTML = `
+                    <div class="card-info">
+                        <h4>[${item.type}] - ${item.location}</h4>
+                        <p>Detected by ${item.bus} · AI Confidence: ${item.conf} · Current Status: <b>${item.status}</b></p>
+                    </div>
+                    <div>
+                        <button class="action-btn" onclick="dispatchCrew(${item.id})">Dispatch Repair Crew</button>
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
+        }
+
+        function dispatchCrew(id) {
+            const item = incidents.find(i => i.id === id);
+            if(item) {
+                item.status = "Crew Dispatched 🚀";
+                alert(`Municipal work order dispatched for ${item.location} (${item.type})!`);
+                filterIncidents();
+            }
+        }
+
         function filterIncidents() {
             const searchQuery = document.getElementById('searchInput').value.toLowerCase();
             const selectedType = document.getElementById('filterSelect').value;
@@ -285,6 +436,9 @@
 
             renderMarkers(filtered);
         }
+
+        // Initial Load
+        renderMarkers(incidents);
     </script>
 </body>
 </html>
