@@ -462,7 +462,7 @@
         .fab-report:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 14px 30px rgba(6, 182, 212, 0.45); }
         .fab-report:active { transform: scale(0.97); }
 
-        /* ---------- AI Chatbot Widget Styles ---------- */
+        /* AI Chatbot Widget Styles */
         .chat-fab {
             position: fixed;
             bottom: 26px;
@@ -852,6 +852,7 @@
             if (viewId === 'map-view') setTimeout(() => { map.invalidateSize(); }, 200);
         }
 
+        // ---------- Map setup with Hybrid Labeled Satellite ----------
         const map = L.map('map').setView([22.5937, 78.9629], 5);
 
         const cleanMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
@@ -859,15 +860,24 @@
             attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
         });
 
-        const satelliteView = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        // Satellite base layer (Imagery) + Reference Overlay (Labels and State/Country Names)
+        const satelliteImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19,
             attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP'
         });
+
+        const satelliteLabels = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19,
+            attribution: 'Labels &copy; Esri'
+        });
+
+        const satelliteHybrid = L.layerGroup([satelliteImagery, satelliteLabels]);
 
         cleanMap.addTo(map);
 
         L.control.layers({
             "Clean Map (Default)": cleanMap,
-            "Satellite View (Esri Imagery)": satelliteView
+            "Satellite Hybrid (With State & Place Names)": satelliteHybrid
         }).addTo(map);
 
         const legend = L.control({ position: 'bottomleft' });
@@ -1132,7 +1142,7 @@
             }
         }
 
-        // ---------- Pull Requests & Actions ----------
+        // ---------- Pull Requests ----------
         const pulls = [
             { id: 104, title: "Upgrade YOLOv10 to YOLOv11 for Pan-India Pothole Precision", by: "National Core Vision Team", target: "State Transport Bus Edge Nodes", status: "Pending Review" },
             { id: 102, title: "Monsoon Waterlogging Threshold Tuning for Coastal Corridors", by: "National Environmental Lab", target: "All State Corridors", status: "Merged" }
@@ -1165,6 +1175,7 @@
             renderPulls();
         }
 
+        // ---------- Actions ----------
         const pipelines = [
             { id: 1, name: "National Edge Frame Compression & Telemetry Relay", detail: "Zero packet loss across state cellular relays.", state: "success" },
             { id: 2, name: "Distributed PostGIS State-Level Spatial Indexing Sync", detail: "Last synced across all 36 regions just now.", state: "success" }
