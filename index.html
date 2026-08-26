@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>municipal-ai / urban-intelligence-platform · GitHub</title>
-    <!-- Leaflet CSS for Interactive Map -->
+    <!-- Leaflet CSS for Map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         body {
@@ -62,6 +62,66 @@
             border-bottom: 2px solid transparent;
             color: #8b949e;
         }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+        }
+        .stat-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            color: #8b949e;
+        }
+        .stat-card .val {
+            font-size: 24px;
+            font-weight: 600;
+            color: #f0f6fc;
+        }
+        .control-panel {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px 6px 0 0;
+            padding: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: none;
+        }
+        .search-input, .filter-select {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+        .search-input {
+            flex: 1;
+            min-width: 240px;
+        }
+        .search-input:focus, .filter-select:focus {
+            border-color: #58a6ff;
+            box-shadow: 0 0 3px rgba(88, 166, 255, 0.4);
+        }
+        .map-wrapper {
+            border: 1px solid #30363d;
+            border-radius: 0 0 6px 6px;
+            overflow: hidden;
+            background: #ffffff;
+            height: 500px;
+            width: 100%;
+            margin-bottom: 32px;
+        }
         .markdown-body {
             background-color: #161b22;
             border: 1px solid #30363d;
@@ -75,29 +135,6 @@
             color: #f0f6fc;
             margin-top: 0;
         }
-        .file-explorer {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            margin-bottom: 24px;
-        }
-        .file-row {
-            padding: 10px 16px;
-            border-bottom: 1px solid #21262d;
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-        }
-        .file-row:last-child { border-bottom: none; }
-        .file-row span { margin-left: 8px; color: #58a6ff; font-weight: 500; }
-        .map-wrapper {
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            overflow: hidden;
-            background: #ffffff;
-            height: 500px;
-            width: 100%;
-        }
         ul { padding-left: 20px; color: #8b949e; }
         li { margin-bottom: 8px; color: #c9d1d9; }
         strong { color: #f0f6fc; }
@@ -110,47 +147,58 @@
             <a href="#" class="repo-title">municipal-ai <span>/</span> <strong>urban-intelligence-platform</strong></a>
         </div>
         <div>
-            <span class="badge">Public Repository · v1.0</span>
+            <span class="badge">Live Production v1.2</span>
         </div>
     </header>
 
     <div class="container">
         <div class="nav-tabs">
-            <div class="tab">💻 Code & Live App</div>
-            <div class="tab tab-inactive">📊 Issues</div>
-            <div class="tab tab-inactive">🔀 Pull Requests</div>
-            <div class="tab tab-inactive">⚙️ Actions</div>
+            <div class="tab">💻 Code & Command Center</div>
+            <div class="tab tab-inactive">📊 Telemetry Logs</div>
+            <div class="tab tab-inactive">⚙️ Edge Pod Configurations</div>
         </div>
 
-        <!-- Simulated GitHub File Tree -->
-        <div class="file-explorer">
-            <div class="file-row" style="background: #21262d; font-weight: 600; color: #f0f6fc;">
-                📁 Latest commit <span>main branch · 2 minutes ago</span>
+        <!-- System Summary Metric Counters -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Active Fleet Nodes</h3>
+                <div class="val" id="fleet-count">3 Buses Online</div>
             </div>
-            <div class="file-row">📦 <span>edge_node.py</span> — Onboard YOLOv10 computer vision and edge filtering service</div>
-            <div class="file-row">🗺️ <span>index.html</span> — GitHub UI wrapper & Interactive Satellite/GIS Command Map</div>
-            <div class="file-row">📄 <span>README.md</span> — System architecture blueprints and documentation</div>
+            <div class="stat-card">
+                <h3>Total Hazards Flagged</h3>
+                <div class="val" id="hazard-count">5 Items</div>
+            </div>
+            <div class="stat-card">
+                <h3>Bandwidth Saved</h3>
+                <div class="val">99.4% (Edge Filtered)</div>
+            </div>
         </div>
 
-        <!-- Live Interactive Map Component -->
-        <div class="markdown-body" style="padding: 16px;">
-            <h2>🛰️ Live Fleet Command & Satellite GIS View</h2>
-            <p style="color: #8b949e; font-size: 14px; margin-bottom: 16px;">
-                Use the layer control icon in the top-right corner of the map below to toggle between standard street maps and <strong>High-Resolution Satellite Imagery</strong>.
-            </p>
-            <div class="map-wrapper" id="map"></div>
+        <!-- Interactive Control Panel with Location Search & Filters -->
+        <div class="control-panel">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by location name (e.g., Connaught, Ring Road, Nehru)..." onkeyup="filterIncidents()">
+            <select id="filterSelect" class="filter-select" onchange="filterIncidents()">
+                <option value="all">All Event Types</option>
+                <option value="Pothole">Potholes</option>
+                <option value="Waterlogging">Waterlogging</option>
+                <option value="Zebra Crossing">Missing Zebra Crossing</option>
+                <option value="Rash Driving">Rash Driving</option>
+                <option value="Signboard">Damaged Signboard</option>
+            </select>
         </div>
 
-        <!-- GitHub Repository README Section -->
+        <!-- Map Container -->
+        <div class="map-wrapper" id="map"></div>
+
+        <!-- Architecture Overview -->
         <div class="markdown-body">
-            <h1>AI-Powered Mobile Urban Intelligence Platform</h1>
-            <p>Transforms standard public transport municipal bus fleets into mobile IoT and edge-computing sensor networks, replacing expensive stationary roadside CCTV cameras.</p>
-            
-            <h2>Architecture Highlights</h2>
+            <h1>Platform Features & Capabilities</h1>
+            <p>This decentralized municipal intelligence setup converts regular transit networks into dynamic environmental and road-surface sensors.</p>
+            <h2>New Upgrades in v1.2</h2>
             <ul>
-                <li><strong>Edge AI Vision Pods:</strong> Filters 99% of raw video data onboard using optimized model weights, broadcasting only lightweight JSON payloads via cellular networks.</li>
-                <li><strong>Multi-Layer GIS Command Map:</strong> Aggregates live road defects (potholes, waterlogging, missing signs) and tracks traffic density heatmaps.</li>
-                <li><strong>Satellite Intelligence Integration:</strong> Supports precise geospatial overlays against high-definition satellite imagery for municipal urban planners.</li>
+                <li><strong>Interactive Location Search:</strong> Type any street or zone name in the search bar above to isolate specific neighborhood reports instantly.</li>
+                <li><strong>Category Filtering:</strong> Dynamically toggle between structural road hazards, environmental waterlogging, and safety violations.</li>
+                <li><strong>High-Resolution Satellite Layer:</strong> Switch map tiles between high-definition satellite terrain and clean vector mapping seamlessly.</li>
             </ul>
         </div>
     </div>
@@ -161,57 +209,82 @@
         // Initialize Map centered around Delhi
         const map = L.map('map').setView([28.6139, 77.2090], 13);
 
-        // Define Base Map Layers
+        // Map Layers
         const cleanMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
             maxZoom: 19,
             attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
         });
 
         const satelliteView = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and GIS Community'
         });
 
-        // Default layer load
         cleanMap.addTo(map);
 
-        // Layer Control Selector
-        const baseLayers = {
+        L.control.layers({
             "Clean Map (Default)": cleanMap,
             "Satellite View (Esri Imagery)": satelliteView
-        };
-        L.control.layers(baseLayers).addTo(map);
+        }).addTo(map);
 
-        // Simulated Fleet Incidents Data
+        // Extended Incident Dataset with Location Descriptions
         const incidents = [
-            { lat: 28.6239, lon: 77.2090, type: "Pothole Detected", bus: "BUS-DL-04-1234", conf: "96%", color: "red" },
-            { lat: 28.6039, lon: 77.1990, type: "Waterlogging", bus: "BUS-DL-01-9876", conf: "92%", color: "blue" },
-            { lat: 28.6189, lon: 77.2290, type: "Missing Zebra Crossing", bus: "BUS-DL-08-4321", conf: "89%", color: "orange" },
-            { lat: 28.6099, lon: 77.1890, type: "Rash Driving Event", bus: "BUS-DL-04-1234", conf: "98%", color: "darkred" },
-            { lat: 28.6289, lon: 77.2190, type: "Damaged Signboard", bus: "BUS-DL-01-9876", conf: "85%", color: "purple" }
+            { lat: 28.6239, lon: 77.2090, type: "Pothole", location: "Connaught Place Outer Circle", bus: "BUS-DL-04-1234", conf: "96%", color: "red" },
+            { lat: 28.6039, lon: 77.1990, type: "Waterlogging", location: "Ring Road Underpass", bus: "BUS-DL-01-9876", conf: "92%", color: "blue" },
+            { lat: 28.6189, lon: 77.2290, type: "Zebra Crossing", location: "Nehru Place Bus Terminal", bus: "BUS-DL-08-4321", conf: "89%", color: "orange" },
+            { lat: 28.6099, lon: 77.1890, type: "Rash Driving", location: "Lodhi Road Intersection", bus: "BUS-DL-04-1234", conf: "98%", color: "darkred" },
+            { lat: 28.6289, lon: 77.2190, type: "Signboard", location: "Rajiv Chowk North Lane", bus: "BUS-DL-01-9876", conf: "85%", color: "purple" }
         ];
 
-        // Add markers to the interactive map
-        incidents.forEach(item => {
-            const markerHtml = `<div style="background-color: ${item.color}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.4);"></div>`;
-            const customIcon = L.divIcon({
-                className: 'custom-pin',
-                html: markerHtml,
-                iconSize: [14, 14]
+        let markers = [];
+
+        function renderMarkers(dataToRender) {
+            // Clear existing markers
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
+
+            dataToRender.forEach(item => {
+                const markerHtml = `<div style="background-color: ${item.color}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.4);"></div>`;
+                const customIcon = L.divIcon({
+                    className: 'custom-pin',
+                    html: markerHtml,
+                    iconSize: [14, 14]
+                });
+
+                const popupContent = `
+                    <div style="font-family: sans-serif; font-size: 13px;">
+                        <b style="color: #0366d6;">${item.type}</b><br>
+                        <b>Location:</b> ${item.location}<br>
+                        <b>Bus ID:</b> ${item.bus}<br>
+                        <b>AI Confidence:</b> ${item.conf}<br>
+                    </div>
+                `;
+
+                const marker = L.marker([item.lat, item.lon], { icon: customIcon })
+                    .addTo(map)
+                    .bindPopup(popupContent);
+
+                markers.push(marker);
             });
 
-            const popupContent = `
-                <div style="font-family: sans-serif; font-size: 13px;">
-                    <b style="color: #0366d6;">${item.type}</b><br>
-                    <b>Bus ID:</b> ${item.bus}<br>
-                    <b>AI Confidence:</b> ${item.conf}<br>
-                    <b>Timestamp:</b> Just now
-                </div>
-            `;
+            document.getElementById('hazard-count').innerText = `${dataToRender.length} Items`;
+        }
 
-            L.marker([item.lat, item.lon], { icon: customIcon })
-                .addTo(map)
-                .bindPopup(popupContent);
-        });
+        // Initial render
+        renderMarkers(incidents);
+
+        // Search & Filter Logic
+        function filterIncidents() {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const selectedType = document.getElementById('filterSelect').value;
+
+            const filtered = incidents.filter(item => {
+                const matchesSearch = item.location.toLowerCase().includes(searchQuery) || item.type.toLowerCase().includes(searchQuery);
+                const matchesType = (selectedType === 'all') || (item.type === selectedType);
+                return matchesSearch && matchesType;
+            });
+
+            renderMarkers(filtered);
+        }
     </script>
 </body>
 </html>
