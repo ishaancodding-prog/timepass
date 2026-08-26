@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urban Intelligence Command Center · Smart City OS</title>
+    <title>Global Urban Intelligence Command Center · Smart City OS</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root {
@@ -277,6 +277,44 @@
         .action-btn:active { transform: scale(0.97); }
         .action-btn:disabled { background: #1e293b; color: #64748b; cursor: default; transform: none; box-shadow: none; }
 
+        /* Complaint Form Styles */
+        .form-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        .form-control {
+            width: 100%;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+        }
+
         /* Status Badges */
         .badge-status {
             padding: 5px 12px;
@@ -324,44 +362,45 @@
     <div id="toastStack"></div>
 
     <header>
-        <div class="brand">🛰️ URBAN INTELLIGENCE COMMAND OS</div>
-        <div><span class="live-badge"><span class="live-dot"></span>Fleet Active · Live Feed</span></div>
+        <div class="brand">🛰️ GLOBAL URBAN INTELLIGENCE OS</div>
+        <div><span class="live-badge"><span class="live-dot"></span>Worldwide Fleet Active</span></div>
     </header>
 
     <div class="container">
         <!-- Navigation Tabs -->
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchView('map-view', event)">🗺️ Command Map &amp; Telemetry</button>
-            <button class="tab-btn" onclick="switchView('issues-view', event)">⚠️ Municipal Issues (Tickets) <span class="tab-count" id="issuesTabCount">0</span></button>
+            <button class="tab-btn active" onclick="switchView('map-view', event)">🗺️ Global Map &amp; Telemetry</button>
+            <button class="tab-btn" onclick="switchView('issues-view', event)">⚠️ Worldwide Tickets <span class="tab-count" id="issuesTabCount">0</span></button>
+            <button class="tab-btn" onclick="switchView('citizen-view', event)">📢 File Global Report</button>
             <button class="tab-btn" onclick="switchView('pr-view', event)">🔀 AI Model Pull Requests <span class="tab-count" id="prTabCount">0</span></button>
             <button class="tab-btn" onclick="switchView('actions-view', event)">⚡ Edge Pipeline Actions</button>
         </div>
 
         <!-- LIVE STREAM TICKER -->
         <div class="ticker-bar">
-            <span class="ticker-label">Live Stream</span>
-            <span class="ticker-content" id="tickerText">Initializing secure edge network streams across connected municipal buses...</span>
+            <span class="ticker-label">Global Stream</span>
+            <span class="ticker-content" id="tickerText">Synchronizing international municipal transit feeds across global timezones...</span>
         </div>
 
         <!-- VIEW 1: COMMAND MAP -->
         <div id="map-view" class="view-section active">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>Active Fleet Buses</h3>
-                    <div class="val" id="fleet-count">— Units Online</div>
+                    <h3>Active Global Fleet</h3>
+                    <div class="val" id="fleet-count">42 Units Online</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Hazards Flagged Today</h3>
-                    <div class="val" id="hazard-count">5 Items</div>
+                    <h3>Worldwide Hazards Flagged</h3>
+                    <div class="val" id="hazard-count">7 Items</div>
                 </div>
                 <div class="stat-card">
-                    <h3>Bandwidth Saved</h3>
-                    <div class="val">99.4% (Edge Filtered)</div>
+                    <h3>Global Bandwidth Saved</h3>
+                    <div class="val">99.6% (Edge Filtered)</div>
                 </div>
             </div>
 
             <div class="control-panel">
-                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search location name (e.g., Connaught, Ring Road, Nehru)..." onkeyup="filterIncidents()">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search state, city, or location (e.g., Delhi, New York, London)..." onkeyup="filterIncidents()">
                 <select id="filterSelect" class="filter-select" onchange="filterIncidents()">
                     <option value="all">All Event Types</option>
                     <option value="Pothole">Potholes</option>
@@ -379,8 +418,8 @@
         <div id="issues-view" class="view-section">
             <div class="view-header">
                 <div>
-                    <h2>Active Municipal Infrastructure Tickets</h2>
-                    <p>Automatically generated by bus edge-AI vision pods requiring municipal department dispatch.</p>
+                    <h2>Worldwide Infrastructure Tickets</h2>
+                    <p>Generated automatically by international bus edge-AI vision pods or submitted globally by citizens.</p>
                 </div>
                 <div class="sub-filters" id="issueStatusFilters">
                     <span class="sub-filter-chip active" data-status="all">All</span>
@@ -394,23 +433,76 @@
             <div class="card-list" id="issues-list"></div>
         </div>
 
-        <!-- VIEW 3: PULL REQUESTS -->
+        <!-- VIEW 3: FILE GLOBAL CITIZEN REPORT -->
+        <div id="citizen-view" class="view-section">
+            <div class="view-header">
+                <div>
+                    <h2>International Grievance &amp; Hazard Reporting Portal</h2>
+                    <p>Submit a road defect or hazard report from anywhere around the globe to pin it onto the worldwide map.</p>
+                </div>
+            </div>
+            <div class="form-card">
+                <form id="citizenForm" onsubmit="handleCitizenSubmit(event)">
+                    <div class="form-group">
+                        <label>Select Country / Region</label>
+                        <select id="citizenCountry" class="form-control" onchange="updateStateOptions()" required>
+                            <option value="India">India</option>
+                            <option value="United States">United States</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="Japan">Japan</option>
+                            <option value="France">France</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Brazil">Brazil</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>State / Province</label>
+                        <select id="citizenState" class="form-control" onchange="updateCityOptions()" required>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>City / Metropolitan Area</label>
+                        <select id="citizenCity" class="form-control" required>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hazard / Issue Type</label>
+                        <select id="citizenType" class="form-control" required>
+                            <option value="Pothole">Pothole / Road Damage</option>
+                            <option value="Waterlogging">Waterlogging / Drainage Overflow</option>
+                            <option value="Zebra Crossing">Missing / Faded Zebra Crossing</option>
+                            <option value="Signboard">Damaged or Missing Traffic Signboard</option>
+                            <option value="Rash Driving">Reckless Driving / Traffic Hazard</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Specific Street Name / Landmark</label>
+                        <input type="text" id="citizenLocation" class="form-control" placeholder="e.g., Connaught Place / Oxford Street / 5th Avenue" required>
+                    </div>
+                    <button type="submit" class="action-btn" style="width: 100%; padding: 14px; font-size: 15px;">🌐 Publish Global Report to Map &amp; Queue</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- VIEW 4: PULL REQUESTS -->
         <div id="pr-view" class="view-section">
             <div class="view-header">
                 <div>
                     <h2>Edge AI Model Weights &amp; Feature Pull Requests</h2>
-                    <p>Proposed updates to onboard computer vision models sent by remote engineering nodes.</p>
+                    <p>Proposed updates to onboard computer vision models sent by remote international transit operators.</p>
                 </div>
             </div>
             <div class="card-list" id="pr-list"></div>
         </div>
 
-        <!-- VIEW 4: ACTIONS -->
+        <!-- VIEW 5: ACTIONS -->
         <div id="actions-view" class="view-section">
             <div class="view-header">
                 <div>
-                    <h2>Automated CI/CD &amp; Edge Telemetry Actions</h2>
-                    <p>Real-time workflow execution logs for bus telemetry synchronizations.</p>
+                    <h2>Automated CI/CD &amp; Global Edge Actions</h2>
+                    <p>Real-time multi-region workflow execution logs for telemetry synchronizations.</p>
                 </div>
             </div>
             <div class="card-list" id="actions-list"></div>
@@ -419,6 +511,100 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        // ---------- Global State & City Database ----------
+        const globalRegions = {
+            "India": {
+                lat: 28.6139, lon: 77.2090,
+                states: {
+                    "Delhi": ["New Delhi", "North Delhi", "South Delhi"],
+                    "Maharashtra": ["Mumbai", "Pune", "Nagpur"],
+                    "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru"],
+                    "West Bengal": ["Kolkata", "Howrah", "Darjeeling"]
+                }
+            },
+            "United States": {
+                lat: 37.0902, lon: -95.7129,
+                states: {
+                    "New York": ["New York City", "Buffalo", "Albany"],
+                    "California": ["Los Angeles", "San Francisco", "San Diego"],
+                    "Illinois": ["Chicago", "Springfield", "Naperville"],
+                    "Texas": ["Houston", "Austin", "Dallas"]
+                }
+            },
+            "United Kingdom": {
+                lat: 55.3781, lon: -3.4360,
+                states: {
+                    "Greater London": ["London", "Westminster", "Camden"],
+                    "Greater Manchester": ["Manchester", "Salford", "Bolton"],
+                    "West Midlands": ["Birmingham", "Coventry", "Wolverhampton"],
+                    "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"]
+                }
+            },
+            "Japan": {
+                lat: 36.2048, lon: 138.2529,
+                states: {
+                    "Tokyo Prefecture": ["Tokyo", "Shinjuku", "Shibuya"],
+                    "Osaka Prefecture": ["Osaka", "Sakai", "Toyonaka"],
+                    "Kyoto Prefecture": ["Kyoto", "Uji", "Maizuru"],
+                    "Kanagawa Prefecture": ["Yokohama", "Kawasaki", "Sagamihara"]
+                }
+            },
+            "France": {
+                lat: 46.6034, lon: 1.8883,
+                states: {
+                    "Île-de-France": ["Paris", "Boulogne-Billancourt", "Saint-Denis"],
+                    "Provence-Alpes-Côte d'Azur": ["Marseille", "Nice", "Toulon"],
+                    "Auvergne-Rhône-Alpes": ["Lyon", "Grenoble", "Saint-Étienne"]
+                }
+            },
+            "Australia": {
+                lat: -25.2744, lon: 133.7751,
+                states: {
+                    "New South Wales": ["Sydney", "Newcastle", "Wollongong"],
+                    "Victoria": ["Melbourne", "Geelong", "Ballarat"],
+                    "Queensland": ["Brisbane", "Gold Coast", "Cairns"]
+                }
+            },
+            "Brazil": {
+                lat: -14.2350, lon: -51.9253,
+                states: {
+                    "São Paulo": ["São Paulo", "Campinas", "Santos"],
+                    "Rio de Janeiro": ["Rio de Janeiro", "Niterói", "Petrópolis"],
+                    "Federal District": ["Brasília", "Ceilândia", "Taguatinga"]
+                }
+            }
+        };
+
+        function updateStateOptions() {
+            const country = document.getElementById('citizenCountry').value;
+            const stateSelect = document.getElementById('citizenState');
+            stateSelect.innerHTML = '';
+            const states = Object.keys(globalRegions[country].states);
+            states.forEach(state => {
+                const opt = document.createElement('option');
+                opt.value = state;
+                opt.textContent = state;
+                stateSelect.appendChild(opt);
+            });
+            updateCityOptions();
+        }
+
+        function updateCityOptions() {
+            const country = document.getElementById('citizenCountry').value;
+            const state = document.getElementById('citizenState').value;
+            const citySelect = document.getElementById('citizenCity');
+            citySelect.innerHTML = '';
+            const cities = globalRegions[country].states[state] || [];
+            cities.forEach(city => {
+                const opt = document.createElement('option');
+                opt.value = city;
+                opt.textContent = city;
+                citySelect.appendChild(opt);
+            });
+        }
+
+        window.onload = () => { updateStateOptions(); };
+
         // ---------- Toast Notifications ----------
         function showToast(message, color) {
             color = color || 'var(--accent-green)';
@@ -434,10 +620,10 @@
 
         // ---------- Live Stream Ticker Simulation ----------
         const tickerMessages = [
-            "BUS-DL-04-1234 transmitted compressed metadata JSON (0.5KB) from Connaught Place.",
-            "YOLOv10 onboard model verified 98.4% confidence score on surface defect mapping.",
-            "PostGIS database successfully indexed 14 new geospatial point triggers.",
-            "Adaptive traffic signal control synchronized with incoming route telemetry."
+            "BUS-US-NY-882 transmitted compressed metadata JSON (0.5KB) from Manhattan.",
+            "BUS-UK-LDN-304 verified AI confidence score on surface defect mapping in London.",
+            "Global PostGIS distributed database successfully indexed cross-state triggers.",
+            "BUS-JPN-TKO-101 processed automated pedestrian safety alert in Tokyo Prefecture."
         ];
         let tickerIdx = 0;
         setInterval(() => {
@@ -455,7 +641,7 @@
         }
 
         // ---------- Map Configuration ----------
-        const map = L.map('map').setView([28.6139, 77.2090], 13);
+        const map = L.map('map').setView([25.0, 10.0], 2);
 
         const cleanMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
             maxZoom: 19,
@@ -463,7 +649,7 @@
         });
 
         const satelliteView = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, Getmapping, Aerogrid, IGN, IGP, UPR-EGP'
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP'
         });
 
         cleanMap.addTo(map);
@@ -474,14 +660,14 @@
         }).addTo(map);
 
         const incidents = [
-            { id: 1, lat: 28.6239, lon: 77.2090, type: "Pothole", location: "Connaught Place Outer Circle", bus: "BUS-DL-04-1234", conf: "96%", color: "red", status: "Unresolved" },
-            { id: 2, lat: 28.6039, lon: 77.1990, type: "Waterlogging", location: "Ring Road Underpass", bus: "BUS-DL-01-9876", conf: "92%", color: "blue", status: "Unresolved" },
-            { id: 3, lat: 28.6189, lon: 77.2290, type: "Zebra Crossing", location: "Nehru Place Bus Terminal", bus: "BUS-DL-08-4321", conf: "89%", color: "orange", status: "Dispatched" },
-            { id: 4, lat: 28.6099, lon: 77.1890, type: "Rash Driving", location: "Lodhi Road Intersection", bus: "BUS-DL-04-1234", conf: "98%", color: "darkred", status: "Under Review" },
-            { id: 5, lat: 28.6289, lon: 77.2190, type: "Signboard", location: "Rajiv Chowk North Lane", bus: "BUS-DL-01-9876", conf: "85%", color: "purple", status: "Resolved" }
+            { id: 1, lat: 28.6239, lon: 77.2090, type: "Pothole", location: "Connaught Place", city: "New Delhi", state: "Delhi", country: "India", bus: "BUS-IN-04", conf: "96%", color: "red", status: "Unresolved" },
+            { id: 2, lat: 40.7128, lon: -74.0060, type: "Waterlogging", location: "Broadway Underpass", city: "New York City", state: "New York", country: "United States", bus: "BUS-US-12", conf: "92%", color: "blue", status: "Unresolved" },
+            { id: 3, lat: 51.5074, lon: -0.1278, type: "Zebra Crossing", location: "Westminster Bridge", city: "London", state: "Greater London", country: "United Kingdom", bus: "BUS-UK-08", conf: "89%", color: "orange", status: "Dispatched" },
+            { id: 4, lat: 35.6762, lon: 139.6503, type: "Rash Driving", location: "Shinjuku Crossing", city: "Tokyo", state: "Tokyo Prefecture", country: "Japan", bus: "BUS-JP-05", conf: "98%", color: "darkred", status: "Under Review" },
+            { id: 5, lat: 48.8566, lon: 2.3522, type: "Signboard", location: "Champs-Élysées", city: "Paris", state: "Île-de-France", country: "France", bus: "BUS-FR-02", conf: "85%", color: "purple", status: "Resolved" },
+            { id: 6, lat: -33.8688, lon: 151.2093, type: "Pothole", location: "George Street", city: "Sydney", state: "New South Wales", country: "Australia", bus: "BUS-AU-09", conf: "94%", color: "red", status: "Unresolved" },
+            { id: 7, lat: -23.5505, lon: -46.6333, type: "Waterlogging", location: "Paulista Avenue", city: "São Paulo", state: "São Paulo", country: "Brazil", bus: "BUS-BR-11", conf: "91%", color: "blue", status: "Dispatched" }
         ];
-
-        document.getElementById('fleet-count').innerText = `${new Set(incidents.map(i => i.bus)).size} Units Online`;
 
         let markers = [];
         let activeIssueFilter = 'all';
@@ -505,9 +691,9 @@
                 const popupContent = `
                     <div style="font-family: sans-serif; font-size: 13px; line-height: 1.5;">
                         <b style="color: #2563eb; font-size: 14px;">${item.type}</b><br>
-                        <b>Location:</b> ${item.location}<br>
-                        <b>Bus ID:</b> ${item.bus}<br>
-                        <b>Confidence:</b> ${item.conf}<br>
+                        <b>Location:</b> ${item.location}, ${item.city}<br>
+                        <b>State/Province:</b> ${item.state} (${item.country})<br>
+                        <b>Source:</b> ${item.bus || 'Citizen Report'}<br>
                         <b>Status:</b> ${item.status}
                     </div>
                 `;
@@ -526,13 +712,13 @@
             listContainer.innerHTML = filtered.map(item => `
                 <div class="interactive-card">
                     <div class="card-info">
-                        <h4>[${item.type}] — ${item.location}</h4>
-                        <p>Detected by ${item.bus} · AI Confidence: ${item.conf}</p>
+                        <h4>[${item.type}] — ${item.location}, ${item.city}</h4>
+                        <p>State/Province: <b>${item.state}</b> (${item.country}) · Source: ${item.bus ? 'Fleet ID: ' + item.bus : '📢 Citizen Report'} · Status: <b>${item.status}</b></p>
                     </div>
                     <div class="card-actions">
                         <span class="badge-status ${statusClass(item.status)}">${item.status}</span>
                         <button class="action-btn" ${item.status === 'Resolved' ? 'disabled' : ''} onclick="dispatchCrew(${item.id})">
-                            ${item.status === 'Resolved' ? 'Resolved' : item.status === 'Unresolved' ? 'Dispatch Repair Crew' : 'Update Status'}
+                            ${item.status === 'Resolved' ? 'Resolved' : item.status === 'Unresolved' ? 'Dispatch Crew' : 'Update Status'}
                         </button>
                     </div>
                 </div>
@@ -557,7 +743,7 @@
             if (!item) return;
             const next = statusFlow[item.status] || item.status;
             item.status = next;
-            showToast(`Work order updated for ${item.location} → ${next}`, 'var(--accent-blue)');
+            showToast(`Work order updated for ${item.state} → ${next}`, 'var(--accent-blue)');
             filterIncidents();
         }
 
@@ -566,7 +752,7 @@
             const selectedType = document.getElementById('filterSelect').value;
 
             const filtered = incidents.filter(item => {
-                const matchesSearch = item.location.toLowerCase().includes(searchQuery) || item.type.toLowerCase().includes(searchQuery);
+                const matchesSearch = item.state.toLowerCase().includes(searchQuery) || item.city.toLowerCase().includes(searchQuery) || item.location.toLowerCase().includes(searchQuery) || item.country.toLowerCase().includes(searchQuery);
                 const matchesType = (selectedType === 'all') || (item.type === selectedType);
                 return matchesSearch && matchesType;
             });
@@ -574,11 +760,51 @@
             renderMarkers(filtered);
         }
 
+        // ---------- Handle Citizen Complaint Submission with State Metadata ----------
+        function handleCitizenSubmit(event) {
+            event.preventDefault();
+            const country = document.getElementById('citizenCountry').value;
+            const state = document.getElementById('citizenState').value;
+            const city = document.getElementById('citizenCity').value;
+            const type = document.getElementById('citizenType').value;
+            const street = document.getElementById('citizenLocation').value;
+            
+            // Get base coordinates for selected region and add offset
+            const base = globalRegions[country];
+            const lat = base.lat + (Math.random() - 0.5) * 0.05;
+            const lon = base.lon + (Math.random() - 0.5) * 0.05;
+            
+            const colorMap = { "Pothole": "red", "Waterlogging": "blue", "Zebra Crossing": "orange", "Signboard": "purple", "Rash Driving": "darkred" };
+
+            const newComplaint = {
+                id: incidents.length + 1,
+                lat: lat,
+                lon: lon,
+                type: type,
+                location: street,
+                city: city,
+                state: state,
+                country: country,
+                bus: null, 
+                conf: "100% (Citizen Verified)",
+                color: colorMap[type] || "red",
+                status: "Unresolved"
+            };
+
+            incidents.unshift(newComplaint);
+            showToast(`✅ Report registered for ${state}, ${country}!`, 'var(--accent-green)');
+            
+            document.getElementById('citizenForm').reset();
+            updateStateOptions();
+            switchView('map-view', { currentTarget: document.querySelectorAll('.tab-btn')[0] });
+            map.setView([lat, lon], 10);
+            renderMarkers(incidents);
+        }
+
         // ---------- Pull Requests ----------
         const pulls = [
-            { id: 104, title: "Upgrade YOLOv10 to YOLOv11 for Pothole Precision", by: "Core Vision Team", target: "Entire Bus Fleet Edge Modules", status: "Pending Review" },
-            { id: 102, title: "Night-Vision Waterlogging Threshold Tuning", by: "Environmental AI Lab", target: "Route 522 & Ring Road Line", status: "Merged" },
-            { id: 99, title: "Reduce False Positives on Faded Zebra Crossings", by: "Core Vision Team", target: "Nehru Place Corridor", status: "Pending Review" }
+            { id: 104, title: "Upgrade YOLOv10 to YOLOv11 for Cross-State Precision", by: "International Core Vision Team", target: "Global Bus Fleet Edge Nodes", status: "Pending Review" },
+            { id: 102, title: "Multi-State Waterlogging Threshold Tuning", by: "Global Environmental Lab", target: "All Metropolitan Corridors", status: "Merged" }
         ];
 
         function prBadgeClass(status) { return status === 'Merged' ? 'status-merged' : 'status-review'; }
@@ -604,14 +830,14 @@
             const pr = pulls.find(p => p.id === id);
             if (!pr) return;
             pr.status = 'Merged';
-            showToast(`PR #${id} merged — deploying weights to bus fleet...`, 'var(--accent-purple)');
+            showToast(`PR #${id} merged — deploying state-level model weights...`, 'var(--accent-purple)');
             renderPulls();
         }
 
         // ---------- Actions ----------
         const pipelines = [
-            { id: 1, name: "Edge Frame Compression & Metadata Stream", detail: "Zero packet loss across cellular relays.", state: "success" },
-            { id: 2, name: "PostGIS Geospatial Spatial Indexing Sync", detail: "Last synced 2 minutes ago.", state: "success" }
+            { id: 1, name: "Global Edge Frame Compression & Telemetry Relay", detail: "Zero packet loss across international networks.", state: "success" },
+            { id: 2, name: "Distributed PostGIS State-Level Spatial Indexing Sync", detail: "Last synced across all provinces just now.", state: "success" }
         ];
 
         function renderActions() {
@@ -636,9 +862,9 @@
             renderActions();
             setTimeout(() => {
                 p.state = 'success';
-                p.detail = id === 1 ? 'Diagnostics normal. All edge pods synchronized.' : 'Re-indexed successfully just now.';
+                p.detail = id === 1 ? 'Diagnostics normal. All state transit pods synchronized.' : 'State databases re-indexed successfully.';
                 renderActions();
-                showToast(id === 1 ? 'Pipeline diagnostics complete — all normal.' : 'Spatial database re-indexed successfully.');
+                showToast(id === 1 ? 'Diagnostics complete — all regional nodes optimal.' : 'State-level spatial index synchronized.');
             }, 1400);
         }
 
