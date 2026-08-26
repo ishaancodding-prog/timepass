@@ -336,7 +336,7 @@
         .card-info p { margin: 0; font-size: 13px; color: var(--text-muted); line-height: 1.4; }
         .card-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
-        /* ---------- Animated SVG Avatar Styles ---------- */
+        /* ---------- Crayon Vector Avatars & Team Grid ---------- */
         .team-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -380,7 +380,7 @@
         .team-avatar {
             position: relative;
             width: 76px; height: 76px; border-radius: 50%;
-            background: #1e293b;
+            background: #fdf6e2;
             border: 3px solid var(--bg-card);
             z-index: 2;
             display: flex; align-items: center; justify-content: center;
@@ -757,7 +757,7 @@
             </div>
         </div>
 
-        <!-- VIEW 4: TEAM MEMBERS WITH GENERATED SVG AVATARS -->
+        <!-- VIEW 4: TEAM MEMBERS WITH CRAYON-STYLE VECTOR AVATARS -->
         <div id="team-view" class="view-section">
             <div class="view-header">
                 <div>
@@ -766,24 +766,25 @@
                 </div>
             </div>
             <div class="team-grid">
-                <!-- Mahima Kushwaha (Female Avatar) -->
+                <!-- Mahima Kushwaha (Female Crayon Avatar) -->
                 <div class="team-card">
                     <div class="avatar-container">
                         <div class="avatar-ring"></div>
                         <div class="team-avatar">
                             <svg viewBox="0 0 100 100" width="100" height="100">
-                                <circle cx="50" cy="50" r="50" fill="#f43f5e"/>
-                                <!-- Hair -->
-                                <path d="M25 55 Q20 30 50 25 Q80 30 75 55 Q80 80 70 90 L30 90 Q20 80 25 55 Z" fill="#881337"/>
+                                <circle cx="50" cy="50" r="48" fill="#ffe4e6" stroke="#f43f5e" stroke-width="3" stroke-dasharray="6,3"/>
+                                <!-- Crayon Hair (Red/Pink) -->
+                                <path d="M25 50 Q18 25 50 20 Q82 25 75 50 Q85 85 68 88 L32 88 Q15 85 25 50 Z" fill="#fb7185" stroke="#be123c" stroke-width="2.5" stroke-linejoin="round"/>
                                 <!-- Face -->
-                                <circle cx="50" cy="50" r="22" fill="#ffedd5"/>
+                                <circle cx="50" cy="52" r="21" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
                                 <!-- Eyes -->
-                                <circle cx="43" cy="48" r="2.5" fill="#1e293b"/>
-                                <circle cx="57" cy="48" r="2.5" fill="#1e293b"/>
-                                <!-- Smile -->
-                                <path d="M45 58 Q50 63 55 58" stroke="#1e293b" stroke-width="2" fill="none" stroke-linecap="round"/>
-                                <!-- Stylish top hair curve -->
-                                <path d="M28 45 Q50 15 72 45" fill="#4c0519"/>
+                                <circle cx="43" cy="49" r="2.5" fill="#1e293b"/>
+                                <circle cx="57" cy="49" r="2.5" fill="#1e293b"/>
+                                <!-- Rosy Cheeks -->
+                                <circle cx="39" cy="56" r="3.5" fill="#fda4af" opacity="0.8"/>
+                                <circle cx="61" cy="56" r="3.5" fill="#fda4af" opacity="0.8"/>
+                                <!-- Crayon Smile -->
+                                <path d="M45 60 Q50 65 55 60" stroke="#be123c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
                             </svg>
                         </div>
                     </div>
@@ -794,23 +795,23 @@
                     </div>
                 </div>
 
-                <!-- Ishaan Thusoo (Male Avatar) -->
+                <!-- Ishaan Thusoo (Male Crayon Avatar) -->
                 <div class="team-card">
                     <div class="avatar-container">
                         <div class="avatar-ring"></div>
                         <div class="team-avatar">
                             <svg viewBox="0 0 100 100" width="100" height="100">
-                                <circle cx="50" cy="50" r="50" fill="#2563eb"/>
-                                <!-- Hair -->
-                                <path d="M30 42 Q50 18 70 42 L70 32 Q50 15 30 32 Z" fill="#1e293b"/>
+                                <circle cx="50" cy="50" r="48" fill="#dbeafe" stroke="#3b82f6" stroke-width="3" stroke-dasharray="6,3"/>
+                                <!-- Crayon Hair (Blue/Dark) -->
+                                <path d="M30 42 Q50 15 70 42 L68 30 Q50 12 32 30 Z" fill="#1e3a8a" stroke="#172554" stroke-width="2.5"/>
                                 <!-- Face -->
-                                <circle cx="50" cy="52" r="22" fill="#fed7aa"/>
-                                <!-- Glasses -->
-                                <rect x="38" y="44" width="11" height="9" rx="2" fill="none" stroke="#0f172a" stroke-width="2"/>
-                                <rect x="51" y="44" width="11" height="9" rx="2" fill="none" stroke="#0f172a" stroke-width="2"/>
-                                <line x1="49" y1="48" x2="51" y2="48" stroke="#0f172a" stroke-width="2"/>
+                                <circle cx="50" cy="53" r="21" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+                                <!-- Crayon Glasses -->
+                                <rect x="37" y="44" width="12" height="10" rx="3" fill="none" stroke="#1e3a8a" stroke-width="2.5"/>
+                                <rect x="51" y="44" width="12" height="10" rx="3" fill="none" stroke="#1e3a8a" stroke-width="2.5"/>
+                                <line x1="49" y1="48" x2="51" y2="48" stroke="#1e3a8a" stroke-width="2.5"/>
                                 <!-- Smile -->
-                                <path d="M46 62 Q50 66 54 62" stroke="#1e293b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                                <path d="M46 63 Q50 67 54 63" stroke="#1e3a8a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
                             </svg>
                         </div>
                     </div>
@@ -821,23 +822,26 @@
                     </div>
                 </div>
 
-                <!-- Diksha Jukaria (Female Avatar) -->
+                <!-- Diksha Jukaria (Female Crayon Avatar) -->
                 <div class="team-card">
                     <div class="avatar-container">
                         <div class="avatar-ring"></div>
                         <div class="team-avatar">
                             <svg viewBox="0 0 100 100" width="100" height="100">
-                                <circle cx="50" cy="50" r="50" fill="#8b5cf6"/>
-                                <!-- Hair bun / long hair -->
-                                <circle cx="50" cy="24" r="12" fill="#3b0764"/>
-                                <path d="M26 50 Q22 25 50 25 Q78 25 74 50 Q82 85 65 90 L35 90 Q18 85 26 50 Z" fill="#581c87"/>
+                                <circle cx="50" cy="50" r="48" fill="#f3e8ff" stroke="#a855f7" stroke-width="3" stroke-dasharray="6,3"/>
+                                <!-- Crayon Hair (Purple Bun style) -->
+                                <circle cx="50" cy="22" r="11" fill="#7e22ce" stroke="#581c87" stroke-width="2"/>
+                                <path d="M26 50 Q20 25 50 25 Q80 25 74 50 Q82 85 66 88 L34 88 Q18 85 26 50 Z" fill="#9333ea" stroke="#581c87" stroke-width="2.5" stroke-linejoin="round"/>
                                 <!-- Face -->
-                                <circle cx="50" cy="52" r="22" fill="#fde68a"/>
+                                <circle cx="50" cy="53" r="21" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
                                 <!-- Eyes -->
                                 <circle cx="43" cy="50" r="2.5" fill="#1e293b"/>
                                 <circle cx="57" cy="50" r="2.5" fill="#1e293b"/>
+                                <!-- Cheeks -->
+                                <circle cx="39" cy="57" r="3.5" fill="#d8b4fe" opacity="0.8"/>
+                                <circle cx="61" cy="57" r="3.5" fill="#d8b4fe" opacity="0.8"/>
                                 <!-- Smile -->
-                                <path d="M45 60 Q50 64 55 60" stroke="#1e293b" stroke-width="2" fill="none" stroke-linecap="round"/>
+                                <path d="M45 61 Q50 65 55 61" stroke="#581c87" stroke-width="2.5" fill="none" stroke-linecap="round"/>
                             </svg>
                         </div>
                     </div>
