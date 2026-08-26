@@ -84,7 +84,7 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52,211,153,0); }
         }
 
-        .container { max-width: 1400px; margin: 28px auto; padding: 0 24px 100px; }
+        .container { max-width: 1400px; margin: 28px auto; padding: 0 24px 120px; }
 
         .nav-tabs {
             display: flex;
@@ -279,16 +279,6 @@
         .legend-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; border: 1px solid rgba(0,0,0,0.2); }
         .legend-hint { margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0; color: #2563eb; font-weight: 600; font-size: 11px; }
 
-        .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
-            background-color: rgba(6, 182, 212, 0.35);
-        }
-        .marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
-            background-color: rgba(6, 182, 212, 0.85);
-            color: #04212b;
-            font-weight: 800;
-        }
-
-        /* Ticker */
         .ticker-bar {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -450,7 +440,6 @@
         .run-success { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .2; } }
 
-        /* Floating report button, visible on every tab */
         .fab-report {
             position: fixed;
             bottom: 26px;
@@ -472,6 +461,113 @@
         }
         .fab-report:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 14px 30px rgba(6, 182, 212, 0.45); }
         .fab-report:active { transform: scale(0.97); }
+
+        /* ---------- AI Chatbot Widget Styles ---------- */
+        .chat-fab {
+            position: fixed;
+            bottom: 26px;
+            right: 175px;
+            z-index: 500;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 12px 18px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.25);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        .chat-fab:hover { background: rgba(6,182,212,0.1); transform: translateY(-2px); }
+
+        .chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 26px;
+            width: 360px;
+            height: 480px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            z-index: 600;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: fadeIn .2s ease;
+        }
+        .chat-window.open { display: flex; }
+        .chat-header {
+            background: #0f172a;
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .chat-title { font-weight: 700; font-size: 14px; color: var(--accent-cyan); display: flex; align-items: center; gap: 7px; }
+        .chat-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; font-weight: 700; }
+        .chat-close:hover { color: var(--text-main); }
+        
+        .chat-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 13px;
+        }
+        .chat-msg {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            line-height: 1.4;
+        }
+        .chat-msg.bot {
+            background: #1e293b;
+            color: var(--text-main);
+            align-self: flex-start;
+            border-top-left-radius: 2px;
+        }
+        .chat-msg.user {
+            background: var(--accent-blue);
+            color: white;
+            align-self: flex-end;
+            border-top-right-radius: 2px;
+        }
+        .chat-footer {
+            padding: 12px;
+            border-top: 1px solid var(--border-color);
+            background: #090d16;
+            display: flex;
+            gap: 8px;
+        }
+        .chat-input {
+            flex: 1;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+        }
+        .chat-input:focus { border-color: var(--accent-cyan); }
+        .chat-send {
+            background: var(--accent-cyan);
+            color: #04141f;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .chat-send:hover { opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -635,6 +731,22 @@
 
     <button class="fab-report" onclick="startPinDrop()">📍 Report an Issue</button>
 
+    <!-- AI Chatbot Widgets -->
+    <button class="chat-fab" onclick="toggleChat()">💬 UrbanAI Assistant</button>
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <div class="chat-title">🤖 UrbanAI Copilot (Smart City OS)</div>
+            <button class="chat-close" onclick="toggleChat()">✕</button>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="chat-msg bot">Hello! I'm your Urban Intelligence AI assistant. Ask me about active municipal tickets, fleet status, or how to report a hazard.</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Type a message or 'status'..." onkeypress="handleChatKey(event)">
+            <button class="chat-send" onclick="sendChatMessage()">Send</button>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     <script>
@@ -740,7 +852,6 @@
             if (viewId === 'map-view') setTimeout(() => { map.invalidateSize(); }, 200);
         }
 
-        // ---------- Map setup ----------
         const map = L.map('map').setView([22.5937, 78.9629], 5);
 
         const cleanMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
@@ -759,7 +870,6 @@
             "Satellite View (Esri Imagery)": satelliteView
         }).addTo(map);
 
-        // Legend control
         const legend = L.control({ position: 'bottomleft' });
         legend.onAdd = function () {
             const div = L.DomUtil.create('div', 'map-legend');
@@ -775,7 +885,6 @@
         };
         legend.addTo(map);
 
-        // Cluster group replaces flat marker array
         const clusterGroup = L.markerClusterGroup({ maxClusterRadius: 45, spiderfyOnMaxZoom: true, showCoverageOnHover: false });
         map.addLayer(clusterGroup);
 
@@ -881,7 +990,6 @@
             renderMarkers(incidents.filter(passesFilter));
         }
 
-        // ---------- Click-to-report on the map ----------
         function startPinDrop() {
             switchView('map-view', { currentTarget: document.querySelectorAll('.tab-btn')[0] });
             pinDropMode = true;
@@ -969,7 +1077,62 @@
             filterIncidents();
         }
 
-        // ---------- Pull Requests ----------
+        // ---------- AI Chatbot Logic ----------
+        function toggleChat() {
+            const win = document.getElementById('chatWindow');
+            win.classList.toggle('open');
+            if(win.classList.contains('open')) {
+                document.getElementById('chatInput').focus();
+            }
+        }
+
+        function handleChatKey(e) {
+            if(e.key === 'Enter') sendChatMessage();
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if(!text) return;
+
+            appendChatMsg(text, 'user');
+            input.value = '';
+
+            setTimeout(() => {
+                const reply = generateBotResponse(text);
+                appendChatMsg(reply, 'bot');
+            }, 600);
+        }
+
+        function appendChatMsg(text, sender) {
+            const body = document.getElementById('chatBody');
+            const div = document.createElement('div');
+            div.className = `chat-msg ${sender}`;
+            div.textContent = text;
+            body.appendChild(div);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function generateBotResponse(query) {
+            const q = query.toLowerCase();
+            const total = incidents.length;
+            const unresolved = incidents.filter(i => i.status === 'Unresolved').length;
+
+            if(q.includes('status') || q.includes('summary') || q.includes('overview')) {
+                return `Current National Status: ${total} total hazards logged across India, with ${unresolved} pending municipal dispatch. All state transit edge nodes are active.`;
+            } else if(q.includes('pothole')) {
+                const count = incidents.filter(i => i.type === 'Pothole').length;
+                return `We currently have ${count} pothole tickets logged across various states. You can click 'Report an Issue' to drop a pin for a new one!`;
+            } else if(q.includes('fleet') || q.includes('bus')) {
+                return `The active national fleet consists of AI-equipped municipal transit buses processing video streams locally via edge computing.`;
+            } else if(q.includes('report') || q.includes('complaint')) {
+                return `To report an issue, click the 'Report an Issue' tab or use the 'Click Map to Report' button to drop a precise pin.`;
+            } else {
+                return `I'm your UrbanAI Copilot! I monitor pan-India infrastructure tickets. Try asking me about 'status', 'potholes', or 'fleet'.`;
+            }
+        }
+
+        // ---------- Pull Requests & Actions ----------
         const pulls = [
             { id: 104, title: "Upgrade YOLOv10 to YOLOv11 for Pan-India Pothole Precision", by: "National Core Vision Team", target: "State Transport Bus Edge Nodes", status: "Pending Review" },
             { id: 102, title: "Monsoon Waterlogging Threshold Tuning for Coastal Corridors", by: "National Environmental Lab", target: "All State Corridors", status: "Merged" }
@@ -1002,7 +1165,6 @@
             renderPulls();
         }
 
-        // ---------- Actions ----------
         const pipelines = [
             { id: 1, name: "National Edge Frame Compression & Telemetry Relay", detail: "Zero packet loss across state cellular relays.", state: "success" },
             { id: 2, name: "Distributed PostGIS State-Level Spatial Indexing Sync", detail: "Last synced across all 36 regions just now.", state: "success" }
