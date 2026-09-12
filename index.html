@@ -354,7 +354,7 @@
             border: 1px solid var(--border-color);
             border-radius: 0 0 12px 12px;
             overflow: hidden;
-            background: #060b16;
+            background: #ffffff;
             height: 560px;
             width: 100%;
             margin-bottom: 24px;
@@ -476,7 +476,7 @@
         
         .avatar-container { position: relative; width: 76px; height: 76px; flex-shrink: 0; }
         .avatar-ring {
-            position: absolute; top: -4px; left: -4px; right: -4px; bottom: -4px;
+            position: absolute top: -4px; left: -4px; right: -4px; bottom: -4px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple));
             animation: spinRing 4s linear infinite;
@@ -1031,44 +1031,31 @@
         }
 
         // Initialize Map centered on Pantnagar
-        const map = L.map('map', { minZoom: 5, maxZoom: 15 }).setView([pantnagarCoords.lat, pantnagarCoords.lon], pantnagarCoords.zoom);
+        const map = L.map('map').setView([pantnagarCoords.lat, pantnagarCoords.lon], pantnagarCoords.zoom);
 
-        // ---------- Self-contained vector basemap (no external tile API / no network / no API key) ----------
-        // Bounding box roughly covering mainland India
-        const indiaBounds = [[6, 68], [38, 98]];
-        map.setMaxBounds([[0, 58], [42, 108]]);
+        // Standard OpenStreetMap base layer (no API key required)
+        const cleanMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+        });
 
-        function buildBasemapSVG() {
-            const scale = 20; // px per degree
-            const west = 68, north = 38;
-            let grid = '';
-            for (let lon = 68; lon <= 98; lon += 2) {
-                const x = (lon - west) * scale;
-                grid += `<line x1="${x}" y1="0" x2="${x}" y2="640" stroke="#16324f" stroke-width="0.5" opacity="0.45"/>`;
-            }
-            for (let lat = 6; lat <= 38; lat += 2) {
-                const y = (north - lat) * scale;
-                grid += `<line x1="0" y1="${y}" x2="600" y2="${y}" stroke="#16324f" stroke-width="0.5" opacity="0.45"/>`;
-            }
-            // Simplified stylized India landmass silhouette (illustrative, not survey-accurate)
-            const landPath = "M10,286 L180,60 L580,190 L510,280 L390,330 L246,442 L246,500 L190,598 L164,560 L120,454 L96,380 L30,310 Z";
-            return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 640">
-                <defs>
-                    <radialGradient id="bgGlow" cx="50%" cy="35%" r="75%">
-                        <stop offset="0%" stop-color="#0b1a2e"/>
-                        <stop offset="100%" stop-color="#05090f"/>
-                    </radialGradient>
-                </defs>
-                <rect x="0" y="0" width="600" height="640" fill="url(#bgGlow)"/>
-                ${grid}
-                <path d="${landPath}" fill="#0f2438" stroke="#06b6d4" stroke-width="2.5" stroke-opacity="0.65" fill-opacity="0.95"/>
-                <path d="${landPath}" fill="none" stroke="#06b6d4" stroke-width="6" stroke-opacity="0.08"/>
-            </svg>`;
-        }
+        // Satellite imagery layer with administrative boundaries (no API key required)
+        const satelliteHybrid = L.layerGroup([
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 19,
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            }),
+            L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 19
+            })
+        ]);
 
-        const basemapSvgString = buildBasemapSVG();
-        const parsedSvg = new DOMParser().parseFromString(basemapSvgString, "image/svg+xml").documentElement;
-        L.svgOverlay(parsedSvg, indiaBounds, { interactive: false }).addTo(map);
+        cleanMap.addTo(map);
+
+        L.control.layers({
+            "Clean Map": cleanMap,
+            "Satellite Hybrid": satelliteHybrid
+        }).addTo(map);
 
         const legend = L.control({ position: 'bottomleft' });
         legend.onAdd = function () {
