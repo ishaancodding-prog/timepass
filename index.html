@@ -457,7 +457,7 @@
         /* ---------- Team Grid & Crayon Avatars ---------- */
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 24px;
         }
         .team-card {
@@ -465,18 +465,18 @@
             backdrop-filter: blur(16px);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 28px;
+            padding: 24px;
             display: flex;
             align-items: center;
-            gap: 22px;
+            gap: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
         }
         .team-card:hover { transform: translateY(-5px); border-color: var(--accent-cyan); box-shadow: 0 15px 35px var(--glow-cyan); }
         
-        .avatar-container { position: relative; width: 76px; height: 76px; flex-shrink: 0; }
+        .avatar-container { position: relative; width: 72px; height: 72px; flex-shrink: 0; }
         .avatar-ring {
-            position: absolute top: -4px; left: -4px; right: -4px; bottom: -4px;
+            position: absolute; top: -4px; left: -4px; right: -4px; bottom: -4px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple));
             animation: spinRing 4s linear infinite;
@@ -484,14 +484,14 @@
         }
         @keyframes spinRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .team-avatar {
-            position: relative; width: 76px; height: 76px; border-radius: 50%;
+            position: relative; width: 72px; height: 72px; border-radius: 50%;
             background: #fdf6e2; border: 3px solid var(--bg-card); z-index: 2;
             display: flex; align-items: center; justify-content: center; overflow: hidden;
             transition: transform 0.3s ease;
         }
         .team-card:hover .team-avatar { transform: scale(1.05); }
 
-        .team-details h3 { margin: 0 0 4px 0; font-size: 18px; color: var(--text-main); font-weight: 700; }
+        .team-details h3 { margin: 0 0 4px 0; font-size: 17px; color: var(--text-main); font-weight: 700; }
         .team-role { font-size: 13px; font-weight: 600; color: var(--accent-cyan); margin-bottom: 8px; display: inline-block; }
         .team-status { font-size: 12px; color: #34d399; display: flex; align-items: center; gap: 6px; font-weight: 500; }
 
@@ -781,6 +781,7 @@
                     </div>
                 </div>
                 <div class="team-grid">
+                    <!-- Mahima Kushwaha -->
                     <div class="team-card">
                         <div class="avatar-container">
                             <div class="avatar-ring"></div>
@@ -804,6 +805,7 @@
                         </div>
                     </div>
 
+                    <!-- Ishaan Thusoo -->
                     <div class="team-card">
                         <div class="avatar-container">
                             <div class="avatar-ring"></div>
@@ -826,6 +828,7 @@
                         </div>
                     </div>
 
+                    <!-- Diksha Jukaria -->
                     <div class="team-card">
                         <div class="avatar-container">
                             <div class="avatar-ring"></div>
@@ -847,6 +850,54 @@
                             <h3>Diksha Jukaria</h3>
                             <span class="team-role">AI Engineer</span>
                             <div class="team-status"><span class="live-dot" style="background:#ec4899; box-shadow:0 0 8px #ec4899;"></span> Edge YOLOv10 &amp; Vision Pipelines</div>
+                        </div>
+                    </div>
+
+                    <!-- Sara Nawaz -->
+                    <div class="team-card">
+                        <div class="avatar-container">
+                            <div class="avatar-ring"></div>
+                            <div class="team-avatar">
+                                <svg viewBox="0 0 100 100" width="100" height="100">
+                                    <circle cx="50" cy="50" r="48" fill="#ecfdf5" stroke="#10b981" stroke-width="3" stroke-dasharray="6,3"/>
+                                    <path d="M22 52 Q18 24 50 18 Q82 24 78 52 Q86 86 68 88 L32 88 Q14 86 22 52 Z" fill="#34d399" stroke="#059669" stroke-width="2.5" stroke-linejoin="round"/>
+                                    <circle cx="50" cy="52" r="21" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+                                    <circle cx="43" cy="49" r="2.5" fill="#1e293b"/>
+                                    <circle cx="57" cy="49" r="2.5" fill="#1e293b"/>
+                                    <circle cx="39" cy="56" r="3.5" fill="#6ee7b7" opacity="0.8"/>
+                                    <circle cx="61" cy="56" r="3.5" fill="#6ee7b7" opacity="0.8"/>
+                                    <path d="M45 61 Q50 66 55 61" stroke="#059669" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="team-details">
+                            <h3>Sara Nawaz</h3>
+                            <span class="team-role">GIS Data Analyst</span>
+                            <div class="team-status"><span class="live-dot" style="background:#10b981; box-shadow:0 0 8px #10b981;"></span> Spatial Data &amp; Telemetry Analytics</div>
+                        </div>
+                    </div>
+
+                    <!-- Prakriti Mourya -->
+                    <div class="team-card">
+                        <div class="avatar-container">
+                            <div class="avatar-ring"></div>
+                            <div class="team-avatar">
+                                <svg viewBox="0 0 100 100" width="100" height="100">
+                                    <circle cx="50" cy="50" r="48" fill="#fffbeb" stroke="#f59e0b" stroke-width="3" stroke-dasharray="6,3"/>
+                                    <path d="M24 50 Q20 22 50 20 Q80 22 76 50 Q84 86 67 88 L33 88 Q16 86 24 50 Z" fill="#fbbf24" stroke="#d97706" stroke-width="2.5" stroke-linejoin="round"/>
+                                    <circle cx="50" cy="52" r="21" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+                                    <circle cx="43" cy="49" r="2.5" fill="#1e293b"/>
+                                    <circle cx="57" cy="49" r="2.5" fill="#1e293b"/>
+                                    <circle cx="39" cy="56" r="3.5" fill="#fcd34d" opacity="0.8"/>
+                                    <circle cx="61" cy="56" r="3.5" fill="#fcd34d" opacity="0.8"/>
+                                    <path d="M45 61 Q50 65 55 61" stroke="#d97706" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="team-details">
+                            <h3>Prakriti Mourya</h3>
+                            <span class="team-role">Edge Systems Engineer</span>
+                            <div class="team-status"><span class="live-dot" style="background:#f59e0b; box-shadow:0 0 8px #f59e0b;"></span> IoT Sensors &amp; Fleet Edge Nodes</div>
                         </div>
                     </div>
                 </div>
@@ -1324,7 +1375,7 @@
             if(q.includes('status') || q.includes('overview') || q.includes('summary')) {
                 return `Current National Status: ${total} total hazards logged, with ${unresolved} pending municipal dispatch. Pantnagar hub is fully active.`;
             } else if(q.includes('team') || q.includes('who')) {
-                return `Our project team features Mahima Kushwaha (UI/UX Designer), Ishaan Thusoo (Full Stack Development), and Diksha Jukaria (AI Engineer).`;
+                return `Our project team features Mahima Kushwaha (UI/UX Designer), Ishaan Thusoo (Full Stack Development), Diksha Jukaria (AI Engineer), Sara Nawaz (GIS Data Analyst), and Prakriti Mourya (Edge Systems Engineer).`;
             } else if(q.includes('pantnagar') || q.includes('node')) {
                 return `Pantnagar serves as our primary regional edge-AI node in Uttarakhand running YOLOv10 local inference on transit telemetry.`;
             } else {
