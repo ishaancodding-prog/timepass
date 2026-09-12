@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>India Urban Intelligence Command Center · Smart City OS</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -38,7 +41,7 @@
             overflow-x: hidden;
         }
 
-        /* ---------- Auth Layer ---------- */
+        /* ---------- Authentication & Sign-In Layer ---------- */
         .auth-container {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -62,195 +65,537 @@
             overflow: hidden;
         }
         .auth-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 4px;
             background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
         }
-        .auth-logo { text-align: center; margin-bottom: 28px; }
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 28px;
+        }
         .auth-logo h2 { font-size: 20px; font-weight: 800; color: var(--accent-cyan); letter-spacing: 0.5px; margin-bottom: 6px; }
         .auth-logo p { font-size: 13px; color: var(--text-muted); }
 
         .auth-form .form-group { margin-bottom: 18px; }
         .auth-form label { display: block; font-size: 11.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
         .auth-input {
-            width: 100%; background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main);
-            padding: 12px 16px; border-radius: 10px; font-size: 14px; outline: none; transition: all 0.2s;
+            width: 100%;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
         }
         .auth-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 0 3px rgba(6,182,212,0.25); }
         .auth-btn {
-            width: 100%; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue)); color: #fff;
-            border: none; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 14.5px; cursor: pointer;
-            transition: all 0.2s; margin-top: 8px; box-shadow: 0 8px 20px rgba(6,182,212,0.3);
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+            box-shadow: 0 8px 20px rgba(6,182,212,0.3);
         }
         .auth-btn:hover { opacity: 0.95; transform: translateY(-1px); box-shadow: 0 10px 25px rgba(6,182,212,0.45); }
-        .auth-switch { text-align: center; margin-top: 20px; font-size: 13px; color: var(--text-muted); }
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
         .auth-switch a { color: var(--accent-cyan); text-decoration: none; font-weight: 700; cursor: pointer; }
+        .auth-switch a:hover { text-decoration: underline; }
 
         #appWrapper { display: none; }
 
-        /* ---------- Header ---------- */
+        /* ---------- Header & Branding ---------- */
         header {
-            background-color: rgba(3, 7, 18, 0.88); backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border-color); padding: 16px 32px;
-            display: flex; align-items: center; justify-content: space-between;
-            position: sticky; top: 0; z-index: 1000;
+            background-color: rgba(3, 7, 18, 0.88);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        .brand { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 800; color: var(--accent-cyan); letter-spacing: 0.75px; }
-        .brand svg { width: 24px; height: 24px; }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            letter-spacing: 0.75px;
+            text-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+        .brand svg { width: 24px; height: 24px; color: var(--accent-cyan); }
+
         .header-right { display: flex; align-items: center; gap: 16px; }
-        .system-time { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; }
-        .logout-btn { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; }
-        .live-badge { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); padding: 6px 14px; border-radius: 99px; font-size: 11.5px; font-weight: 700; text-transform: uppercase; display: inline-flex; align-items: center; gap: 7px; }
-        .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #34d399; box-shadow: 0 0 8px #34d399; }
+        .system-time {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #f87171;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .logout-btn:hover { background: rgba(239, 68, 68, 0.3); }
 
-        /* ---------- Container & Tabs ---------- */
+        .live-badge {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            padding: 6px 14px;
+            border-radius: 99px;
+            font-size: 11.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .live-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #34d399;
+            box-shadow: 0 0 8px #34d399;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%   { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52,211,153,.7); }
+            70%  { transform: scale(1); box-shadow: 0 0 0 8px rgba(52,211,153,0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52,211,153,0); }
+        }
+
+        /* ---------- Container & Navigation ---------- */
         .container { max-width: 1400px; margin: 28px auto; padding: 0 24px 120px; }
-        .nav-tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 28px; gap: 10px; overflow-x: auto; align-items: center; }
+
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 28px;
+            gap: 10px;
+            overflow-x: auto;
+            align-items: center;
+        }
         .tab-btn {
-            background: transparent; border: none; padding: 12px 22px; color: var(--text-muted); font-size: 14px;
-            font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s ease;
-            display: inline-flex; align-items: center; gap: 9px; white-space: nowrap;
+            background: transparent;
+            border: none;
+            padding: 12px 22px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            white-space: nowrap;
         }
-        .tab-btn:hover { color: var(--text-main); }
-        .tab-btn.active { color: var(--accent-cyan); border-bottom-color: var(--accent-cyan); background: linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.06)); border-radius: 6px 6px 0 0; }
-        .tab-count { background: rgba(255,255,255,0.08); color: var(--text-muted); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+        .tab-btn svg { width: 16px; height: 16px; }
+        .tab-btn:hover { color: var(--text-main); background: rgba(255, 255, 255, 0.02); border-radius: 6px 6px 0 0; }
+        .tab-btn.active {
+            color: var(--accent-cyan);
+            border-bottom-color: var(--accent-cyan);
+            background: linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.06));
+            border-radius: 6px 6px 0 0;
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+        }
+        .tab-btn.highlight-tab { color: #34d399; }
+        .tab-btn.highlight-tab:hover, .tab-btn.highlight-tab.active { color: #34d399; border-bottom-color: #34d399; text-shadow: 0 0 10px rgba(52,211,153,0.4); }
+        .tab-count {
+            background: rgba(255,255,255,0.08);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 99px;
+            min-width: 20px;
+            text-align: center;
+        }
+        .tab-btn.active .tab-count { background: rgba(6,182,212,0.2); color: var(--accent-cyan); }
 
+        /* ---------- Telemetry Bar & Analytics ---------- */
         .ticker-bar {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
-            padding: 12px 20px; display: flex; align-items: center; gap: 14px; font-size: 13px; margin-bottom: 24px;
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 13px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
-        .ticker-label { color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; font-size: 11px; background: rgba(6,182,212,0.1); padding: 4px 8px; border-radius: 4px; }
-        .ticker-content { color: var(--text-muted); font-family: var(--font-mono); }
+        .ticker-label { color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; background: rgba(6,182,212,0.1); padding: 4px 8px; border-radius: 4px; }
+        .ticker-content { color: var(--text-muted); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-family: var(--font-mono); }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 24px; }
-        .stat-card {
-            background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
-            padding: 22px; position: relative; overflow: hidden;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
         }
-        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent-cyan); }
+        .stat-card {
+            background-color: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        .stat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--accent-cyan); opacity: 0.8;
+        }
         .stat-card:nth-child(2)::before { background: var(--accent-blue); }
         .stat-card:nth-child(3)::before { background: var(--accent-green); }
-        .stat-card h3 { font-size: 11.5px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
-        .stat-card .val { font-size: 28px; font-weight: 800; font-family: var(--font-mono); }
+        .stat-card:hover { transform: translateY(-3px); border-color: rgba(6, 182, 212, 0.4); box-shadow: 0 12px 25px -5px var(--glow-cyan); }
+        .stat-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+        }
+        .stat-card .val { font-size: 28px; font-weight: 800; color: var(--text-main); font-family: var(--font-mono); }
         .stat-card .sub { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; }
 
-        /* ---------- Pure SVG Map Wrapper ---------- */
+        /* ---------- Map Control & Wrapper ---------- */
         .control-panel {
-            background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px 12px 0 0;
-            padding: 18px 22px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; border-bottom: none;
+            background-color: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px 12px 0 0;
+            padding: 18px 22px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: none;
         }
         .search-input, .filter-select {
-            background-color: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main);
-            padding: 11px 16px; border-radius: 8px; font-size: 14px; outline: none;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 11px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
         }
         .search-input { flex: 1; min-width: 280px; }
-        .map-hint-bar {
-            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
-            background: rgba(6, 182, 212, 0.06); border: 1px solid rgba(6, 182, 212, 0.25); border-bottom: none;
-            padding: 10px 22px; font-size: 12.5px; color: #7dd3e8;
-        }
-        .map-hint-btn {
-            background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.4); color: var(--accent-cyan);
-            padding: 6px 12px; border-radius: 7px; font-size: 12px; font-weight: 700; cursor: pointer;
+        .search-input:focus, .filter-select:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25);
         }
 
+        .map-hint-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: rgba(6, 182, 212, 0.06);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            border-bottom: none;
+            padding: 10px 22px;
+            font-size: 12.5px;
+            color: #7dd3e8;
+        }
+        .map-hint-bar strong { color: var(--accent-cyan); }
+        .map-btn-group { display: flex; gap: 8px; }
+        .map-hint-btn {
+            background: rgba(6,182,212,0.15);
+            border: 1px solid rgba(6,182,212,0.4);
+            color: var(--accent-cyan);
+            padding: 6px 12px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+        .map-hint-btn:hover { background: rgba(6,182,212,0.3); }
+
         .map-wrapper {
-            border: 1px solid var(--border-color); border-radius: 0 0 12px 12px;
-            background: #060b19; height: 600px; width: 100%; position: relative; overflow: hidden;
+            border: 1px solid var(--border-color);
+            border-radius: 0 0 12px 12px;
+            overflow: hidden;
+            background: #ffffff;
+            height: 560px;
+            width: 100%;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+            position: relative;
         }
         .map-wrapper.pin-mode { cursor: crosshair; }
         .map-wrapper.pin-mode::after {
-            content: '📍 Click anywhere on India map to place report';
-            position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
-            background: rgba(15, 23, 42, 0.95); color: #67e8f9; border: 1px solid var(--accent-cyan);
-            padding: 8px 16px; border-radius: 99px; font-size: 12.5px; font-weight: 700; z-index: 10;
+            content: '📍 Click anywhere on the map to place your report';
+            position: absolute;
+            top: 12px; left: 50%; transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(8px);
+            color: #67e8f9;
+            border: 1px solid var(--accent-cyan);
+            padding: 8px 16px;
+            border-radius: 99px;
+            font-size: 12.5px;
+            font-weight: 700;
+            z-index: 1000;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+            pointer-events: none;
         }
 
-        /* SVG Vector Map Styles */
-        #indiaSvgMap {
-            width: 100%; height: 100%; display: block;
-            background: radial-gradient(circle at center, #0a1329 0%, #030712 100%);
+        .map-legend {
+            background: rgba(13, 19, 34, 0.92);
+            backdrop-filter: blur(10px);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            line-height: 1.6;
+            min-width: 150px;
         }
-        .grid-line { stroke: rgba(30, 41, 59, 0.5); stroke-width: 0.5; stroke-dasharray: 4,4; }
-        .india-boundary {
-            fill: rgba(15, 23, 42, 0.85);
-            stroke: var(--accent-cyan);
-            stroke-width: 1.8;
-            filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.2));
-            transition: all 0.3s ease;
-        }
-        .region-bubble {
-            fill: rgba(37, 99, 235, 0.12);
-            stroke: rgba(6, 182, 212, 0.35);
-            stroke-width: 1;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .region-bubble:hover {
-            fill: rgba(6, 182, 212, 0.25);
-            stroke: var(--accent-cyan);
-        }
-        .region-text {
-            font-size: 10px; font-family: var(--font-sans); fill: #94a3b8; font-weight: 600; pointer-events: none;
-        }
-        .incident-pin {
-            cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .incident-pin:hover { transform: scale(1.4); }
+        .map-legend strong { display: block; margin-bottom: 4px; font-size: 12px; color: var(--accent-cyan); }
+        .legend-row { display: flex; align-items: center; gap: 7px; }
+        .legend-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; border: 1px solid rgba(255,255,255,0.4); }
+        .legend-hint { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border-color); color: var(--accent-cyan); font-weight: 600; font-size: 11px; }
 
-        /* Popup overlay for SVG pins */
-        .svg-popup {
-            position: absolute; display: none; background: rgba(13, 19, 34, 0.95);
-            backdrop-filter: blur(12px); border: 1px solid var(--accent-cyan); border-radius: 10px;
-            padding: 12px 16px; font-size: 12.5px; z-index: 50; pointer-events: auto; max-width: 260px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+        .pantnagar-label {
+            background: rgba(3, 7, 18, 0.9);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            font-family: var(--font-sans);
+            font-weight: 800;
+            font-size: 10.5px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(6,182,212,0.4);
+            white-space: nowrap;
         }
-        .svg-popup-close { float: right; cursor: pointer; color: var(--text-muted); margin-left: 10px; }
 
-        /* ---------- Views, Cards & Modals ---------- */
-        .view-section { display: none; }
+        /* ---------- Views & Cards ---------- */
+        .view-section { display: none; animation: fadeIn .3s cubic-bezier(0.16, 1, 0.3, 1); }
         .view-section.active { display: block; }
-        .view-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
-        .view-header h2 { font-size: 24px; font-weight: 700; }
-        .view-header p { color: var(--text-muted); font-size: 14px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .sub-filters { display: flex; gap: 8px; }
+        .view-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+        .view-header h2 { margin: 0 0 6px 0; color: var(--text-main); font-size: 24px; font-weight: 700; }
+        .view-header p { margin: 0; color: var(--text-muted); font-size: 14px; }
+
+        .sub-filters { display: flex; gap: 8px; flex-wrap: wrap; }
         .sub-filter-chip {
-            background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted);
-            padding: 7px 14px; border-radius: 99px; font-size: 12px; font-weight: 600; cursor: pointer;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 7px 14px;
+            border-radius: 99px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s ease;
         }
-        .sub-filter-chip.active { color: var(--accent-cyan); border-color: var(--accent-cyan); background: rgba(6,182,212,0.1); }
+        .sub-filter-chip:hover { color: var(--text-main); border-color: var(--accent-blue); background: var(--bg-card-hover); }
+        .sub-filter-chip.active { color: var(--accent-cyan); border-color: var(--accent-cyan); background: rgba(6,182,212,0.1); box-shadow: 0 0 10px rgba(6,182,212,0.15); }
 
         .card-list { display: flex; flex-direction: column; gap: 16px; }
         .interactive-card {
-            background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
-            padding: 22px; display: flex; justify-content: space-between; align-items: center; gap: 20px;
+            background-color: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
         }
-        .card-info h4 { margin: 0 0 6px 0; font-size: 16px; }
-        .card-info p { margin: 0; font-size: 13px; color: var(--text-muted); }
-        .badge-status { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; }
+        .interactive-card:hover { border-color: rgba(6, 182, 212, 0.4); background-color: var(--bg-card-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .card-info { flex: 1; min-width: 260px; }
+        .card-info h4 { margin: 0 0 6px 0; font-size: 16px; color: var(--text-main); font-weight: 600; }
+        .card-info p { margin: 0; font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+        .card-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+        /* ---------- Team Grid ---------- */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .team-card {
+            background-color: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+        }
+        .team-card:hover { transform: translateY(-5px); border-color: var(--accent-cyan); box-shadow: 0 15px 35px var(--glow-cyan); }
+        
+        .avatar-container { position: relative; width: 76px; height: 76px; flex-shrink: 0; }
+        .avatar-ring {
+            position: absolute; top: -4px; left: -4px; right: -4px; bottom: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple));
+            animation: spinRing 4s linear infinite;
+            z-index: 1;
+        }
+        @keyframes spinRing { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .team-avatar {
+            position: relative; width: 76px; height: 76px; border-radius: 50%;
+            background: #fdf6e2; border: 3px solid var(--bg-card); z-index: 2;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .team-card:hover .team-avatar { transform: scale(1.05); }
+
+        .team-details h3 { margin: 0 0 4px 0; font-size: 18px; color: var(--text-main); font-weight: 700; }
+        .team-role { font-size: 13px; font-weight: 600; color: var(--accent-cyan); margin-bottom: 8px; display: inline-block; }
+        .team-status { font-size: 12px; color: #34d399; display: flex; align-items: center; gap: 6px; font-weight: 500; }
+
+        /* ---------- Buttons & Forms ---------- */
+        .action-btn {
+            background-color: var(--accent-blue);
+            color: white; border: none; padding: 9px 18px; border-radius: 8px;
+            font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+        .action-btn:hover { background-color: #1d4ed8; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4); }
+        .action-btn:active { transform: scale(0.97); }
+        .action-btn:disabled { background: #1e293b; color: #64748b; cursor: default; transform: none; box-shadow: none; }
+        .action-btn.secondary { background: rgba(6,182,212,0.15); color: var(--accent-cyan); box-shadow: none; border: 1px solid rgba(6,182,212,0.35); }
+        .action-btn.secondary:hover { background: rgba(6,182,212,0.25); }
+
+        .form-card {
+            background-color: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 32px; max-width: 800px; margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .form-top-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+        .pinned-note {
+            display: none; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.35);
+            color: var(--accent-cyan); padding: 10px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; margin-bottom: 20px;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .form-control {
+            width: 100%; background-color: var(--bg-main); border: 1px solid var(--border-color);
+            color: var(--text-main); padding: 12px 16px; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s;
+        }
+        .form-control:focus { border-color: var(--accent-cyan); box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2); }
+
+        .badge-status { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; white-space: nowrap; letter-spacing: 0.3px; }
         .status-unresolved { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
         .status-resolved { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
         .status-dispatched { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .status-review { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
 
-        .action-btn {
-            background-color: var(--accent-blue); color: white; border: none; padding: 9px 18px;
-            border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer;
+        /* ---------- Toasts ---------- */
+        #toastStack { position: fixed; top: 24px; right: 24px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; pointer-events: none; }
+        .toast {
+            pointer-events: auto; background: var(--bg-card); backdrop-filter: blur(12px);
+            border: 1px solid var(--accent-green); border-left: 5px solid var(--accent-green);
+            color: var(--text-main); padding: 14px 18px; border-radius: 10px; font-size: 13px; font-weight: 500;
+            min-width: 280px; max-width: 360px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            animation: toastIn .25s ease, toastOut .3s ease 3.4s forwards;
         }
-        .action-btn.secondary { background: rgba(6,182,212,0.15); color: var(--accent-cyan); border: 1px solid rgba(6,182,212,0.35); }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes toastOut { to { opacity: 0; transform: translateX(30px); } }
 
-        .form-card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 32px; max-width: 800px; margin: 0 auto; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
-        .form-control { width: 100%; background-color: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); padding: 12px 16px; border-radius: 8px; font-size: 14px; outline: none; }
+        /* ---------- Floating Controls & Copilot ---------- */
+        .fab-report {
+            position: fixed; bottom: 26px; right: 26px; z-index: 500; width: 60px; height: 60px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue)); color: #04141f;
+            border: none; border-radius: 50%; font-size: 22px; cursor: pointer; box-shadow: 0 10px 25px rgba(6, 182, 212, 0.4);
+            display: flex; align-items: center; justify-content: center; transition: transform .2s ease, box-shadow .2s ease;
+        }
+        .fab-report:hover { transform: scale(1.08); box-shadow: 0 14px 30px rgba(6, 182, 212, 0.6); }
 
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-        .team-card { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 28px; display: flex; align-items: center; gap: 22px; }
-        .team-avatar { width: 70px; height: 70px; border-radius: 50%; background: #fdf6e2; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 2px solid var(--accent-cyan); }
+        .chat-fab {
+            position: fixed; bottom: 26px; right: 100px; z-index: 500; width: 60px; height: 60px;
+            background: var(--bg-card); backdrop-filter: blur(12px); border: 2px solid var(--accent-cyan); color: var(--accent-cyan);
+            border-radius: 50%; font-size: 22px; cursor: pointer; box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3);
+            display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;
+        }
+        .chat-fab:hover { background: rgba(6,182,212,0.15); transform: scale(1.08); }
 
-        #toastStack { position: fixed; top: 24px; right: 24px; display: flex; flex-direction: column; gap: 12px; z-index: 9999; }
-        .toast { background: var(--bg-card); border-left: 5px solid var(--accent-green); color: var(--text-main); padding: 14px 18px; border-radius: 10px; font-size: 13px; min-width: 280px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .chat-window {
+            position: fixed; bottom: 100px; right: 26px; width: 380px; height: 500px;
+            background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border-color);
+            border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); z-index: 600; display: none;
+            flex-direction: column; overflow: hidden; transform: translateY(20px); opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .chat-window.open { display: flex; transform: translateY(0); opacity: 1; }
+        .chat-header {
+            background: #0f172a; border-bottom: 1px solid var(--border-color); padding: 14px 18px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .chat-title { font-weight: 700; font-size: 14px; color: var(--accent-cyan); display: flex; align-items: center; gap: 7px; }
+        .chat-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; font-weight: 700; }
+        .chat-close:hover { color: var(--text-main); }
+        
+        .chat-body { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; font-size: 13px; }
+        .chat-msg { max-width: 85%; padding: 10px 14px; border-radius: 12px; line-height: 1.4; }
+        .chat-msg.bot { background: #1e293b; color: var(--text-main); align-self: flex-start; border-top-left-radius: 2px; border: 1px solid var(--border-color); }
+        .chat-msg.user { background: var(--accent-blue); color: white; align-self: flex-end; border-top-right-radius: 2px; }
+        
+        .chat-suggestions { display: flex; gap: 6px; padding: 0 16px 10px; flex-wrap: wrap; }
+        .suggestion-chip {
+            background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.3); color: var(--accent-cyan);
+            font-size: 11px; padding: 4px 8px; border-radius: 99px; cursor: pointer; font-weight: 600;
+        }
+        .suggestion-chip:hover { background: rgba(6,182,212,0.25); }
 
-        .fab-report { position: fixed; bottom: 26px; right: 26px; z-index: 500; width: 60px; height: 60px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue)); border: none; border-radius: 50%; font-size: 22px; cursor: pointer; }
+        .chat-footer { padding: 12px; border-top: 1px solid var(--border-color); background: #090d16; display: flex; gap: 8px; }
+        .chat-input { flex: 1; background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); padding: 9px 12px; border-radius: 8px; font-size: 13px; outline: none; }
+        .chat-input:focus { border-color: var(--accent-cyan); }
+        .chat-send { background: var(--accent-cyan); color: #04141f; border: none; padding: 9px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .chat-send:hover { opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -261,11 +606,11 @@
     <div id="authContainer" class="auth-container">
         <div class="auth-card">
             <div class="auth-logo">
-                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-cyan); margin: 0 auto 12px; display: block;">
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-cyan); margin: 0 auto 12px; display: block;">
                     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                 </svg>
                 <h2 id="authTitle">Command Center Portal</h2>
-                <p id="authSubtitle">Offline Intelligent Vector System</p>
+                <p id="authSubtitle">Sign in to access National Smart City OS</p>
             </div>
             <form id="authForm" class="auth-form" onsubmit="handleAuthSubmit(event)">
                 <div class="form-group" id="nameGroup" style="display: none;">
@@ -292,16 +637,14 @@
     <div id="appWrapper">
         <header>
             <div class="brand">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                    <line x1="8" y1="21" x2="16" y2="21"/>
-                    <line x1="12" y1="17" x2="12" y2="21"/>
+                <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M19.375 5H.625a.625.625 0 0 0 0 1.25h.625V15a.625.625 0 1 0 1.25 0v-3.75h15V15a.625.625 0 1 0 1.25 0V6.25h.625a.625.625 0 1 0 0-1.25ZM2.5 6.25h6.875V10H2.5V6.25ZM17.5 10h-6.875V6.25H17.5V10ZM7.5 8.125c0 .345-.28.625-.625.625H5a.625.625 0 1 1 0-1.25h1.875c.345 0 .625.28.625.625Zm5 0c0-.345.28-.625.625-.625H15a.625.625 0 1 1 0 1.25h-1.875a.625.625 0 0 1-.625-.625Z" fill="currentColor"/>
                 </svg>
-                INDIA URBAN INTELLIGENCE COMMAND OS (OFFLINE VECTOR EDITION)
+                INDIA URBAN INTELLIGENCE COMMAND OS
             </div>
             <div class="header-right">
                 <div class="system-time" id="systemClock">00:00:00 UTC</div>
-                <div><span class="live-badge"><span class="live-dot"></span>Zero External APIs Active</span></div>
+                <div><span class="live-badge"><span class="live-dot"></span>National Fleet Active</span></div>
                 <button class="logout-btn" onclick="logoutSession()">Sign Out</button>
             </div>
         </header>
@@ -310,89 +653,58 @@
             <div class="nav-tabs">
                 <button class="tab-btn active" onclick="switchView('map-view', event)">🗺️ National Map</button>
                 <button class="tab-btn" onclick="switchView('issues-view', event)">⚠️ Pan-India Tickets <span class="tab-count" id="issuesTabCount">0</span></button>
-                <button class="tab-btn" onclick="switchView('citizen-view', event)">📢 Report an Issue</button>
+                <button class="tab-btn highlight-tab" onclick="switchView('citizen-view', event)">📢 Report an Issue</button>
                 <button class="tab-btn" onclick="switchView('team-view', event)">👥 Team Members</button>
+                <button class="tab-btn" onclick="switchView('actions-view', event)">⚡ Edge Actions</button>
             </div>
 
             <div class="ticker-bar">
-                <span class="ticker-label">Vector Stream</span>
-                <span class="ticker-content" id="tickerText">Hardware-accelerated SVG geographic renderer running offline without external tile calls...</span>
+                <span class="ticker-label">Live Stream</span>
+                <span class="ticker-content" id="tickerText">Synchronizing municipal transit feeds across all Indian states and Union Territories...</span>
             </div>
 
-            <!-- VIEW 1: ZERO-API COMMAND MAP -->
+            <!-- VIEW 1: COMMAND MAP -->
             <div id="map-view" class="view-section active">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h3>National Fleet Coverage</h3>
+                        <h3>Active National Fleet</h3>
                         <div class="val">36 States</div>
-                        <div class="sub">Vectorized Geographic Projection</div>
+                        <div class="sub"><span>🟢</span> Real-time telemetry reporting</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Reported Road Defects</h3>
-                        <div class="val" id="hazard-count">5 Items</div>
-                        <div class="sub">Embedded Point Coordinates</div>
+                        <h3>Hazards Flagged</h3>
+                        <div class="val" id="hazard-count">7 Items</div>
+                        <div class="sub"><span>⚡</span> YOLOv10 edge model verification</div>
                     </div>
                     <div class="stat-card">
-                        <h3>External API Bandwidth</h3>
-                        <div class="val">0.0 KB/s</div>
-                        <div class="sub">100% Offline Capable</div>
+                        <h3>Bandwidth Saved</h3>
+                        <div class="val">99.5%</div>
+                        <div class="sub"><span>💾</span> Compressed metadata JSON (0.5KB)</div>
                     </div>
                 </div>
 
                 <div class="control-panel">
-                    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Filter location, state or city (e.g., Pantnagar, Delhi, Mumbai)..." onkeyup="filterIncidents()">
+                    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search state, city, or location (e.g., Pantnagar, Delhi, Mumbai)..." onkeyup="filterIncidents()">
                     <select id="filterSelect" class="filter-select" onchange="filterIncidents()">
                         <option value="all">All Event Types</option>
                         <option value="Pothole">Potholes</option>
                         <option value="Waterlogging">Waterlogging</option>
                         <option value="Zebra Crossing">Missing Zebra Crossing</option>
+                        <option value="Rash Driving">Rash Driving</option>
                         <option value="Signboard">Damaged Signboard</option>
                     </select>
                 </div>
 
                 <div class="map-hint-bar">
-                    <span>Precision Projected Cartographic Surface. <strong>No Tile API or API Key Required.</strong></span>
+                    <span>Explore India or report road hazards. <strong>Pantnagar Hub is set as primary focus.</strong></span>
                     <div class="map-btn-group">
-                        <button class="map-hint-btn" onclick="startPinDrop()">📍 Click Map to Drop Report</button>
+                        <button class="map-hint-btn" onclick="resetToPantnagar()">🎯 Reset to Pantnagar</button>
+                        <button class="map-hint-btn" onclick="startPinDrop()">📍 Click Map to Report</button>
                     </div>
                 </div>
 
-                <div class="map-wrapper" id="mapWrapper" onclick="handleMapClick(event)">
-                    <svg id="indiaSvgMap" viewBox="0 0 1000 900">
-                        <!-- Longitudinal/Latitudinal Gridlines -->
-                        <g class="grid-layer">
-                            <line x1="100" y1="200" x2="900" y2="200" class="grid-line" />
-                            <line x1="100" y1="400" x2="900" y2="400" class="grid-line" />
-                            <line x1="100" y1="600" x2="900" y2="600" class="grid-line" />
-                            <line x1="300" y1="50" x2="300" y2="850" class="grid-line" />
-                            <line x1="500" y1="50" x2="500" y2="850" class="grid-line" />
-                            <line x1="700" y1="50" x2="700" y2="850" class="grid-line" />
-                        </g>
-
-                        <!-- High-Fidelity Projected Geometry of India Coastline/Mainland -->
-                        <g id="landmassLayer">
-                            <path class="india-boundary" d="
-                                M 420 85 
-                                L 450 115 L 485 95 L 530 140 L 490 190 L 515 225 L 560 215 L 610 240 
-                                L 670 235 L 720 280 L 800 280 L 860 305 L 830 360 L 780 375 L 730 350 
-                                L 725 410 L 690 440 L 670 515 L 630 580 L 590 640 L 560 720 L 510 825 
-                                L 475 750 L 430 670 L 410 580 L 390 520 L 310 470 L 330 435 L 365 415 
-                                L 380 340 L 350 280 L 380 230 L 370 170 L 410 130 Z" 
-                            />
-                        </g>
-
-                        <!-- Region Anchors -->
-                        <g id="regionNodesLayer"></g>
-
-                        <!-- Incident Markers -->
-                        <g id="incidentPinsLayer"></g>
-                    </svg>
-
-                    <!-- Embedded Popup -->
-                    <div id="svgPopup" class="svg-popup">
-                        <span class="svg-popup-close" onclick="closePopup()">✕</span>
-                        <div id="svgPopupContent"></div>
-                    </div>
+                <div class="map-wrapper" id="mapWrapper">
+                    <div id="map" style="height:100%; width:100%;"></div>
                 </div>
             </div>
 
@@ -401,12 +713,14 @@
                 <div class="view-header">
                     <div>
                         <h2>Pan-India Infrastructure Tickets</h2>
-                        <p>Internal storage records without third-party dependencies.</p>
+                        <p>Generated automatically by state transit bus edge-AI vision pods or submitted by citizens.</p>
                     </div>
                     <div class="sub-filters" id="issueStatusFilters">
                         <span class="sub-filter-chip active" data-status="all">All</span>
                         <span class="sub-filter-chip" data-status="Unresolved">Unresolved</span>
                         <span class="sub-filter-chip" data-status="Dispatched">Dispatched</span>
+                        <span class="sub-filter-chip" data-status="Crew Dispatched 🚀">En Route</span>
+                        <span class="sub-filter-chip" data-status="Under Review">Under Review</span>
                         <span class="sub-filter-chip" data-status="Resolved">Resolved</span>
                     </div>
                 </div>
@@ -417,11 +731,16 @@
             <div id="citizen-view" class="view-section">
                 <div class="view-header">
                     <div>
-                        <h2>Grievance Reporting Portal</h2>
-                        <p>Submissions immediately register directly to the SVG coordinate projection plane.</p>
+                        <h2>Indian State &amp; UT Grievance Reporting Portal</h2>
+                        <p>Submit a road defect or hazard report from any Indian state or Union Territory to pin it onto the national map.</p>
                     </div>
                 </div>
                 <div class="form-card">
+                    <div class="form-top-actions">
+                        <button type="button" class="action-btn secondary" onclick="startPinDrop()">📍 Pin Exact Location on Map</button>
+                        <button type="button" class="action-btn secondary" onclick="useMyLocation()">🧭 Use My Current Location</button>
+                    </div>
+                    <div class="pinned-note" id="pinnedLocationNote"></div>
                     <form id="citizenForm" onsubmit="handleCitizenSubmit(event)">
                         <input type="hidden" id="citizenLat">
                         <input type="hidden" id="citizenLng">
@@ -437,16 +756,17 @@
                             <label>Hazard / Issue Type</label>
                             <select id="citizenType" class="form-control" required>
                                 <option value="Pothole">Pothole / Road Damage</option>
-                                <option value="Waterlogging">Waterlogging Overflow</option>
-                                <option value="Zebra Crossing">Missing Zebra Crossing</option>
-                                <option value="Signboard">Damaged Signboard</option>
+                                <option value="Waterlogging">Waterlogging / Drainage Overflow</option>
+                                <option value="Zebra Crossing">Missing / Faded Zebra Crossing</option>
+                                <option value="Signboard">Damaged or Missing Traffic Signboard</option>
+                                <option value="Rash Driving">Reckless Driving / Traffic Hazard</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Street / Landmark</label>
-                            <input type="text" id="citizenLocation" class="form-control" placeholder="e.g. GBPUAT Campus Road / MG Road" required>
+                            <label>Specific Street Name / Landmark</label>
+                            <input type="text" id="citizenLocation" class="form-control" placeholder="e.g., Pantnagar Main Road / MG Road / Connaught Place" required>
                         </div>
-                        <button type="submit" class="action-btn" style="width: 100%; padding: 14px; font-size: 15px;">Publish to Offline Map Surface</button>
+                        <button type="submit" class="action-btn" style="width: 100%; padding: 14px; font-size: 15px;">🇮🇳 Publish National Report to Map &amp; Queue</button>
                     </form>
                 </div>
             </div>
@@ -454,263 +774,564 @@
             <!-- VIEW 4: TEAM MEMBERS -->
             <div id="team-view" class="view-section">
                 <div class="view-header">
-                    <h2>Project Development Team</h2>
+                    <div>
+                        <h2>Project Development Team</h2>
+                        <p>Core contributors building the AI-Powered Mobile Urban Intelligence Platform.</p>
+                    </div>
                 </div>
                 <div class="team-grid">
                     <div class="team-card">
-                        <div class="team-avatar">👩</div>
-                        <div>
+                        <div class="avatar-container">
+                            <div class="avatar-ring"></div>
+                            <div class="team-avatar">
+                                <svg viewBox="0 0 100 100" width="100" height="100">
+                                    <circle cx="50" cy="50" r="48" fill="#ffe4e6" stroke="#f43f5e" stroke-width="3" stroke-dasharray="6,3"/>
+                                    <path d="M25 50 Q18 25 50 20 Q82 25 75 50 Q85 85 68 88 L32 88 Q15 85 25 50 Z" fill="#fb7185" stroke="#be123c" stroke-width="2.5" stroke-linejoin="round"/>
+                                    <circle cx="50" cy="52" r="21" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+                                    <circle cx="43" cy="49" r="2.5" fill="#1e293b"/>
+                                    <circle cx="57" cy="49" r="2.5" fill="#1e293b"/>
+                                    <circle cx="39" cy="56" r="3.5" fill="#fda4af" opacity="0.8"/>
+                                    <circle cx="61" cy="56" r="3.5" fill="#fda4af" opacity="0.8"/>
+                                    <path d="M45 60 Q50 65 55 60" stroke="#be123c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="team-details">
                             <h3>Mahima Kushwaha</h3>
-                            <span style="color:var(--accent-cyan); font-size:13px;">UI/UX Designer</span>
+                            <span class="team-role">UI/UX Designer</span>
+                            <div class="team-status"><span class="live-dot" style="background:#f43f5e; box-shadow:0 0 8px #f43f5e;"></span> Designing GIS Interfaces</div>
                         </div>
                     </div>
+
                     <div class="team-card">
-                        <div class="team-avatar">👨</div>
-                        <div>
+                        <div class="avatar-container">
+                            <div class="avatar-ring"></div>
+                            <div class="team-avatar">
+                                <svg viewBox="0 0 100 100" width="100" height="100">
+                                    <circle cx="50" cy="50" r="48" fill="#dbeafe" stroke="#3b82f6" stroke-width="3" stroke-dasharray="6,3"/>
+                                    <path d="M30 42 Q50 15 70 42 L68 30 Q50 12 32 30 Z" fill="#1e3a8a" stroke="#172554" stroke-width="2.5"/>
+                                    <circle cx="50" cy="53" r="21" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+                                    <rect x="37" y="44" width="12" height="10" rx="3" fill="none" stroke="#1e3a8a" stroke-width="2.5"/>
+                                    <rect x="51" y="44" width="12" height="10" rx="3" fill="none" stroke="#1e3a8a" stroke-width="2.5"/>
+                                    <line x1="49" y1="48" x2="51" y2="48" stroke="#1e3a8a" stroke-width="2.5"/>
+                                    <path d="M46 63 Q50 67 54 63" stroke="#1e3a8a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="team-details">
                             <h3>Ishaan Thusoo</h3>
-                            <span style="color:var(--accent-cyan); font-size:13px;">Full Stack Development</span>
+                            <span class="team-role">Full Stack Development</span>
+                            <div class="team-status"><span class="live-dot"></span> System Architecture &amp; APIs</div>
                         </div>
                     </div>
+
                     <div class="team-card">
-                        <div class="team-avatar">👩</div>
-                        <div>
-                            <h3>Diksha Jukaria</h3>
-                            <span style="color:var(--accent-cyan); font-size:13px;">AI Engineer</span>
+                        <div class="avatar-container">
+                            <div class="avatar-ring"></div>
+                            <div class="team-avatar">
+                                <svg viewBox="0 0 100 100" width="100" height="100">
+                                    <circle cx="50" cy="50" r="48" fill="#f3e8ff" stroke="#a855f7" stroke-width="3" stroke-dasharray="6,3"/>
+                                    <circle cx="50" cy="22" r="11" fill="#7e22ce" stroke="#581c87" stroke-width="2"/>
+                                    <path d="M26 50 Q20 25 50 25 Q80 25 74 50 Q82 85 66 88 L34 88 Q18 85 26 50 Z" fill="#9333ea" stroke="#581c87" stroke-width="2.5" stroke-linejoin="round"/>
+                                    <circle cx="50" cy="53" r="21" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+                                    <circle cx="43" cy="50" r="2.5" fill="#1e293b"/>
+                                    <circle cx="57" cy="50" r="2.5" fill="#1e293b"/>
+                                    <circle cx="39" cy="57" r="3.5" fill="#d8b4fe" opacity="0.8"/>
+                                    <circle cx="61" cy="57" r="3.5" fill="#d8b4fe" opacity="0.8"/>
+                                    <path d="M45 61 Q50 65 55 61" stroke="#581c87" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                </svg>
+                            </div>
                         </div>
+                        <div class="team-details">
+                            <h3>Diksha Jukaria</h3>
+                            <span class="team-role">AI Engineer</span>
+                            <div class="team-status"><span class="live-dot" style="background:#ec4899; box-shadow:0 0 8px #ec4899;"></span> Edge YOLOv10 &amp; Vision Pipelines</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 5: ACTIONS -->
+            <div id="actions-view" class="view-section">
+                <div class="view-header">
+                    <div>
+                        <h2>Automated CI/CD &amp; National Edge Actions</h2>
+                        <p>Real-time multi-state workflow execution logs for bus telemetry synchronizations.</p>
+                    </div>
+                </div>
+                <div class="card-list" id="actions-list">
+                    <div class="interactive-card">
+                        <div class="card-info">
+                            <h4>[Node Sync] Pantnagar Campus &amp; Delhi Fleet Pods</h4>
+                            <p>Compressed JSON metadata batch uploaded successfully via 5G edge relay. 42 potholes indexed.</p>
+                        </div>
+                        <span class="badge-status status-resolved">Completed</span>
+                    </div>
+                    <div class="interactive-card">
+                        <div class="card-info">
+                            <h4>[AI Model Check] YOLOv10 Edge Weights Distribution</h4>
+                            <p>Synchronized latest confidence threshold weights (0.92) across all 36 state municipal transit servers.</p>
+                        </div>
+                        <span class="badge-status status-dispatched">Active Sync</span>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Floating Action Buttons -->
         <button class="fab-report" onclick="startPinDrop()" title="Report an Issue">📍</button>
+        <button class="chat-fab" onclick="toggleChat()" title="UrbanAI Assistant">🤖</button>
+
+        <!-- Slide-Up AI Copilot Drawer -->
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="chat-title">🤖 UrbanAI Copilot</div>
+                <button class="chat-close" onclick="toggleChat()">✕</button>
+            </div>
+            <div class="chat-body" id="chatBody">
+                <div class="chat-msg bot">Hello! I'm your Urban Intelligence AI assistant. Ask me about active municipal tickets, fleet status, or our team members!</div>
+            </div>
+            <div class="chat-suggestions">
+                <span class="suggestion-chip" onclick="sendQuickPrompt('Status overview')">📊 Status overview</span>
+                <span class="suggestion-chip" onclick="sendQuickPrompt('Who is on the team?')">👥 Team info</span>
+                <span class="suggestion-chip" onclick="sendQuickPrompt('Pantnagar node info')">🎓 Pantnagar node</span>
+            </div>
+            <div class="chat-footer">
+                <input type="text" id="chatInput" class="chat-input" placeholder="Type a message..." onkeypress="handleChatKey(event)">
+                <button class="chat-send" onclick="sendChatMessage()">Send</button>
+            </div>
+        </div>
     </div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     <script>
-        // --- GIS Math Projection (Equirectangular India Boundary Window) ---
-        const GEO_BOUNDS = {
-            minLon: 67.0, maxLon: 98.0,
-            minLat: 7.0,  maxLat: 37.5,
-            svgWidth: 1000, svgHeight: 900
-        };
+        // ---------- Auth System Logic ----------
+        let isRegister = false;
 
-        function projectGeoToSvg(lat, lon) {
-            const x = ((lon - GEO_BOUNDS.minLon) / (GEO_BOUNDS.maxLon - GEO_BOUNDS.minLon)) * GEO_BOUNDS.svgWidth;
-            const y = ((GEO_BOUNDS.maxLat - lat) / (GEO_BOUNDS.maxLat - GEO_BOUNDS.minLat)) * GEO_BOUNDS.svgHeight;
-            return { x, y };
-        }
-
-        function invertSvgToGeo(svgX, svgY) {
-            const lon = GEO_BOUNDS.minLon + (svgX / GEO_BOUNDS.svgWidth) * (GEO_BOUNDS.maxLon - GEO_BOUNDS.minLon);
-            const lat = GEO_BOUNDS.maxLat - (svgY / GEO_BOUNDS.svgHeight) * (GEO_BOUNDS.maxLat - GEO_BOUNDS.minLat);
-            return { lat: parseFloat(lat.toFixed(4)), lon: parseFloat(lon.toFixed(4)) };
-        }
-
-        // India Regions Data
-        const indiaRegions = {
-            "Uttarakhand": { lat: 29.0222, lon: 79.4908, label: "Pantnagar Hub", cities: ["Pantnagar", "Dehradun", "Haridwar", "Nainital"] },
-            "Delhi (NCT)": { lat: 28.6139, lon: 77.2090, label: "Delhi Node", cities: ["New Delhi", "North Delhi", "South Delhi"] },
-            "Maharashtra": { lat: 19.0760, lon: 72.8777, label: "Mumbai Node", cities: ["Mumbai", "Pune", "Nagpur"] },
-            "Karnataka": { lat: 12.9716, lon: 77.5946, label: "Bengaluru Node", cities: ["Bengaluru", "Mysuru", "Mangaluru"] },
-            "Tamil Nadu": { lat: 13.0827, lon: 80.2707, label: "Chennai Node", cities: ["Chennai", "Coimbatore", "Madurai"] },
-            "West Bengal": { lat: 22.5726, lon: 88.3639, label: "Kolkata Node", cities: ["Kolkata", "Howrah", "Siliguri"] }
-        };
-
-        const incidents = [
-            { id: 1, lat: 29.0222, lon: 79.4908, type: "Pantnagar Node", location: "GBPUAT Campus", city: "Pantnagar", state: "Uttarakhand", color: "#10b981", status: "Unresolved" },
-            { id: 2, lat: 28.6239, lon: 77.2090, type: "Pothole", location: "Connaught Place", city: "New Delhi", state: "Delhi (NCT)", color: "#ef4444", status: "Unresolved" },
-            { id: 3, lat: 19.0760, lon: 72.8777, type: "Waterlogging", location: "Andheri Subway", city: "Mumbai", state: "Maharashtra", color: "#3b82f6", status: "Unresolved" },
-            { id: 4, lat: 12.9716, lon: 77.5946, type: "Zebra Crossing", location: "MG Road Junction", city: "Bengaluru", state: "Karnataka", color: "#f59e0b", status: "Dispatched" },
-            { id: 5, lat: 13.0827, lon: 80.2707, type: "Signboard", location: "Marina Beach Road", city: "Chennai", state: "Tamil Nadu", color: "#8b5cf6", status: "Resolved" }
-        ];
-
-        let pinDropMode = false;
-        let activeIssueFilter = 'all';
-
-        // Render Base Nodes
-        function renderBaseRegions() {
-            const container = document.getElementById('regionNodesLayer');
-            container.innerHTML = '';
-            for (const [state, info] of Object.entries(indiaRegions)) {
-                const pt = projectGeoToSvg(info.lat, info.lon);
-                container.innerHTML += `
-                    <circle cx="${pt.x}" cy="${pt.y}" r="22" class="region-bubble" onclick="selectRegion('${state}')"/>
-                    <circle cx="${pt.x}" cy="${pt.y}" r="3" fill="#06b6d4"/>
-                    <text x="${pt.x + 8}" y="${pt.y - 8}" class="region-text">${info.label}</text>
-                `;
-            }
-        }
-
-        // Render Incident Markers on SVG
-        function renderPins(filteredData) {
-            const container = document.getElementById('incidentPinsLayer');
-            container.innerHTML = '';
-
-            filteredData.forEach(item => {
-                const pt = projectGeoToSvg(item.lat, item.lon);
-                container.innerHTML += `
-                    <g class="incident-pin" onclick="openPopup(event, ${item.id})">
-                        <circle cx="${pt.x}" cy="${pt.y}" r="9" fill="${item.color}" opacity="0.3"/>
-                        <circle cx="${pt.x}" cy="${pt.y}" r="5" fill="${item.color}" stroke="#ffffff" stroke-width="1.5"/>
-                    </g>
-                `;
-            });
-            document.getElementById('hazard-count').innerText = `${filteredData.length} Items`;
-            renderIssuesList(filteredData);
-        }
-
-        function openPopup(e, id) {
-            e.stopPropagation();
-            const item = incidents.find(i => i.id === id);
-            if (!item) return;
-            const popup = document.getElementById('svgPopup');
-            const pt = projectGeoToSvg(item.lat, item.lon);
-
-            document.getElementById('svgPopupContent').innerHTML = `
-                <strong style="color:var(--accent-cyan);">${item.type}</strong><br>
-                <span>${item.location}, ${item.city}</span><br>
-                <small style="color:var(--text-muted);">${item.state}</small><br>
-                <span class="badge-status status-${item.status.toLowerCase()}" style="margin-top:6px; display:inline-block;">${item.status}</span>
-            `;
-            popup.style.left = `${(pt.x / GEO_BOUNDS.svgWidth) * 100}%`;
-            popup.style.top = `${(pt.y / GEO_BOUNDS.svgHeight) * 100}%`;
-            popup.style.display = 'block';
-        }
-
-        function closePopup() {
-            document.getElementById('svgPopup').style.display = 'none';
-        }
-
-        function handleMapClick(event) {
-            if (!pinDropMode) return;
-            const mapWrapper = document.getElementById('mapWrapper');
-            const rect = mapWrapper.getBoundingClientRect();
-            const clickX = ((event.clientX - rect.left) / rect.width) * GEO_BOUNDS.svgWidth;
-            const clickY = ((event.clientY - rect.top) / rect.height) * GEO_BOUNDS.svgHeight;
-
-            const coords = invertSvgToGeo(clickX, clickY);
-            pinDropMode = false;
-            mapWrapper.classList.remove('pin-mode');
-
-            document.getElementById('citizenLat').value = coords.lat;
-            document.getElementById('citizenLng').value = coords.lon;
-            switchView('citizen-view');
-            showToast(`Location selected: ${coords.lat}°N, ${coords.lon}°E`, 'var(--accent-cyan)');
-        }
-
-        function startPinDrop() {
-            switchView('map-view');
-            pinDropMode = true;
-            document.getElementById('mapWrapper').classList.add('pin-mode');
-            showToast('Click anywhere on the vector map to mark report location.', 'var(--accent-amber)');
-        }
-
-        function renderIssuesList(data) {
-            const filtered = activeIssueFilter === 'all' ? data : data.filter(i => i.status === activeIssueFilter);
-            const list = document.getElementById('issues-list');
-            list.innerHTML = filtered.map(item => `
-                <div class="interactive-card">
-                    <div class="card-info">
-                        <h4>[${item.type}] — ${item.location}, ${item.city}</h4>
-                        <p>State: <b>${item.state}</b> · Lat/Lon: ${item.lat}, ${item.lon}</p>
-                    </div>
-                    <span class="badge-status ${item.status === 'Resolved' ? 'status-resolved' : 'status-unresolved'}">${item.status}</span>
-                </div>
-            `).join('') || `<div class="interactive-card"><p>No reports found.</p></div>`;
-            document.getElementById('issuesTabCount').innerText = data.filter(i => i.status !== 'Resolved').length;
-        }
-
-        function filterIncidents() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const type = document.getElementById('filterSelect').value;
-            const filtered = incidents.filter(i => {
-                const matchesSearch = i.state.toLowerCase().includes(query) || i.city.toLowerCase().includes(query) || i.location.toLowerCase().includes(query);
-                const matchesType = (type === 'all') || (i.type === type);
-                return matchesSearch && matchesType;
-            });
-            renderPins(filtered);
-        }
-
-        function handleCitizenSubmit(e) {
-            e.preventDefault();
-            const state = document.getElementById('citizenState').value;
-            const city = document.getElementById('citizenCity').value;
-            const type = document.getElementById('citizenType').value;
-            const location = document.getElementById('citizenLocation').value;
-            let lat = parseFloat(document.getElementById('citizenLat').value);
-            let lon = parseFloat(document.getElementById('citizenLng').value);
-
-            if (isNaN(lat) || isNaN(lon)) {
-                const fallback = indiaRegions[state] || { lat: 28.6139, lon: 77.2090 };
-                lat = fallback.lat; lon = fallback.lon;
-            }
-
-            incidents.unshift({
-                id: incidents.length + 1,
-                lat, lon, type, location, city, state,
-                color: "#ef4444", status: "Unresolved"
-            });
-
-            document.getElementById('citizenForm').reset();
-            showToast("Report mapped into vector database!", "var(--accent-green)");
-            switchView('map-view');
-            filterIncidents();
-        }
-
-        function updateStateDropdown() {
-            const select = document.getElementById('citizenState');
-            select.innerHTML = '';
-            Object.keys(indiaRegions).forEach(state => {
-                select.innerHTML += `<option value="${state}">${state}</option>`;
-            });
-            updateCityOptions();
-        }
-
-        function updateCityOptions() {
-            const state = document.getElementById('citizenState').value;
-            const select = document.getElementById('citizenCity');
-            select.innerHTML = '';
-            (indiaRegions[state]?.cities || []).forEach(city => {
-                select.innerHTML += `<option value="${city}">${city}</option>`;
-            });
-        }
-
-        function switchView(viewId, event) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(viewId).classList.add('active');
-            if (event?.currentTarget) event.currentTarget.classList.add('active');
-            closePopup();
-        }
-
-        function showToast(msg, color) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.style.borderLeftColor = color || 'var(--accent-green)';
-            toast.textContent = msg;
-            document.getElementById('toastStack').appendChild(toast);
-            setTimeout(() => toast.remove(), 3500);
+        function toggleAuthMode() {
+            isRegister = !isRegister;
+            document.getElementById('authTitle').textContent = isRegister ? "Register Operator Account" : "Command Center Portal";
+            document.getElementById('authSubtitle').textContent = isRegister ? "Create credentials for National Smart City OS" : "Sign in to access National Smart City OS";
+            document.getElementById('nameGroup').style.display = isRegister ? "block" : "none";
+            document.getElementById('authSubmitBtn').textContent = isRegister ? "Create Account & Launch" : "Sign In to Dashboard";
+            document.getElementById('authSwitchText').textContent = isRegister ? "Already registered?" : "Need an operator account?";
+            document.getElementById('authSwitchLink').textContent = isRegister ? "Sign in here" : "Register here";
         }
 
         function handleAuthSubmit(e) {
             e.preventDefault();
-            document.getElementById('authContainer').style.display = 'none';
-            document.getElementById('appWrapper').style.display = 'block';
-            renderBaseRegions();
-            filterIncidents();
-            showToast("Offline Command Engine Initialized", "var(--accent-green)");
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPassword').value;
+            if(!email || !pass) {
+                showToast("Please enter valid credentials.", "var(--accent-red)");
+                return;
+            }
+            showToast("✅ Authentication successful. Launching Command OS...", "var(--accent-green)");
+            setTimeout(() => {
+                document.getElementById('authContainer').style.display = 'none';
+                document.getElementById('appWrapper').style.display = 'block';
+                if(map) { map.invalidateSize(); }
+            }, 600);
         }
 
         function logoutSession() {
             document.getElementById('appWrapper').style.display = 'none';
             document.getElementById('authContainer').style.display = 'flex';
+            document.getElementById('authForm').reset();
+            showToast("Signed out successfully.", "var(--accent-amber)");
         }
 
+        // Live Clock
         setInterval(() => {
             const now = new Date();
             document.getElementById('systemClock').textContent = now.toUTCString().slice(17, 25) + ' UTC';
         }, 1000);
 
+        const indiaRegions = {
+            "Andhra Pradesh": { lat: 15.9129, lon: 79.7400, zoom: 7, cities: ["Visakhapatnam", "Vijayawada", "Guntur", "Tirupati"] },
+            "Delhi (NCT)": { lat: 28.6139, lon: 77.2090, zoom: 11, cities: ["New Delhi", "North Delhi", "South Delhi", "Dwarka"] },
+            "Karnataka": { lat: 15.3173, lon: 75.7139, zoom: 7, cities: ["Bengaluru", "Mysuru", "Hubballi-Dharwad", "Mangaluru"] },
+            "Maharashtra": { lat: 19.7515, lon: 75.7139, zoom: 7, cities: ["Mumbai", "Pune", "Nagpur", "Nashik"] },
+            "Uttar Pradesh": { lat: 26.8467, lon: 80.9462, zoom: 7, cities: ["Lucknow", "Kanpur", "Varanasi", "Noida", "Agra"] },
+            "Uttarakhand": { lat: 30.0668, lon: 79.0193, zoom: 8, cities: ["Pantnagar", "Dehradun", "Haridwar", "Nainital", "Rishikesh"] },
+            "West Bengal": { lat: 22.9868, lon: 87.8550, zoom: 7, cities: ["Kolkata", "Howrah", "Siliguri", "Durgapur"] }
+        };
+
+        const pantnagarCoords = { lat: 29.0222, lon: 79.4908, zoom: 12 };
+
+        function nearestState(lat, lon) {
+            let best = null, bestDist = Infinity;
+            for (const [name, info] of Object.entries(indiaRegions)) {
+                const d = Math.hypot(info.lat - lat, info.lon - lon);
+                if (d < bestDist) { bestDist = d; best = name; }
+            }
+            return best || "Uttarakhand";
+        }
+
+        function updateStateDropdown() {
+            const stateSelect = document.getElementById('citizenState');
+            stateSelect.innerHTML = '';
+            Object.keys(indiaRegions).sort().forEach(state => {
+                const opt = document.createElement('option');
+                opt.value = state;
+                opt.textContent = state;
+                stateSelect.appendChild(opt);
+            });
+            stateSelect.value = "Uttarakhand";
+            updateCityOptions();
+        }
+
+        function updateCityOptions() {
+            const state = document.getElementById('citizenState').value;
+            const citySelect = document.getElementById('citizenCity');
+            citySelect.innerHTML = '';
+            const cities = indiaRegions[state] ? indiaRegions[state].cities : [];
+            cities.forEach(city => {
+                const opt = document.createElement('option');
+                opt.value = city;
+                opt.textContent = city;
+                citySelect.appendChild(opt);
+            });
+        }
+
         window.onload = () => { updateStateDropdown(); };
+
+        function showToast(message, color) {
+            color = color || 'var(--accent-green)';
+            const stack = document.getElementById('toastStack');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.borderColor = color;
+            toast.style.borderLeftColor = color;
+            toast.textContent = message;
+            stack.appendChild(toast);
+            setTimeout(() => toast.remove(), 3800);
+        }
+
+        const tickerMessages = [
+            "Pantnagar Campus Edge Node successfully transmitting YOLOv10 local inference metadata...",
+            "BUS-DL-04 transmitted compressed JSON metadata (0.5KB) from Connaught Place, Delhi.",
+            "BUS-MH-12 verified AI confidence score on highway defect mapping in Mumbai, Maharashtra.",
+            "National PostGIS distributed database successfully indexed state transit triggers."
+        ];
+        let tickerIdx = 0;
+        setInterval(() => {
+            tickerIdx = (tickerIdx + 1) % tickerMessages.length;
+            document.getElementById('tickerText').textContent = tickerMessages[tickerIdx];
+        }, 5000);
+
+        function switchView(viewId, event) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            if (event && event.currentTarget) event.currentTarget.classList.add('active');
+            if (viewId === 'map-view') setTimeout(() => { map.invalidateSize(); }, 200);
+        }
+
+        // Initialize Map centered on Pantnagar
+        const map = L.map('map').setView([pantnagarCoords.lat, pantnagarCoords.lon], pantnagarCoords.zoom);
+
+        // OpenStreetMap Tile Layer (Free, no API key required)
+        const cleanMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        });
+
+        // Satellite Layer (Free, no API key required)
+        const satelliteHybrid = L.layerGroup([
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { 
+                maxZoom: 19,
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics'
+            }),
+            L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { 
+                maxZoom: 19 
+            })
+        ]);
+
+        cleanMap.addTo(map);
+
+        L.control.layers({
+            "Clean Map": cleanMap,
+            "Satellite Hybrid": satelliteHybrid
+        }).addTo(map);
+
+        const legend = L.control({ position: 'bottomleft' });
+        legend.onAdd = function () {
+            const div = L.DomUtil.create('div', 'map-legend');
+            const types = [
+                ['Pantnagar Hub', '#10b981'], ['Pothole', '#ef4444'], ['Waterlogging', '#3b82f6'],
+                ['Zebra Crossing', '#f59e0b'], ['Signboard', '#8b5cf6']
+            ];
+            div.innerHTML = '<strong>Hazard &amp; Node Types</strong>' +
+                types.map(([label, color]) => `<div class="legend-row"><span class="legend-dot" style="background:${color}"></span>${label}</div>`).join('') +
+                '<div class="legend-hint">📍 Click map to report</div>';
+            L.DomEvent.disableClickPropagation(div);
+            return div;
+        };
+        legend.addTo(map);
+
+        const clusterGroup = L.markerClusterGroup({ maxClusterRadius: 45, spiderfyOnMaxZoom: true, showCoverageOnHover: false });
+        map.addLayer(clusterGroup);
+
+        const incidents = [
+            { id: 1, lat: 29.0222, lon: 79.4908, type: "Pantnagar Node", location: "GBPUAT Campus & Industrial Hub", city: "Pantnagar", state: "Uttarakhand", bus: "PANTNAGAR-EDGE-01", conf: "99%", color: "#10b981", status: "Unresolved" },
+            { id: 2, lat: 28.6239, lon: 77.2090, type: "Pothole", location: "Connaught Place", city: "New Delhi", state: "Delhi (NCT)", bus: "BUS-DL-04", conf: "96%", color: "#ef4444", status: "Unresolved" },
+            { id: 3, lat: 19.0760, lon: 72.8777, type: "Waterlogging", location: "Andheri Subway", city: "Mumbai", state: "Maharashtra", bus: "BUS-MH-12", conf: "92%", color: "#3b82f6", status: "Unresolved" },
+            { id: 4, lat: 12.9716, lon: 77.5946, type: "Zebra Crossing", location: "MG Road Junction", city: "Bengaluru", state: "Karnataka", bus: "BUS-KA-08", conf: "89%", color: "#f59e0b", status: "Dispatched" },
+            { id: 5, lat: 13.0827, lon: 80.2707, type: "Signboard", location: "Marina Beach Road", city: "Chennai", state: "Tamil Nadu", bus: "BUS-TN-02", conf: "85%", color: "#8b5cf6", status: "Resolved" }
+        ];
+
+        let activeIssueFilter = 'all';
+        let pinDropMode = false;
+
+        function statusClass(status) {
+            if (status === 'Unresolved') return 'status-unresolved';
+            if (status === 'Dispatched' || status === 'Crew Dispatched 🚀') return 'status-dispatched';
+            if (status === 'Under Review') return 'status-review';
+            if (status === 'Resolved') return 'status-resolved';
+            return 'status-review';
+        }
+
+        function renderMarkers(dataToRender) {
+            clusterGroup.clearLayers();
+
+            dataToRender.forEach(item => {
+                const markerHtml = `<div style="background-color: ${item.color}; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.8);"></div>`;
+                const customIcon = L.divIcon({ className: 'custom-pin', html: markerHtml, iconSize: [14, 14] });
+
+                const popupContent = `
+                    <div style="font-family: sans-serif; font-size: 13px; line-height: 1.5; color: #030712;">
+                        <b style="color: #2563eb; font-size: 14px;">${item.type}</b><br>
+                        <b>Location:</b> ${item.location}, ${item.city}<br>
+                        <b>State/UT:</b> ${item.state}<br>
+                        <b>Source:</b> ${item.bus || 'Citizen Report'}<br>
+                        <b>Status:</b> ${item.status}
+                    </div>
+                `;
+
+                const marker = L.marker([item.lat, item.lon], { icon: customIcon }).bindPopup(popupContent);
+                clusterGroup.addLayer(marker);
+
+                if(item.city === "Pantnagar") {
+                    const textLabel = L.divIcon({
+                        className: 'pantnagar-label',
+                        html: '📍 Pantnagar Hub',
+                        iconSize: [100, 20],
+                        iconAnchor: [-10, 15]
+                    });
+                    const labelMarker = L.marker([item.lat, item.lon], { icon: textLabel, interactive: false });
+                    clusterGroup.addLayer(labelMarker);
+                }
+            });
+
+            document.getElementById('hazard-count').innerText = `${dataToRender.length} Items`;
+            renderIssuesList(dataToRender);
+        }
+
+        function renderIssuesList(data) {
+            const filtered = activeIssueFilter === 'all' ? data : data.filter(i => i.status === activeIssueFilter);
+            const listContainer = document.getElementById('issues-list');
+            listContainer.innerHTML = filtered.map(item => `
+                <div class="interactive-card">
+                    <div class="card-info">
+                        <h4>[${item.type}] — ${item.location}, ${item.city}</h4>
+                        <p>State/UT: <b>${item.state}</b> · Source: ${item.bus ? 'Fleet ID: ' + item.bus : '📢 Citizen Report'} · Status: <b>${item.status}</b></p>
+                    </div>
+                    <div class="card-actions">
+                        <span class="badge-status ${statusClass(item.status)}">${item.status}</span>
+                        <button class="action-btn" ${item.status === 'Resolved' ? 'disabled' : ''} onclick="dispatchCrew(${item.id})">
+                            ${item.status === 'Resolved' ? 'Resolved' : item.status === 'Unresolved' ? 'Dispatch Crew' : 'Update Status'}
+                        </button>
+                    </div>
+                </div>
+            `).join('') || `<div class="interactive-card"><div class="card-info"><p>No tickets match this filter condition.</p></div></div>`;
+
+            document.getElementById('issuesTabCount').innerText = data.filter(i => i.status !== 'Resolved').length;
+        }
+
+        document.querySelectorAll('#issueStatusFilters .sub-filter-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('#issueStatusFilters .sub-filter-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                activeIssueFilter = chip.dataset.status;
+                renderIssuesList(incidents.filter(passesFilter));
+            });
+        });
+
+        function passesFilter(item) {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const selectedType = document.getElementById('filterSelect').value;
+            const matchesSearch = item.state.toLowerCase().includes(searchQuery) || item.city.toLowerCase().includes(searchQuery) || item.location.toLowerCase().includes(searchQuery);
+            const matchesType = (selectedType === 'all') || (item.type === selectedType);
+            return matchesSearch && matchesType;
+        }
+
+        const statusFlow = { "Unresolved": "Dispatched", "Dispatched": "Crew Dispatched 🚀", "Under Review": "Dispatched" };
+
+        function dispatchCrew(id) {
+            const item = incidents.find(i => i.id === id);
+            if (!item) return;
+            const next = statusFlow[item.status] || item.status;
+            item.status = next;
+            showToast(`Work order updated for ${item.state} → ${next}`, 'var(--accent-blue)');
+            filterIncidents();
+        }
+
+        function filterIncidents() {
+            renderMarkers(incidents.filter(passesFilter));
+            
+            // Search query state flyTo
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            for (const [stateName, data] of Object.entries(indiaRegions)) {
+                if (stateName.toLowerCase() === query) {
+                    map.flyTo([data.lat, data.lon], data.zoom, { duration: 1.5, easeLinearity: 0.25 });
+                    showToast(`📍 Zoomed to ${stateName}`, 'var(--accent-cyan)');
+                    break;
+                }
+            }
+        }
+
+        function resetToPantnagar() {
+            document.getElementById('searchInput').value = '';
+            filterIncidents();
+            map.flyTo([pantnagarCoords.lat, pantnagarCoords.lon], pantnagarCoords.zoom, { duration: 1.6, easeLinearity: 0.25 });
+            showToast("🎯 Map centered back on Pantnagar Hub.", "var(--accent-cyan)");
+        }
+
+        function startPinDrop() {
+            switchView('map-view', { currentTarget: document.querySelectorAll('.tab-btn')[0] });
+            pinDropMode = true;
+            document.getElementById('mapWrapper').classList.add('pin-mode');
+            showToast('Click anywhere on the map to drop your report location.', 'var(--accent-amber)');
+        }
+
+        map.on('click', function (e) {
+            if (!pinDropMode) return;
+            pinDropMode = false;
+            document.getElementById('mapWrapper').classList.remove('pin-mode');
+            fillLocationFields(e.latlng.lat, e.latlng.lng);
+            switchView('citizen-view', { currentTarget: document.querySelectorAll('.tab-btn')[2] });
+            showToast('Location pinned — confirm details and submit.', 'var(--accent-cyan)');
+        });
+
+        function fillLocationFields(lat, lng) {
+            const state = nearestState(lat, lng);
+            document.getElementById('citizenState').value = state;
+            updateCityOptions();
+            document.getElementById('citizenLat').value = lat.toFixed(5);
+            document.getElementById('citizenLng').value = lng.toFixed(5);
+            const note = document.getElementById('pinnedLocationNote');
+            note.style.display = 'block';
+            note.textContent = `📍 Location set: ${lat.toFixed(4)}, ${lng.toFixed(4)} (nearest state: ${state})`;
+        }
+
+        function useMyLocation() {
+            if (!navigator.geolocation) {
+                showToast('Geolocation is not supported by your browser.', 'var(--accent-red)');
+                return;
+            }
+            showToast('Requesting your current location…', 'var(--accent-blue)');
+            navigator.geolocation.getCurrentPosition(
+                pos => fillLocationFields(pos.coords.latitude, pos.coords.longitude),
+                () => showToast('Could not get your location — please pin manually on the map.', 'var(--accent-red)')
+            );
+        }
+
+        function handleCitizenSubmit(event) {
+            event.preventDefault();
+            const state = document.getElementById('citizenState').value;
+            const city = document.getElementById('citizenCity').value;
+            const type = document.getElementById('citizenType').value;
+            const street = document.getElementById('citizenLocation').value;
+            const latField = document.getElementById('citizenLat').value;
+            const lngField = document.getElementById('citizenLng').value;
+
+            let lat, lon;
+            if (latField && lngField) {
+                lat = parseFloat(latField);
+                lon = parseFloat(lngField);
+            } else {
+                const base = indiaRegions[state] || { lat: 29.0222, lon: 79.4908 };
+                lat = base.lat + (Math.random() - 0.5) * 0.04;
+                lon = base.lon + (Math.random() - 0.5) * 0.04;
+            }
+
+            const colorMap = { "Pothole": "#ef4444", "Waterlogging": "#3b82f6", "Zebra Crossing": "#f59e0b", "Signboard": "#8b5cf6", "Rash Driving": "#990033" };
+
+            const newComplaint = {
+                id: incidents.length ? Math.max(...incidents.map(i => i.id)) + 1 : 1,
+                lat: lat, lon: lon, type: type, location: street, city: city, state: state,
+                bus: null, conf: "100% (Citizen Verified)", color: colorMap[type] || "#ef4444", status: "Unresolved"
+            };
+
+            incidents.unshift(newComplaint);
+            showToast(`✅ Report registered for ${state}!`, 'var(--accent-green)');
+
+            document.getElementById('citizenForm').reset();
+            document.getElementById('citizenLat').value = '';
+            document.getElementById('citizenLng').value = '';
+            document.getElementById('pinnedLocationNote').style.display = 'none';
+            updateStateDropdown();
+
+            switchView('map-view', { currentTarget: document.querySelectorAll('.tab-btn')[0] });
+            filterIncidents();
+        }
+
+        // ---------- AI Copilot Drawer Logic ----------
+        function toggleChat() {
+            const win = document.getElementById('chatWindow');
+            win.classList.toggle('open');
+            if(win.classList.contains('open')) { document.getElementById('chatInput').focus(); }
+        }
+
+        function handleChatKey(e) { if(e.key === 'Enter') sendChatMessage(); }
+
+        function sendQuickPrompt(promptText) {
+            document.getElementById('chatInput').value = promptText;
+            sendChatMessage();
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if(!text) return;
+
+            appendChatMsg(text, 'user');
+            input.value = '';
+
+            setTimeout(() => {
+                const reply = generateBotResponse(text);
+                appendChatMsg(reply, 'bot');
+            }, 500);
+        }
+
+        function appendChatMsg(text, sender) {
+            const body = document.getElementById('chatBody');
+            const div = document.createElement('div');
+            div.className = `chat-msg ${sender}`;
+            div.textContent = text;
+            body.appendChild(div);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function generateBotResponse(query) {
+            const q = query.toLowerCase();
+            const total = incidents.length;
+            const unresolved = incidents.filter(i => i.status === 'Unresolved').length;
+
+            if(q.includes('status') || q.includes('overview') || q.includes('summary')) {
+                return `Current National Status: ${total} total hazards logged, with ${unresolved} pending municipal dispatch. Pantnagar hub is fully active.`;
+            } else if(q.includes('team') || q.includes('who')) {
+                return `Our project team features Mahima Kushwaha (UI/UX Designer), Ishaan Thusoo (Full Stack Development), and Diksha Jukaria (AI Engineer).`;
+            } else if(q.includes('pantnagar') || q.includes('node')) {
+                return `Pantnagar serves as our primary regional edge-AI node in Uttarakhand running YOLOv10 local inference on transit telemetry.`;
+            } else {
+                return `I'm your UrbanAI Copilot! Ask me about 'status', 'pantnagar', or 'team'.`;
+            }
+        }
+
+        renderMarkers(incidents);
     </script>
 </body>
 </html>
